@@ -2,6 +2,7 @@ package com.example.locationwake;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,17 +55,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Log, TAG, method, action
-                Log.d(TAG, "createUI(): Clicked on addButton");
+                Log.d(TAG, "createUI(): onClick(View v): Clicked on addButton");
                 //get the text that has been added
                 //TODO: can not be done if there is no text or if the text is already in the database
                 String longitudeString = longitudeEdit.getText().toString();
                 String latitudeString = latitudeEdit.getText().toString();
 
-                Log.d(TAG, "createUI(): Got Strings longitudeString = " + longitudeString);
-                Log.d(TAG, "createUI(): Got Strings latitudeString = " + latitudeString);
+                Log.d(TAG, "createUI(): onClick(View v): Got Strings longitudeString = " + longitudeString);
+                Log.d(TAG, "createUI(): onClick(View v): Got Strings latitudeString = " + latitudeString);
             }
         });
+
         //activity finding location
         goButton = findViewById(R.id.buttonFind);
+
+        goButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //Log, TAG, method, action
+                Log.d(TAG, "createUI(): onClick(View v): Clicked on goButton");
+                //create Intent
+                Intent intent = new Intent(MainActivity.this, GetLocations.class);
+                startActivity(intent);
+            }
+        });
     }
 }

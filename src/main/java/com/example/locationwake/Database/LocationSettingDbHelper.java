@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -13,6 +14,9 @@ import androidx.annotation.Nullable;
  * Database for storing the location, with an ID, name and setting
  */
 public class LocationSettingDbHelper extends SQLiteOpenHelper {
+
+    private String TAG = "LocationSettingDbHelper";
+
     // If you change the database schema, you must increment this number below
     public static final int DATABASE_VERSION = 1;
 
@@ -46,6 +50,7 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d(TAG, "onCreate(SQLiteDatabase db): opened database");
         String CREATE_LOCATION_TABLE = "CREATE TABLE " + TABLE_LOCATION + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 KEY_NAME + " TEXT," + KEY_LAT + " TEXT," + KEY_LON + " TEXT," + KEY_DISTANCE + " TEXT," + SETTING + " TEXT" + ")";
         db.execSQL(CREATE_LOCATION_TABLE);
@@ -79,6 +84,14 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
         values.put(SETTING, location.getSetting());
 
         db.insert(TABLE_LOCATION, null, values);
+
+        Log.d(TAG, "addLocation(mLocation location): added location " + TABLE_LOCATION + "\n"
+        + location.getName() + "\n"
+        + location.getLat() + "\n"
+        + location.getLng() + "\n"
+        + location.getDistance() + "\n"
+        + location.getSetting());
+
         db.close();
     }
 
@@ -106,6 +119,7 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
             locationList[i][4] = (cursor.getString(cursor.getColumnIndex(KEY_DISTANCE)));
             locationList[i][5] = (cursor.getString(cursor.getColumnIndex(SETTING)));
         }
+        Log.d(TAG, "getLocation(): returned locations");
 
         db.close();
         return locationList;
