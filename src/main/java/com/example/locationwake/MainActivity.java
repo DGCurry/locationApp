@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "createUI(): Clicked on addButton");
                 //get the text that has been added
                 //TODO: can not be done if there is no text or if the text is already in the database
-                String longitudeString = longitudeEdit.toString();
-                String latitudeString = latitudeEdit.toString();
+                String longitudeString = longitudeEdit.getText().toString();
+                String latitudeString = latitudeEdit.getText().toString();
 
                 Log.d(TAG, "createUI(): Got Strings longitudeString = " + longitudeString);
                 Log.d(TAG, "createUI(): Got Strings latitudeString = " + latitudeString);
