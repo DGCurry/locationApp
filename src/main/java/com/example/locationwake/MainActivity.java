@@ -19,13 +19,13 @@ public class MainActivity extends AppCompatActivity {
 
     //GUI ELEMENTS
     //adding location
-    private EditText nameEdit = findViewById(R.id.editName);
-    private EditText longitudeEdit = findViewById(R.id.editLongitude);
-    private EditText latitudeEdit = findViewById(R.id.editLatitude);
-    private Button addButton = findViewById(R.id.buttonAdd);
+    private EditText nameEdit;
+    private EditText longitudeEdit;
+    private EditText latitudeEdit;
+    private Button addButton;
 
     //activity finding location
-    private Button goButton = findViewById(R.id.buttonFind);
+    private Button goButton;
 
 
     @Override
@@ -43,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
      * Creates the GUI by adding the listeners
      */
     private void createUI() {
+        //adding location
+        nameEdit = findViewById(R.id.editName);
+        longitudeEdit = findViewById(R.id.editLongitude);
+        latitudeEdit = findViewById(R.id.editLatitude);
+        addButton = findViewById(R.id.buttonAdd);
+
         addButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -53,8 +59,12 @@ public class MainActivity extends AppCompatActivity {
                 //TODO: can not be done if there is no text or if the text is already in the database
                 String longitudeString = longitudeEdit.toString();
                 String latitudeString = latitudeEdit.toString();
+
+                Log.d(TAG, "createUI(): Got Strings longitudeString = " + longitudeString);
+                Log.d(TAG, "createUI(): Got Strings latitudeString = " + latitudeString);
             }
         });
-
+        //activity finding location
+        goButton = findViewById(R.id.buttonFind);
     }
 }
