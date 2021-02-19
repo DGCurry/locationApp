@@ -105,20 +105,35 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
 
         //list with single entry stored in matrix for all entries
         ArrayList<String[]> locationList = new ArrayList<>();
-        String[] dataEntry = new String[6];
-        //put in every entry the correct data
+        //put in every entry with the correct data
+        int i = 0;
         while (cursor.moveToNext()) {
-
+            String[] dataEntry = new String[6];
+            Logger.logD(TAG, "hello there " + i);
             dataEntry[0] = cursor.getString(cursor.getColumnIndex(KEY_ID));
             dataEntry[1] = cursor.getString(cursor.getColumnIndex(KEY_NAME));
             dataEntry[2] = cursor.getString(cursor.getColumnIndex(KEY_LAT));
             dataEntry[3] = cursor.getString(cursor.getColumnIndex(KEY_LON));
             dataEntry[4] = cursor.getString(cursor.getColumnIndex(KEY_DISTANCE));
             dataEntry[5] = cursor.getString(cursor.getColumnIndex(SETTING));
-            locationList.add(dataEntry);
-        }
-        Logger.logD(TAG, "getLocation(): returned locations");
 
+            locationList.add(i, dataEntry);
+            i++;
+        }
+        Logger.logD(TAG, "getLocation(): size of the dataEntry array is " + Integer.toString(locationList.size()));
+        for (String[] entry:locationList) {
+            Logger.logD(TAG, "getLocation(): got location from table " + TABLE_LOCATION + "\n"
+                    + entry[0] + "\n"
+                    + entry[1] + "\n"
+                    + entry[2] + "\n"
+                    + entry[3] + "\n"
+                    + entry[4] + "\n"
+                    + entry[5]);
+        }
+
+        Logger.logV(TAG, "getLocation(): returned locations");
+
+        cursor.close();
         db.close();
         return locationList;
     }

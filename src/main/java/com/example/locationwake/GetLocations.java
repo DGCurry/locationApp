@@ -66,6 +66,26 @@ public class GetLocations extends AppCompatActivity {
         LocationSettingDbHelper settingDbHelper = new LocationSettingDbHelper(getApplicationContext());
         //set the data we have in the correct lists
         dataList = settingDbHelper.getLocation();
+        Iterator<String[]> iterator = dataList.iterator();
+
+//        while (iterator.hasNext()) {
+//                Logger.logD(TAG, "createUI(): Got location \n " +
+//                        iterator.next()[0] + "\n" +
+//                        iterator.next()[1] + "\n" +
+//                        iterator.next()[2] + "\n" +
+//                        iterator.next()[3]);
+//
+//        }
+
+        for (String[] dataEntry:dataList) {
+            Logger.logD(TAG, "createUI(): Got location \n " +
+                    dataEntry[0] + "\n" +
+                    dataEntry[1] + "\n" +
+                    dataEntry[2] + "\n" +
+                    dataEntry[3]
+            );
+        }
+
     }
 
 
@@ -87,15 +107,6 @@ public class GetLocations extends AppCompatActivity {
         ListIterator<String[]> iterator = dataList.listIterator();
 
         try {
-            for (String[] dataEntry:dataList) {
-                Logger.logV(TAG, "createUI(): Got data\n " +
-                        dataEntry[0] + "\n" +
-                        dataEntry[1] + "\n" +
-                        dataEntry[2] + "\n" +
-                        dataEntry[3]
-                );
-            }
-
             IDView.setText(dataList.get(0)[0]);
             nameView.setText(dataList.get(0)[1]);
             latitudeView.setText(dataList.get(0)[2]);
