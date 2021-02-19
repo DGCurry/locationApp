@@ -3,12 +3,15 @@ package com.example.locationwake.Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import com.example.locationwake.Logger;
+
+import java.util.ArrayList;
 
 /**
  * Database for storing the location, with an ID, name and setting
@@ -35,13 +38,9 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
     /**
      * Constructor for the database
      * @param context the app context
-     * @param name name of the database
-     * @param factory -
-     * @param version version id of the database, for later updates
-     * @param errorHandler -
      */
-    public LocationSettingDbHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version, @Nullable DatabaseErrorHandler errorHandler) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION, errorHandler);
+    public LocationSettingDbHelper(@Nullable Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     /**
@@ -50,7 +49,7 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d(TAG, "onCreate(SQLiteDatabase db): opened database");
+        Logger.logD(TAG, "onCreate(SQLiteDatabase db): opened database");
         String CREATE_LOCATION_TABLE = "CREATE TABLE " + TABLE_LOCATION + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 KEY_NAME + " TEXT," + KEY_LAT + " TEXT," + KEY_LON + " TEXT," + KEY_DISTANCE + " TEXT," + SETTING + " TEXT" + ")";
         db.execSQL(CREATE_LOCATION_TABLE);
@@ -84,46 +83,43 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
         values.put(SETTING, location.getSetting());
 
         db.insert(TABLE_LOCATION, null, values);
-
-        Log.d(TAG, "addLocation(mLocation location): added location " + TABLE_LOCATION + "\n"
-        + location.getName() + "\n"
-        + location.getLat() + "\n"
-        + location.getLng() + "\n"
-        + location.getDistance() + "\n"
-        + location.getSetting());
-
+        Logger.logD(TAG, "addLocation(mLocation location): added location " + TABLE_LOCATION + "\n"
+                + location.getName() + "\n"
+                + location.getLat() + "\n"
+                + location.getLng() + "\n"
+                + location.getDistance() + "\n"
+                + location.getSetting());
         db.close();
     }
+
 
     /**
      * method to get the locations out of the database
      * @return String matrix with values stored in the rows
      */
-    public String[][] getLocation() {
+    public ArrayList<String[]> getLocation() {
         SQLiteDatabase db = this.getWritableDatabase();
         //query for the database to get all the locations
         String query = "SELECT id, name, latitude, longitude, distance, setting FROM " + TABLE_LOCATION;
         Cursor cursor = db.rawQuery(query, null);
 
         //list with single entry stored in matrix for all entries
-        String[][] locationList = new String[cursor.getCount()][6];
-        int i = 0;
-
+        ArrayList<String[]> locationList = new ArrayList<>();
+        String[] dataEntry = new String[6];
         //put in every entry the correct data
         while (cursor.moveToNext()) {
-            //put everything in the list
-            locationList[i][0] = (cursor.getString(cursor.getColumnIndex(KEY_ID)));
-            locationList[i][1] = (cursor.getString(cursor.getColumnIndex(KEY_NAME)));
-            locationList[i][2] = (cursor.getString(cursor.getColumnIndex(KEY_LAT)));
-            locationList[i][3] = (cursor.getString(cursor.getColumnIndex(KEY_LON)));
-            locationList[i][4] = (cursor.getString(cursor.getColumnIndex(KEY_DISTANCE)));
-            locationList[i][5] = (cursor.getString(cursor.getColumnIndex(SETTING)));
+
+            dataEntry[0] = cursor.getString(cursor.getColumnIndex(KEY_ID));
+            dataEntry[1] = cursor.getString(cursor.getColumnIndex(KEY_NAME));
+            dataEntry[2] = cursor.getString(cursor.getColumnIndex(KEY_LAT));
+            dataEntry[3] = cursor.getString(cursor.getColumnIndex(KEY_LON));
+            dataEntry[4] = cursor.getString(cursor.getColumnIndex(KEY_DISTANCE));
+            dataEntry[5] = cursor.getString(cursor.getColumnIndex(SETTING));
+            locationList.add(dataEntry);
         }
-        Log.d(TAG, "getLocation(): returned locations");
+        Logger.logD(TAG, "getLocation(): returned locations");
 
         db.close();
         return locationList;
     }
-
-
 }
