@@ -2,12 +2,10 @@ package com.example.locationwake;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.locationwake.Database.LocationSettingDbHelper;
@@ -33,6 +31,10 @@ public class GetLocations extends AppCompatActivity {
     private TextView nameView;
     private TextView latitudeView;
     private TextView longitudeView;
+    private TextView distanceView;
+    private TextView settingView;
+
+    //iterating through locations
     private Button previousButton;
     private Button nextButton;
 
@@ -66,26 +68,18 @@ public class GetLocations extends AppCompatActivity {
         LocationSettingDbHelper settingDbHelper = new LocationSettingDbHelper(getApplicationContext());
         //set the data we have in the correct lists
         dataList = settingDbHelper.getLocation();
-        Iterator<String[]> iterator = dataList.iterator();
 
-//        while (iterator.hasNext()) {
-//                Logger.logD(TAG, "createUI(): Got location \n " +
-//                        iterator.next()[0] + "\n" +
-//                        iterator.next()[1] + "\n" +
-//                        iterator.next()[2] + "\n" +
-//                        iterator.next()[3]);
-//
-//        }
-
+        //debug
         for (String[] dataEntry:dataList) {
             Logger.logD(TAG, "createUI(): Got location \n " +
                     dataEntry[0] + "\n" +
                     dataEntry[1] + "\n" +
                     dataEntry[2] + "\n" +
-                    dataEntry[3]
+                    dataEntry[3] + "\n" +
+                    dataEntry[4] + "\n" +
+                    dataEntry[5]
             );
         }
-
     }
 
 
@@ -99,6 +93,9 @@ public class GetLocations extends AppCompatActivity {
         nameView = findViewById(R.id.textViewName);
         latitudeView = findViewById(R.id.textViewLatitude);
         longitudeView = findViewById(R.id.textViewLongitude);
+        distanceView = findViewById(R.id.textViewDistance);
+        settingView = findViewById(R.id.textViewSetting);
+
         backButton = findViewById(R.id.buttonBack);
         previousButton = findViewById(R.id.buttonPrevious);
         nextButton = findViewById(R.id.buttonNext);
@@ -111,11 +108,14 @@ public class GetLocations extends AppCompatActivity {
             nameView.setText(dataList.get(0)[1]);
             latitudeView.setText(dataList.get(0)[2]);
             longitudeView.setText(dataList.get(0)[3]);
+            distanceView.setText(dataList.get(0)[4]);
+            settingView.setText(dataList.get(0)[5]);
         } catch(Exception e) {
             Logger.logE(TAG, "createUI(): Oh no... an error occurred; \n" + e);
         }
 
         Logger.logV(TAG, "createUI(): setting onClickListeners on the buttons");
+
         //going back to previous activity
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +140,8 @@ public class GetLocations extends AppCompatActivity {
                 nameView.setText(dataEntry[1]);
                 latitudeView.setText(dataEntry[2]);
                 longitudeView.setText(dataEntry[3]);
+                distanceView.setText(dataEntry[4]);
+                settingView.setText(dataEntry[5]);
             }
         });
 
@@ -158,9 +160,9 @@ public class GetLocations extends AppCompatActivity {
                 nameView.setText(dataEntry[1]);
                 latitudeView.setText(dataEntry[2]);
                 longitudeView.setText(dataEntry[3]);
+                distanceView.setText(dataEntry[4]);
+                settingView.setText(dataEntry[5]);
             }
         });
     }
-
-
 }

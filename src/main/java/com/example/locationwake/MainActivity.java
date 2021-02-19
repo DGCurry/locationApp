@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText nameEdit;
     private EditText longitudeEdit;
     private EditText latitudeEdit;
+    private EditText distanceEdit;
+    private EditText settingEdit;
     private Button addButton;
 
     //activity finding location
@@ -38,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Log, TAG, method, action
-        Log.v(TAG, "onCreate(Bundle savedInstanceState): started MainActivity");
+        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started MainActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Log, TAG, method, action
-        Log.v(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
+        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
         createUI();
     }
 
@@ -50,13 +52,15 @@ public class MainActivity extends AppCompatActivity {
      * Creates the GUI by adding the listeners
      */
     private void createUI() {
-        Log.v(TAG, "createUI(): getting the UI elements");
+        Logger.logV(TAG, "createUI(): getting the UI elements");
         //adding location
         nameEdit = findViewById(R.id.editName);
         longitudeEdit = findViewById(R.id.editLongitude);
         latitudeEdit = findViewById(R.id.editLatitude);
+        distanceEdit = findViewById(R.id.editDistance);
+        settingEdit = findViewById(R.id.editSetting);
 
-        Log.v(TAG, "createUI(): setting onClickListeners on the buttons");
+        Logger.logV(TAG, "createUI(): setting onClickListeners on the buttons");
 
         addButton = findViewById(R.id.buttonAdd);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -64,25 +68,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Log, TAG, method, action
-                Log.d(TAG, "createUI(): onClick(View v): Clicked on addButton");
+                Logger.logV(TAG, "createUI(): onClick(View v): Clicked on addButton");
                 //get the text that has been added
                 //TODO: can not be done if there is no text or if the text is already in the database
                 String nameString = nameEdit.getText().toString();
                 String latitudeString = latitudeEdit.getText().toString();
                 String longitudeString = longitudeEdit.getText().toString();
+                String distanceString = distanceEdit.getText().toString();
+                String settingString = settingEdit.getText().toString();
 
-                Log.d(TAG, "createUI(): onClick(View v): Got Strings latitudeString = " + latitudeString);
-                Log.d(TAG, "createUI(): onClick(View v): Got Strings longitudeString = " + longitudeString);
+                Logger.logV(TAG, "createUI(): onClick(View v): Got Strings nameString = " + nameString);
+                Logger.logV(TAG, "createUI(): onClick(View v): Got Strings latitudeString = " + latitudeString);
+                Logger.logD(TAG, "createUI(): onClick(View v): Got Strings longitudeString = " + longitudeString);
+                Logger.logD(TAG, "createUI(): onClick(View v): Got Strings distanceString = " + distanceString);
+                Logger.logD(TAG, "createUI(): onClick(View v): Got Strings settingString = " + settingString);
 
-                Log.v(TAG, "createUI(): onClick(View v): Adding entry to database");
+                Logger.logV(TAG, "createUI(): onClick(View v): Adding entry to database");
 
                 //Adding data to database
                 mLocation locationEntry = new mLocation();
                 locationEntry.setName(nameString);
                 locationEntry.setLat(latitudeString);
                 locationEntry.setLng(longitudeString);
-                locationEntry.setDistance(null);
-                locationEntry.setSetting(null);
+                locationEntry.setDistance(distanceString);
+                locationEntry.setSetting(settingString);
                 LocationSettingDbHelper locationSettingDbHelper = new LocationSettingDbHelper(getApplicationContext());
                 locationSettingDbHelper.addLocation(locationEntry);
             }
@@ -95,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Log, TAG, method, action
-                Log.v(TAG, "createUI(): onClick(View v): Clicked on goButton");
+                Logger.logV(TAG, "createUI(): onClick(View v): Clicked on goButton");
                 //create Intent
                 Intent intent = new Intent(MainActivity.this, GetLocations.class);
                 startActivity(intent);
