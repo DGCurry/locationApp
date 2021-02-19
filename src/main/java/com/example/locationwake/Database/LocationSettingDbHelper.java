@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -26,14 +25,12 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
     //information kept in the database
     private static final String DATABASE_NAME = "lookupDatabase";
 
-    //location(id, name, latitude, longitude, distance, setting)
+    //location(id, name, latitude, longitude)
     private static final String TABLE_LOCATION = "location";
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_LAT = "latitude";
     private static final String KEY_LON = "longitude";
-    private static final String KEY_DISTANCE = "distance";
-    private static final String SETTING = "setting";
 
     /**
      * Constructor for the database
@@ -49,9 +46,9 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Logger.logD(TAG, "onCreate(SQLiteDatabase db): opened database");
+        Logger.logV(TAG, "onCreate(SQLiteDatabase db): opened database");
         String CREATE_LOCATION_TABLE = "CREATE TABLE " + TABLE_LOCATION + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                KEY_NAME + " TEXT," + KEY_LAT + " TEXT," + KEY_LON + " TEXT," + KEY_DISTANCE + " TEXT," + SETTING + " TEXT" + ")";
+                KEY_NAME + " TEXT," + KEY_LAT + " TEXT," + KEY_LON + " TEXT" + ")";
         db.execSQL(CREATE_LOCATION_TABLE);
     }
 
@@ -75,20 +72,17 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        //location(id, name, latitude, longitude, distance, setting)
+        //location(id, name, latitude, longitude)
         values.put(KEY_NAME, location.getName());
         values.put(KEY_LAT, location.getLat());
         values.put(KEY_LON, location.getLng());
-        values.put(KEY_DISTANCE, location.getDistance());
-        values.put(SETTING, location.getSetting());
 
         db.insert(TABLE_LOCATION, null, values);
         Logger.logD(TAG, "addLocation(mLocation location): added location " + TABLE_LOCATION + "\n"
                 + location.getName() + "\n"
                 + location.getLat() + "\n"
-                + location.getLng() + "\n"
-                + location.getDistance() + "\n"
-                + location.getSetting());
+                + location.getLng());
+
         db.close();
     }
 
@@ -100,25 +94,20 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
     public ArrayList<String[]> getLocation() {
         SQLiteDatabase db = this.getWritableDatabase();
         //query for the database to get all the locations
-        String query = "SELECT id, name, latitude, longitude, distance, setting FROM " + TABLE_LOCATION;
+        String query = "SELECT id, name, latitude, longitude FROM " + TABLE_LOCATION;
         Cursor cursor = db.rawQuery(query, null);
 
         //list with single entry stored in matrix for all entries
         ArrayList<String[]> locationList = new ArrayList<>();
         //put in every entry with the correct data
-        int i = 0;
         while (cursor.moveToNext()) {
-            String[] dataEntry = new String[6];
-            Logger.logD(TAG, "hello there " + i);
+            String[] dataEntry = new String[4];
             dataEntry[0] = cursor.getString(cursor.getColumnIndex(KEY_ID));
             dataEntry[1] = cursor.getString(cursor.getColumnIndex(KEY_NAME));
             dataEntry[2] = cursor.getString(cursor.getColumnIndex(KEY_LAT));
             dataEntry[3] = cursor.getString(cursor.getColumnIndex(KEY_LON));
-            dataEntry[4] = cursor.getString(cursor.getColumnIndex(KEY_DISTANCE));
-            dataEntry[5] = cursor.getString(cursor.getColumnIndex(SETTING));
 
-            locationList.add(i, dataEntry);
-            i++;
+            locationList.add(dataEntry);
         }
         Logger.logD(TAG, "getLocation(): size of the dataEntry array is " + Integer.toString(locationList.size()));
         for (String[] entry:locationList) {
@@ -126,9 +115,8 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
                     + entry[0] + "\n"
                     + entry[1] + "\n"
                     + entry[2] + "\n"
-                    + entry[3] + "\n"
-                    + entry[4] + "\n"
-                    + entry[5]);
+                    + entry[3]);
+
         }
 
         Logger.logV(TAG, "getLocation(): returned locations");

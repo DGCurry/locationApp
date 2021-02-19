@@ -6,11 +6,8 @@ package com.example.locationwake.Database;
 public class mLocation {
 
     // Data needed for the database
-    //TODO: add day/timeStep
     private String lat, lng;
     private String name;
-    private String distance;
-    private String setting;
 
     /**
      * Add the latitude information as String.
@@ -29,30 +26,11 @@ public class mLocation {
     }
 
     /**
-     * Add the distance information as String.
-     * @param distance distance the user has given
-     */
-    public void setDistance(String distance) {
-        this.distance = distance;
-    }
-
-    /**
      * Add the name information as String.
      * @param name name the user has given
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * Add the setting information as String.
-     * @param setting name the user has given
-     *                SLT: silent
-     *                VBR: vibrate
-     *                SND: sound
-     */
-    public void setSetting(String setting) {
-        this.setting = setting;
     }
 
     /**
@@ -77,25 +55,6 @@ public class mLocation {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Return the distance information as String
-     * @return distance distance the user has added
-     */
-    public String getDistance() {
-        return distance;
-    }
-
-    /**
-     * Return the setting information as String
-     * @return setting setting the user has added
-     *                SLT: silent
-     *                VBR: vibrate
-     *                SND: sound
-     */
-    public String getSetting() {
-        return setting;
     }
 
 }
