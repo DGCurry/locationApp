@@ -6,8 +6,26 @@ package com.example.locationwake.Database;
 public class mLocation {
 
     // Data needed for the database
-    private String lat, lng;
     private String name;
+    private String lat, lng;
+    private Integer ID;
+    /**
+     * Constructor to create a data holder from the beginning
+     * @param lat latitude the user has given
+     * @param lng longitude the user has given
+     * @param name name the user has given
+     */
+    public mLocation(String name, String lat, String lng) {
+        this.name = name;
+        this.lat = lat;
+        this.lng = lng;
+    }
+
+    /**
+     * Empty constructor
+     */
+    public mLocation() {
+    }
 
     /**
      * Add the latitude information as String.
@@ -34,6 +52,14 @@ public class mLocation {
     }
 
     /**
+     * Add the ID that corresponds to the database entry
+     * @param ID ID the database has generated for an entry
+     */
+    public void setID(Integer ID) {
+        this.ID = ID;
+    }
+
+    /**
      * Return the latitude information as String
      * @return lat latitude the user has added
      */
@@ -55,6 +81,14 @@ public class mLocation {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Return the ID key that corresponds to the location
+     * @return ID key
+     */
+    public Integer getID() {
+        return ID;
     }
 
 }

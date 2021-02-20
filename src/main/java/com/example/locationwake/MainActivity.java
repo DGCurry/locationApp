@@ -4,13 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.locationwake.Database.LocationSettingDbHelper;
-import com.example.locationwake.Database.mLocation;
+import com.example.locationwake.Database.DataHandler;
 
 /**
  * This is a test class to test all func. The GUI will be added later on.
@@ -71,29 +69,12 @@ public class MainActivity extends AppCompatActivity {
                 Logger.logV(TAG, "createUI(): onClick(View v): Clicked on addButton");
                 //get the text that has been added
                 //TODO: can not be done if there is no text or if the text is already in the database
-                String nameString = nameEdit.getText().toString();
-                String latitudeString = latitudeEdit.getText().toString();
-                String longitudeString = longitudeEdit.getText().toString();
-                String distanceString = distanceEdit.getText().toString();
-                String settingString = settingEdit.getText().toString();
-
-                Logger.logV(TAG, "createUI(): onClick(View v): Got Strings nameString = " + nameString);
-                Logger.logV(TAG, "createUI(): onClick(View v): Got Strings latitudeString = " + latitudeString);
-                Logger.logD(TAG, "createUI(): onClick(View v): Got Strings longitudeString = " + longitudeString);
-                Logger.logD(TAG, "createUI(): onClick(View v): Got Strings distanceString = " + distanceString);
-                Logger.logD(TAG, "createUI(): onClick(View v): Got Strings settingString = " + settingString);
-
-                Logger.logV(TAG, "createUI(): onClick(View v): Adding entry to database");
-
-                //Adding data to database
-                mLocation locationEntry = new mLocation();
-                locationEntry.setName(nameString);
-                locationEntry.setLat(latitudeString);
-                locationEntry.setLng(longitudeString);
-                locationEntry.setDistance(distanceString);
-                locationEntry.setSetting(settingString);
-                LocationSettingDbHelper locationSettingDbHelper = new LocationSettingDbHelper(getApplicationContext());
-                locationSettingDbHelper.addLocation(locationEntry);
+                DataHandler.addData(nameEdit.getText().toString(),
+                        latitudeEdit.getText().toString(),
+                        longitudeEdit.getText().toString(),
+                        distanceEdit.getText().toString(),
+                        settingEdit.getText().toString(),
+                        getApplicationContext());
             }
         });
 

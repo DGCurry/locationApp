@@ -11,6 +11,26 @@ public class mAttribute {
     private String setting;
     private Integer ID;
 
+    /**
+     * Constructor to create a data holder from the beginning
+     * @param ID key id to link to LocationSettingDbHelper entry
+     * @param distance distance the user has given
+     * @param setting setting the user has added
+     *                SLT: silent
+     *                VBR: vibrate
+     *                SND: sound
+     */
+    public mAttribute(int ID, String distance, String setting) {
+        this.ID = ID;
+        this.distance = distance;
+        this.setting = setting;
+    }
+
+    /**
+     * Empty constructor
+     */
+    public mAttribute() {
+    }
 
     /**
      * Add the ID information as Integer.

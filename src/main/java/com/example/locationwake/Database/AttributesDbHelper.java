@@ -102,7 +102,7 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
             String[] dataEntry = new String[3];
             dataEntry[0] = cursor.getString(cursor.getColumnIndex(KEY_ID));
             dataEntry[1] = cursor.getString(cursor.getColumnIndex(KEY_DISTANCE));
-            dataEntry[2] = cursor.getString(cursor.getColumnIndex(KEY_DISTANCE));
+            dataEntry[2] = cursor.getString(cursor.getColumnIndex(SETTING));
 
             attributeList.add(dataEntry);
         }

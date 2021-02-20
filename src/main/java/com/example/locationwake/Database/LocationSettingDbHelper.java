@@ -67,7 +67,7 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
      * Add the values in the mLocation into the database
      * @param location instance of the data holder
      */
-    public void addLocation(mLocation location) {
+    public int addLocation(mLocation location) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -77,19 +77,28 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
         values.put(KEY_LAT, location.getLat());
         values.put(KEY_LON, location.getLng());
 
-        db.insert(TABLE_LOCATION, null, values);
+        long id = db.insert(TABLE_LOCATION, null, values);
         Logger.logD(TAG, "addLocation(mLocation location): added location " + TABLE_LOCATION + "\n"
                 + location.getName() + "\n"
                 + location.getLat() + "\n"
                 + location.getLng());
 
         db.close();
+        if (id < Integer.MIN_VALUE || id > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException
+                    (id + " cannot be cast to int without changing its value.");
+        }
+        return (int)id;
     }
 
 
     /**
      * method to get the locations out of the database
      * @return String matrix with values stored in the rows
+     *              row 0: ID
+     *              row 1: name
+     *              row 2: latitude
+     *              row 3: longitude
      */
     public ArrayList<String[]> getLocation() {
         SQLiteDatabase db = this.getWritableDatabase();
