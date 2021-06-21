@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    >
+    <LinearLayout
+        android:id="@+id/location_row_container1"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/location_row_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:padding="5dp"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/location_row_ID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:padding="5dp"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/location_row_container2"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:paddingLeft="60dp"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/location_row_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:padding="5dp"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/location_row_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:padding="5dp"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
