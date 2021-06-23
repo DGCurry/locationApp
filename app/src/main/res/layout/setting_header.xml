@@ -13,23 +13,16 @@
         android:orientation="horizontal"
         >
 
-        <ImageView
-            android:layout_width="@dimen/sr_icon_size"
-            android:layout_height="@dimen/sr_icon_size"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_launcher_background">
-
-        </ImageView>
-
         <TextView
-            android:id="@+id/textView_distance_title"
+            android:id="@+id/textView_header_name"
             android:layout_width="0dp"
             android:layout_weight="0.4"
             android:layout_height="wrap_content"
             android:textColor="#000"
             android:textSize="30sp"
+            android:layout_marginStart="@dimen/sr_icon_size"
             android:padding="@dimen/sr_text_padding"
-            tools:text="Radius" />
+            tools:text="Location" />
 
         <Button
             android:id="@+id/button_header_change"
@@ -38,16 +31,15 @@
             android:layout_height="@dimen/sr_icon_size"
             />
 
-
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView_distance_radius"
+        android:id="@+id/textView_header_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:layout_marginStart="@dimen/sr_icon_size"
         android:padding="@dimen/sr_text_padding"
-        tools:text="... meters " />
+        tools:text="Latitude " />
 
 </LinearLayout>

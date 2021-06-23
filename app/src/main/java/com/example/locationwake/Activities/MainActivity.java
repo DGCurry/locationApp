@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected static final int NOTIFICATION_PERMISSION_CODE = 100;
     protected static final int LOCATION_PERMISSION_CODE = 101;
     protected static final int BACKGROUNDLOCATION_PERMISSION_CODE = 102;
+    protected static final int INTERNET_PERMISSION_CODE = 103;
 
     /**
      * Method to start activity
@@ -72,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(): created MainActivity");
-        Intent intent = new Intent(MainActivity.this, settingactivity.class);
-        startActivity(intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -88,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
         Logger.logV(TAG, "onStart() started startWorker()");
         startWorker();
+        Intent intent = new Intent(MainActivity.this, settingactivity.class);
+        startActivity(intent);
     }
 
 
@@ -218,6 +219,14 @@ public class MainActivity extends AppCompatActivity {
             Logger.logD(TAG, "askPermissions(): adding BACKGROUNDLOCATION_PERMISSION_CODE to list");
             permissionList.add(BACKGROUNDLOCATION_PERMISSION_CODE);
         }
+
+        if (ContextCompat.checkSelfPermission(
+                getApplicationContext(),
+                Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            Logger.logD(TAG, "askPermissions(): adding INTERNET_PERMISSION_CODE to list");
+            permissionList.add(INTERNET_PERMISSION_CODE);
+        }
+
         return permissionList;
     }
 

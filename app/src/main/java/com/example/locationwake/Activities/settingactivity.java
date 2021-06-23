@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.locationwake.Activities.helperclasses.ActiveSettingRecAdapter;
 import com.example.locationwake.Activities.helperclasses.LocationViewAdapter;
@@ -60,6 +62,10 @@ public class settingactivity extends AppCompatActivity {
      */
     private void loadData() {
         Logger.logV(TAG, "loadData(): loading the data from the database into dataList");
+        list = new ArrayList<>();
+        list.add(new mSetting("SLT"));
+        list.add(new mDistance("541"));
+        list.add(new mLocation("1", "20"));
     }
 
 
@@ -72,7 +78,7 @@ public class settingactivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ActiveSettingRecAdapter(list);
+        mAdapter = new ActiveSettingRecAdapter(list, getApplicationContext(), "jemoeder");
         recyclerView.setAdapter(mAdapter);
     }
 }

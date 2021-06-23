@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.locationwake">
 
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <permission
+        android:name="com.example.locationwake.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.LocationWake">
+        android:theme="@style/Theme.LocationWake"
+        >
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCznxN1cgqCogxAdTvc2cMJjJlxkmPs6fc" />
+
         <activity android:name=".Activities.PermissionActivities.NotificationPermissionActivity" />
         <activity android:name=".Activities.PermissionActivities.BackgroundLocationPermissionActivity" />
         <activity android:name=".Activities.PermissionActivities.LocationPermissionActivity" />
@@ -27,7 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".Activities.PermissionActivities.InternetPermissionActivity" />
     </application>
 
 </manifest>

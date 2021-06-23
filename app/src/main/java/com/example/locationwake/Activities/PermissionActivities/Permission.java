@@ -21,6 +21,7 @@ public class Permission extends AppCompatActivity {
     protected static final int NOTIFICATION_PERMISSION_CODE = 100;
     protected static final int LOCATION_PERMISSION_CODE = 101;
     protected static final int BACKGROUNDLOCATION_PERMISSION_CODE = 102;
+    protected static final int INTERNET_PERMISSION_CODE = 103;
 
 
     protected String getPermissionMapping(int permission) {
@@ -41,6 +42,9 @@ public class Permission extends AppCompatActivity {
                 } else {
                     return null;
                 }
+
+            case INTERNET_PERMISSION_CODE:
+                return Manifest.permission.INTERNET;
 
             default:
                 return null;
@@ -80,6 +84,13 @@ public class Permission extends AppCompatActivity {
                     startActivity(intent);
                     break;
 
+                case INTERNET_PERMISSION_CODE:
+                    Logger.logD(TAG, "askPermissions(): starting InternetPermissionActivity");
+                    intent = new Intent(getApplicationContext(), InternetPermissionActivity.class);
+                    intent.putExtra("PERMISSION_CODES", permissionList);
+                    startActivity(intent);
+                    break;
+
             }
         }
         finish();
@@ -88,6 +99,7 @@ public class Permission extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Logger.logE(TAG, requestCode + " " + permissions.length + " " + grantResults[0]);
         switch (requestCode) {
             case NOTIFICATION_PERMISSION_CODE:
@@ -110,7 +122,7 @@ public class Permission extends AppCompatActivity {
                     // in your app.
                     Logger.logE(TAG, "permission for loc granted");
 
-                }  else {
+                } else {
                     Logger.logE(TAG, "permission for loc denied");
                 }
                 break;
@@ -122,8 +134,19 @@ public class Permission extends AppCompatActivity {
                     // Permission is granted. Continue the action or workflow
                     // in your app.
                     Logger.logE(TAG, "permission for backloc granted");
-                }  else {
+                } else {
                     Logger.logE(TAG, "permission for backloc denied");
+                }
+
+            case INTERNET_PERMISSION_CODE:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission is granted. Continue the action or workflow
+                    // in your app.
+                    Logger.logE(TAG, "permission for internet granted");
+                } else {
+                    Logger.logE(TAG, "permission for internet denied");
                 }
         }
         onFinish();

@@ -3,4 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="ic_clear_margin">56dp</dimen>
+
+    <dimen name="sr_icon_size">60dp</dimen>
+    <dimen name="sr_item_padding">20dp</dimen>
+    <dimen name="sr_text_padding">5dp</dimen>
 </resources>

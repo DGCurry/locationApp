@@ -6,4 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".Activities.MainActivity"
 
-    />
+    >
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="211dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
