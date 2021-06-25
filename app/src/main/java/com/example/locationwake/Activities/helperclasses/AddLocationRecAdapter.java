@@ -27,7 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
+public class AddLocationRecAdapter extends RecyclerView.Adapter{
 
     //TAG of the class
     static final private String TAG = "ActiveSettingRecAdapter";
@@ -37,7 +37,7 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
 
     Context context;
 
-    public ActiveSettingRecAdapter(List<AttributeInterface> list, Context context, String name) {
+    public AddLocationRecAdapter(List<AttributeInterface> list, Context context, String name) {
         if (attributes == null) {
             attributes = new ArrayList<>();
         }

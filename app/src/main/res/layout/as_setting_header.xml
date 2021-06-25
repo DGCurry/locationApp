@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/sr_item_padding"
+    android:padding="@dimen/rc_item_padding"
+    android:background="@color/white"
+    android:layout_margin="@dimen/rc_item_margin"
     >
 
     <LinearLayout
@@ -13,41 +15,33 @@
         android:orientation="horizontal"
         >
 
-        <ImageView
-            android:layout_width="@dimen/sr_icon_size"
-            android:layout_height="@dimen/sr_icon_size"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_launcher_background">
-
-        </ImageView>
-
         <TextView
-            android:id="@+id/textView_distance_title"
+            android:id="@+id/textView_header_name"
             android:layout_width="0dp"
             android:layout_weight="0.4"
             android:layout_height="wrap_content"
             android:textColor="#000"
             android:textSize="30sp"
-            android:padding="@dimen/sr_text_padding"
-            tools:text="Radius" />
+            android:layout_marginStart="@dimen/rc_icon_size"
+            android:padding="@dimen/rc_text_padding"
+            tools:text="Location" />
 
         <Button
             android:id="@+id/button_header_change"
             android:layout_gravity="center"
-            android:layout_width="@dimen/sr_icon_size"
-            android:layout_height="@dimen/sr_icon_size"
+            android:layout_width="@dimen/rc_icon_size"
+            android:layout_height="@dimen/rc_icon_size"
             />
-
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView_distance_radius"
+        android:id="@+id/textView_header_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        android:layout_marginStart="@dimen/sr_icon_size"
-        android:padding="@dimen/sr_text_padding"
-        tools:text="... meters " />
+        android:layout_marginStart="@dimen/rc_icon_size"
+        android:padding="@dimen/rc_text_padding"
+        tools:text="Latitude " />
 
 </LinearLayout>

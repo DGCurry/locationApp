@@ -125,18 +125,18 @@ public class SettingWorker extends Worker {
         Logger.logD(TAG, "setSetting(): setting is " + setting);
 
         AudioManager am = (AudioManager) mContext.getSystemService(mContext.AUDIO_SERVICE);
-//        switch(setting) {
-//            case "SLT":
-//                am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-//                am.adjustVolume(AudioManager.ADJUST_MUTE, AudioManager.FLAG_SHOW_UI);
-//            case "VBR":
-//                am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-//                am.adjustVolume(AudioManager.ADJUST_MUTE, AudioManager.FLAG_SHOW_UI);
-//                //TODO: perhaps let user decide the volume
-//            case "SND":
-//                am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-//                am.adjustVolume(AudioManager.ADJUST_UNMUTE, AudioManager.FLAG_SHOW_UI);
-//        }
+        switch(setting) {
+            case "SLT":
+                am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                am.adjustVolume(AudioManager.ADJUST_MUTE, AudioManager.FLAG_SHOW_UI);
+            case "VBR":
+                am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+                am.adjustVolume(AudioManager.ADJUST_MUTE, AudioManager.FLAG_SHOW_UI);
+                //TODO: perhaps let user decide the volume
+            case "SND":
+                am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                am.adjustVolume(AudioManager.ADJUST_UNMUTE, AudioManager.FLAG_SHOW_UI);
+        }
     }
 
 

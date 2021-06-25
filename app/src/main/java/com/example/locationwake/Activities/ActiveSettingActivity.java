@@ -1,41 +1,37 @@
 package com.example.locationwake.Activities;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.widget.Button;
-
-import com.example.locationwake.backend.Database.DataHandler;
-import com.example.locationwake.backend.Database.mAttribute;
-import com.example.locationwake.backend.Database.Attributes.mLocation;
-import com.example.locationwake.Activities.helperclasses.LocationViewAdapter;
+import com.example.locationwake.Activities.helperclasses.ActiveSettingRecAdapter;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
+import com.example.locationwake.backend.Database.Attributes.AttributeInterface;
+import com.example.locationwake.backend.Database.Attributes.mDistance;
+import com.example.locationwake.backend.Database.Attributes.mLocation;
+import com.example.locationwake.backend.Database.Attributes.mSetting;
 
 import java.util.ArrayList;
 
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class OverviewActivity extends AppCompatActivity {
+public class ActiveSettingActivity extends AppCompatActivity {
 
     //TAG of the class
-    static final private String TAG = "GetLocations";
+    static final private String TAG = "settingactivity";
 
     //DATA ELEMENTS
     //Holds all the data that is in the database
-    private ArrayList<mLocation> locationList = new ArrayList<>();
-    private ArrayList<mAttribute> attributeList = new ArrayList<>();
+    private ArrayList<AttributeInterface> list = new ArrayList<>();
 
     //GUI ELEMENTS
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-
-    //going back to previous activity
-    private Button backButton;
 
     /**
      * Method to start activity
@@ -46,7 +42,7 @@ public class OverviewActivity extends AppCompatActivity {
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started MainActivity");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_location);
+        setContentView(R.layout.activity_setting);
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started loadData()");
         loadData();
@@ -60,7 +56,10 @@ public class OverviewActivity extends AppCompatActivity {
      */
     private void loadData() {
         Logger.logV(TAG, "loadData(): loading the data from the database into dataList");
-        locationList = DataHandler.loadLocations(getApplicationContext());
+        list = new ArrayList<>();
+        list.add(new mSetting("SLT"));
+        list.add(new mDistance("541"));
+        list.add(new mLocation("1", "20"));
     }
 
 
@@ -73,7 +72,7 @@ public class OverviewActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new LocationViewAdapter(locationList);
+        mAdapter = new ActiveSettingRecAdapter(list, getApplicationContext(), "jemoeder");
         recyclerView.setAdapter(mAdapter);
     }
 }

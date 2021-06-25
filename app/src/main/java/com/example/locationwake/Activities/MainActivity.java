@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         Logger.logV(TAG, "onStart() started startWorker()");
         startWorker();
-        Intent intent = new Intent(MainActivity.this, settingactivity.class);
+        Intent intent = new Intent(MainActivity.this, ActiveSettingActivity.class);
         startActivity(intent);
     }
 

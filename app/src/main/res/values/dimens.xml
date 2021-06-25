@@ -4,7 +4,13 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="ic_clear_margin">56dp</dimen>
 
-    <dimen name="sr_icon_size">60dp</dimen>
-    <dimen name="sr_item_padding">20dp</dimen>
-    <dimen name="sr_text_padding">5dp</dimen>
+    recyclerview cards
+    <dimen name="rc_icon_size">60dp</dimen>
+    <dimen name="rc_item_padding">20dp</dimen>
+    <dimen name="rc_text_padding">5dp</dimen>
+    <dimen name="rc_item_margin">10dp</dimen>
+    <dimen name="rc_item_textbox_size">140dp</dimen>
+    <dimen name="rc_item_textedit_size">280dp</dimen>
+
+
 </resources>
