@@ -1,7 +1,7 @@
-package com.example.locationwake.backend.Database;
+package com.example.locationwake.Backend.Database;
 
-import com.example.locationwake.backend.Database.Attributes.mDistance;
-import com.example.locationwake.backend.Database.Attributes.mSetting;
+import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mSetting;
 
 /**
  * Holder of the data. Create an instance of this class to save the data to the database
@@ -12,8 +12,8 @@ public class mAttribute {
     private Integer KID;
     private Integer AID;
 
-    private com.example.locationwake.backend.Database.Attributes.mDistance mDistance;
-    private com.example.locationwake.backend.Database.Attributes.mSetting mSetting;
+    private com.example.locationwake.Backend.Database.Attributes.mDistance mDistance;
+    private com.example.locationwake.Backend.Database.Attributes.mSetting mSetting;
 
     /**
      * Constructor to create a data holder from the beginning
@@ -61,19 +61,19 @@ public class mAttribute {
         return AID;
     }
 
-    public com.example.locationwake.backend.Database.Attributes.mDistance getDistance() {
+    public com.example.locationwake.Backend.Database.Attributes.mDistance getDistance() {
         return mDistance;
     }
 
-    public void setDistance(com.example.locationwake.backend.Database.Attributes.mDistance mDistance) {
+    public void setDistance(com.example.locationwake.Backend.Database.Attributes.mDistance mDistance) {
         this.mDistance = mDistance;
     }
 
-    public com.example.locationwake.backend.Database.Attributes.mSetting getSetting() {
+    public com.example.locationwake.Backend.Database.Attributes.mSetting getSetting() {
         return mSetting;
     }
 
-    public void setSetting(com.example.locationwake.backend.Database.Attributes.mSetting mSetting) {
+    public void setSetting(com.example.locationwake.Backend.Database.Attributes.mSetting mSetting) {
         this.mSetting = mSetting;
     }
 }

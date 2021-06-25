@@ -1,15 +1,13 @@
-package com.example.locationwake.backend.Workers;
+package com.example.locationwake.Backend.Workers;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.work.ListenableWorker;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.example.locationwake.Logger;
-import com.google.common.util.concurrent.ListenableFuture;
 
 public class WorkManager extends Worker {
 

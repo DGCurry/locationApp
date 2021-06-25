@@ -1,12 +1,12 @@
-package com.example.locationwake.backend.behaviour.Components;
+package com.example.locationwake.Backend.Behaviour.Components;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 
-import com.example.locationwake.backend.Database.Attributes.mDistance;
-import com.example.locationwake.backend.Database.Attributes.mLocation;
-import com.example.locationwake.backend.behaviour.Component;
+import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Behaviour.Component;
 
 public class LocationComponent extends Component {
 

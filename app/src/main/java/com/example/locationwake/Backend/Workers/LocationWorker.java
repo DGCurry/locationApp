@@ -1,7 +1,6 @@
-package com.example.locationwake.backend.Workers;
+package com.example.locationwake.Backend.Workers;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,7 +11,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -20,10 +18,8 @@ import androidx.annotation.WorkerThread;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.work.ForegroundInfo;
-import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import androidx.work.impl.utils.futures.SettableFuture;
 
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
@@ -32,11 +28,8 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.CountDownLatch;
-
-import javax.security.auth.callback.Callback;
 
 
 public class LocationWorker extends Worker {

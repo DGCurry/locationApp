@@ -1,4 +1,4 @@
-package com.example.locationwake.backend.Database.Attributes;
+package com.example.locationwake.Backend.Database.Attributes;
 
 public interface AttributeInterface {
     int DISTANCE_TYPE = 100;

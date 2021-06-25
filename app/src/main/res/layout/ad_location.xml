@@ -17,7 +17,7 @@
         >
 
         <TextView
-            android:id="@+id/textView_distance_title"
+            android:id="@+id/textView_ad_location_title"
             android:layout_width="@dimen/rc_item_textbox_size"
             android:layout_marginStart="@dimen/rc_icon_size"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         >
 
         <TextView
-            android:id="@+id/textView_lat"
+            android:id="@+id/textView_ad_location_latitude"
             android:layout_width="0dp"
             android:layout_weight=".5"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             tools:text="latitude" />
 
         <TextView
-            android:id="@+id/textView_lon"
+            android:id="@+id/textView_ad_location_longitude"
             android:layout_width="0dp"
             android:layout_weight=".5"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
         >
 
         <EditText
-            android:id="@+id/editText_ad_name1"
+            android:id="@+id/editText_ad_location_latitude"
             android:layout_width="0dp"
             android:layout_weight=".5"
             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             tools:text="" />
 
         <EditText
-            android:id="@+id/editText_ad_name"
+            android:id="@+id/editText_ad_location_longitude"
             android:layout_width="0dp"
             android:layout_weight=".5"
             android:layout_height="wrap_content"

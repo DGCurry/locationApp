@@ -17,7 +17,7 @@
         >
 
         <TextView
-            android:id="@+id/textView_distance_title"
+            android:id="@+id/textView_ad_name_title"
             android:layout_width="@dimen/rc_item_textbox_size"
             android:layout_marginStart="@dimen/rc_icon_size"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/editText_ad_name"
+        android:id="@+id/editText_ad_name_name"
         android:layout_width="@dimen/rc_item_textedit_size"
         android:layout_height="wrap_content"
         android:textSize="24sp"

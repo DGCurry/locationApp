@@ -1,11 +1,11 @@
-package com.example.locationwake.backend.Database;
+package com.example.locationwake.Backend.Database;
 
 import android.content.Context;
 
 import com.example.locationwake.Logger;
-import com.example.locationwake.backend.Database.Attributes.mDistance;
-import com.example.locationwake.backend.Database.Attributes.mLocation;
-import com.example.locationwake.backend.Database.Attributes.mSetting;
+import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mSetting;
 
 import java.util.ArrayList;
 

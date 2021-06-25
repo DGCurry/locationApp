@@ -1,4 +1,4 @@
-package com.example.locationwake.backend.Database.Attributes;
+package com.example.locationwake.Backend.Database.Attributes;
 
 /**
  * Holder of the data. Create an instance of this class to save the data to the database

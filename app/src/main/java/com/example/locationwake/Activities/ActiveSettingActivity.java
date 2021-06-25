@@ -6,13 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.locationwake.Activities.helperclasses.ActiveSettingRecAdapter;
+import com.example.locationwake.Activities.HelperClasses.ActiveSettingRecAdapter;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
-import com.example.locationwake.backend.Database.Attributes.AttributeInterface;
-import com.example.locationwake.backend.Database.Attributes.mDistance;
-import com.example.locationwake.backend.Database.Attributes.mLocation;
-import com.example.locationwake.backend.Database.Attributes.mSetting;
+import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
+import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mSetting;
 
 import java.util.ArrayList;
 

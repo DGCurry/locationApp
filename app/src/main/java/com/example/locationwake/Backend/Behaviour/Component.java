@@ -1,4 +1,4 @@
-package com.example.locationwake.backend.behaviour;
+package com.example.locationwake.Backend.Behaviour;
 
 public abstract class Component {
     /**

@@ -1,4 +1,4 @@
-package com.example.locationwake.backend.Database;
+package com.example.locationwake.Backend.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.locationwake.Logger;
-import com.example.locationwake.backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
 
 import java.util.ArrayList;
 

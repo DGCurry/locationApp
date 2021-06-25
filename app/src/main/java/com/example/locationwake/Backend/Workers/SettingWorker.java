@@ -1,4 +1,4 @@
-package com.example.locationwake.backend.Workers;
+package com.example.locationwake.Backend.Workers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,11 +9,11 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.example.locationwake.Logger;
-import com.example.locationwake.backend.Database.DataHandler;
-import com.example.locationwake.backend.Database.mAttribute;
-import com.example.locationwake.backend.Database.Attributes.mLocation;
-import com.example.locationwake.backend.behaviour.Components.LocationComponent;
-import com.example.locationwake.backend.behaviour.SettingObject;
+import com.example.locationwake.Backend.Database.DataHandler;
+import com.example.locationwake.Backend.Database.mAttribute;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Behaviour.Components.LocationComponent;
+import com.example.locationwake.Backend.Behaviour.SettingObject;
 
 import java.util.ArrayList;
 

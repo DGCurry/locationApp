@@ -1,4 +1,4 @@
-package com.example.locationwake.Activities.helperclasses;
+package com.example.locationwake.Activities.HelperClasses;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
-import com.example.locationwake.backend.Database.Attributes.AttributeInterface;
-import com.example.locationwake.backend.Database.Attributes.mDistance;
-import com.example.locationwake.backend.Database.Attributes.mLocation;
-import com.example.locationwake.backend.Database.Attributes.mSetting;
+import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
+import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;

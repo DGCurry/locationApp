@@ -17,7 +17,7 @@
         >
 
         <TextView
-            android:id="@+id/textView_distance_title"
+            android:id="@+id/textView_ad_setting_title"
             android:layout_width="@dimen/rc_item_textbox_size"
             android:layout_marginStart="@dimen/rc_icon_size"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
     </LinearLayout>
 
     <Spinner
-        android:id="@+id/spinner_setting"
+        android:id="@+id/spinner_ad_setting_setting"
         android:layout_width="@dimen/rc_item_textedit_size"
         android:layout_height="wrap_content"
         android:textSize="24sp"

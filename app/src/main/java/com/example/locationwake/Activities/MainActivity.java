@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
     private void startWorker() {
         Logger.logD(TAG, "startWorker(): starting workmanager");
         PeriodicWorkRequest  work = new PeriodicWorkRequest.Builder(
-                com.example.locationwake.backend.Workers.WorkManager.class,
+                com.example.locationwake.Backend.Workers.WorkManager.class,
                 15,
                 TimeUnit.MINUTES)
                 .addTag("WorkManager")
