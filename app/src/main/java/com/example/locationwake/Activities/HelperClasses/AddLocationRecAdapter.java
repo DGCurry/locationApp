@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -116,12 +117,12 @@ public class AddLocationRecAdapter extends RecyclerView.Adapter{
 
         private final Spinner spinnerSetting;
 
-
         public settingViewHolder(View view) {
             super(view);
             spinnerSetting = (Spinner) view.findViewById(R.id.spinner_ad_setting_setting);
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, R.layout.support_simple_spinner_dropdown_item, settings);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, settings);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerSetting.setAdapter(arrayAdapter);
             spinnerSetting.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

@@ -24,7 +24,8 @@
             android:textColor="#000"
             android:textSize="30sp"
             android:padding="@dimen/rc_text_padding"
-            tools:text="Setting" />
+            android:text="Setting"
+            />
 
     </LinearLayout>
 

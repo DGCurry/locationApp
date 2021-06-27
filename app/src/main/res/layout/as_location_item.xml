@@ -33,7 +33,7 @@
             android:textColor="#000"
             android:textSize="30sp"
             android:padding="@dimen/rc_text_padding"
-            tools:text="Location" />
+            android:text="Location" />
 
         <Button
             android:id="@+id/button_header_change"

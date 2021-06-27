@@ -17,7 +17,7 @@
         android:textColor="#000"
         android:textSize="30sp"
         android:padding="@dimen/rc_text_padding"
-        tools:text="Attribute" />
+        android:text="Attribute" />
 
     <LinearLayout
         android:layout_width="match_parent"

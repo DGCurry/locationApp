@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.locationwake.Activities.NewLocationActivities.AddLocationActivity;
 import com.example.locationwake.Activities.PermissionActivities.BackgroundLocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.LocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.NotificationPermissionActivity;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         Logger.logV(TAG, "onStart() started startWorker()");
         startWorker();
-        Intent intent = new Intent(MainActivity.this, ActiveSettingActivity.class);
+        Intent intent = new Intent(MainActivity.this, AddLocationActivity.class);
         startActivity(intent);
     }
 

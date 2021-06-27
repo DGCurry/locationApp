@@ -32,7 +32,7 @@
             android:textColor="#000"
             android:textSize="30sp"
             android:padding="@dimen/rc_text_padding"
-            tools:text="Radius" />
+            android:text="Radius" />
 
         <Button
             android:id="@+id/button_header_change"
@@ -51,6 +51,6 @@
         android:textSize="24sp"
         android:layout_marginStart="@dimen/rc_icon_size"
         android:padding="@dimen/rc_text_padding"
-        tools:text="... meters " />
+        android:text="... meters " />
 
 </LinearLayout>

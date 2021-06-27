@@ -24,7 +24,8 @@
             android:textColor="#000"
             android:textSize="30sp"
             android:padding="@dimen/rc_text_padding"
-            tools:text="Location" />
+            android:text="Location"
+            />
 
     </LinearLayout>
 
@@ -42,7 +43,7 @@
             android:textSize="24sp"
             android:layout_marginStart="@dimen/rc_icon_size"
             android:padding="@dimen/rc_text_padding"
-            tools:text="latitude" />
+            android:text="latitude" />
 
         <TextView
             android:id="@+id/textView_ad_location_longitude"
@@ -52,7 +53,7 @@
             android:textSize="24sp"
             android:layout_marginStart="@dimen/rc_icon_size"
             android:padding="@dimen/rc_text_padding"
-            tools:text="longitude" />
+            android:text="longitude" />
 
 
 
