@@ -6,14 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.locationwake.Activities.HelperClasses.ActiveSettingRecAdapter;
 import com.example.locationwake.Activities.HelperClasses.AddLocationRecAdapter;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
-import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
-import com.example.locationwake.Backend.Database.Attributes.mSetting;
 
 import java.util.ArrayList;
 
@@ -27,7 +22,8 @@ public class AddLocationActivity extends AppCompatActivity {
 
     //DATA ELEMENTS
     //Holds all the data that is in the database
-    private ArrayList<String> list = new ArrayList<>();
+    private ArrayList<String> settings = new ArrayList<>();
+    private ArrayList<String> attributes = new ArrayList<>();
 
     //GUI ELEMENTS
     private RecyclerView recyclerView;
@@ -57,10 +53,15 @@ public class AddLocationActivity extends AppCompatActivity {
      */
     private void loadData() {
         Logger.logV(TAG, "loadData(): loading the data from the database into dataList");
-        list = new ArrayList<>();
-        list.add("SLT");
-        list.add("VBR");
-        list.add("SND");
+        settings = new ArrayList<>();
+        settings.add("SLT");
+        settings.add("VBR");
+        settings.add("SND");
+
+        attributes = new ArrayList<>();
+        attributes.add("SLT");
+        attributes.add("VBR");
+        attributes.add("SND");
     }
 
 
@@ -73,7 +74,7 @@ public class AddLocationActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new AddLocationRecAdapter(this.getApplicationContext(), this, list);
+        mAdapter = new AddLocationRecAdapter(this.getApplicationContext(), this, settings, attributes);
         recyclerView.setAdapter(mAdapter);
     }
 }

@@ -27,15 +27,16 @@ public class AddLocationRecAdapter extends RecyclerView.Adapter{
 
     private Object parent;
 
-    ArrayList<String> settings;
+    ArrayList<String> settings, attributes;
 
-    private String name, setting, latitude, longitude, radius;
+    private String name, setting, attribute, latitude, longitude, radius;
     private EditText editName, editLatitude, editLongitude;
 
-    public AddLocationRecAdapter(Context context, Object parent, ArrayList<String> settings) {
+    public AddLocationRecAdapter(Context context, Object parent, ArrayList<String> settings, ArrayList<String> attributes) {
         this.context = context;
         this.parent = parent;
         this.settings = settings;
+        this.attributes = attributes;
     }
 
     @Override
@@ -98,7 +99,7 @@ public class AddLocationRecAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 
     public class nameViewHolder extends RecyclerView.ViewHolder {
@@ -153,8 +154,24 @@ public class AddLocationRecAdapter extends RecyclerView.Adapter{
 
     public class attributeViewHolder extends RecyclerView.ViewHolder {
 
+        private final Spinner spinnerAttributes;
+
         public attributeViewHolder(View view) {
             super(view);
+            spinnerAttributes = (Spinner) view.findViewById(R.id.spinner_ad_attribute_setting);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, attributes);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerAttributes.setAdapter(arrayAdapter);
+            spinnerAttributes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    attribute = parent.getItemAtPosition(position).toString();
+                }
+                @Override
+                public void onNothingSelected(AdapterView <?> parent) {
+                    attribute = attributes.get(0);
+                }
+            });
         }
 
         void bindView(int position) {

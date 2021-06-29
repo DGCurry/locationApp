@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/recyclerViewContainer"
@@ -17,5 +18,13 @@
             android:scrollbars="vertical" />
 
     </RelativeLayout>
+
+    <Button
+        android:layout_width="@dimen/rc_item_textbox_size"
+        android:layout_height="wrap_content"
+        android:text="Send">
+
+
+    </Button>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

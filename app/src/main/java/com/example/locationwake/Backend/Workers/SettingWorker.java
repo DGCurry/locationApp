@@ -102,7 +102,7 @@ public class SettingWorker extends Worker {
         ArrayList<mLocation> locations =  DataHandler.loadLocations(mContext);
         // going through each location, get the ID, create a SettingObject with this.
         for (mLocation location:locations) {
-            ArrayList<mAttribute> mAttributes = DataHandler.loadAttribute(location.getKID(), mContext);
+            ArrayList<mAttribute> mAttributes = DataHandler.loadAttributes(location.getKID(), mContext);
             for (mAttribute attribute:mAttributes) {
                 SettingObject cSettingObject = new SettingObject(attribute.getKID(), attribute.getAID());
                 LocationComponent addLocationComponent = new LocationComponent(mContext,

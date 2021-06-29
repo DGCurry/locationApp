@@ -115,7 +115,7 @@ public class DataHandler {
      * @param context context of the application
      * @return ArrayList of all attributes that correspond with the location ID
      */
-    public static ArrayList<mAttribute> loadAttribute(int KID, Context context) {
+    public static ArrayList<mAttribute> loadAttributes(int KID, Context context) {
         ArrayList<mAttribute> returnList = new ArrayList<>();
         Logger.logV(TAG, "loadData(): loading the data from the database into dataList");
         AttributesDbHelper attributesDbHelper = new AttributesDbHelper(context);
