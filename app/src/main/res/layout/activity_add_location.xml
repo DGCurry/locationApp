@@ -20,6 +20,7 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/button_add_entry"
         android:layout_width="@dimen/rc_item_textbox_size"
         android:layout_height="wrap_content"
         android:text="Send">

@@ -34,25 +34,43 @@ public class DataEntry implements Runnable {
         this.context = context;
     }
 
+    /**
+     * Called when thread is opened. Checks the input values. If input value is invalid, it calls
+     * the onFailure function. If the input is valid, it calls the onSuccess function
+     */
     @Override
     public void run() {
         if (!checkLocation(Float.parseFloat(mLocation.getLng()),
                 Float.parseFloat(mLocation.getLat()),
                 Integer.parseInt(mAttribute.getDistance().getDistance()))) {
             callBack.onFailure(0, "location failed");
-        } else if (!checkSetting(mAttribute.getSetting().getSetting())) {
-            callBack.onFailure(0, "setting failed");
-        } else if (!checkName(mLocation.getName())) {
-            callBack.onFailure(0, "name failed");
+            return;
         }
+
+        if (!checkSetting(mAttribute.getSetting().getSetting())) {
+            callBack.onFailure(0, "setting failed");
+            return;
+        }
+
+        if (!checkName(mLocation.getName())) {
+            callBack.onFailure(0, "name failed");
+            return;
+        }
+
         DataHandler.addData(mLocation.getName(), mLocation.getLat(), mLocation.getLng(),
                 mAttribute.getDistance().getDistance(), mAttribute.getSetting().getSetting(), context);
+
         callBack.onSuccess(0, "succeeded");
 
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     private boolean checkName(String name) {
-        return !name.equals("Null") || !name.equals("None") || !name.equals("null") || !name.equals("none");
+        return true;
     }
 
     private boolean checkSetting(String setting) {

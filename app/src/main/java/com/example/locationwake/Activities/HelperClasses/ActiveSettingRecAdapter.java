@@ -37,6 +37,12 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
 
     Context context;
 
+    /**
+     * Constructor
+     * @param list
+     * @param context
+     * @param name
+     */
     public ActiveSettingRecAdapter(List<AttributeInterface> list, Context context, String name) {
         if (attributes == null) {
             attributes = new ArrayList<>();
@@ -51,11 +57,22 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
         this.name = name;
     }
 
+    /**
+     * Returns the type of the item
+     * @param position
+     * @return
+     */
     @Override
     public int getItemViewType(int position) {
         return attributes.get(position).getType();
     }
 
+    /**
+     * 
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView;
@@ -77,6 +94,11 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
         }
     }
 
+    /**
+     * when the item in bind, this determines what function should be called to bind the position
+     * @param holder holder of the item
+     * @param position position in the recyclerview
+     */
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
@@ -98,6 +120,10 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
         }
     }
 
+    /**
+     * returns how many attributes are used for the recyclerview
+     * @return attributes size if not null
+     */
     @Override
     public int getItemCount() {
         if (attributes == null) {
@@ -106,12 +132,19 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
         return attributes.size();
     }
 
+    /**
+     * innerclass holds the information for the header item
+     */
     public class headerViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView title;
         private final TextView setting;
         private final Button changeButton;
 
+        /**
+         * constructor of the class. Binds the UI elements
+         * @param view
+         */
         public headerViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.textView_header_name);
@@ -119,18 +152,29 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
             changeButton = (Button) view.findViewById(R.id.button_header_change);
         }
 
+        /**
+         * binds the item to a certain position
+         * @param position position of the item
+         */
         void bindView(int position) {
             title.setText(name);
             setting.setText(((mSetting)attributes.get(position)).getSetting());
         }
     }
 
+    /**
+     * innerclass holds the information in the location item
+     */
     public class LocationViewHolder extends RecyclerView.ViewHolder implements OnMapReadyCallback {
 
         MapView mapView;
         GoogleMap map;
         View layout;
 
+        /**
+         * constructor of the class. Binds the UI elements
+         * @param view
+         */
         public LocationViewHolder(View view) {
             super(view);
             layout = view;
@@ -144,6 +188,10 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
 
         }
 
+        /**
+         * binds the item to a certain position
+         * @param position position of the item
+         */
         void bindView(int position) {
             mLocation location = (mLocation)attributes.get(position);
             // Store a reference of the ViewHolder object in the layout.
@@ -154,6 +202,10 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
             setMapLocation();
         }
 
+        /**
+         * callback function called when the map is ready to be displayed
+         * @param googleMap
+         */
         @Override
         public void onMapReady(@NonNull GoogleMap googleMap) {
             MapsInitializer.initialize(context);
@@ -161,6 +213,9 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
             setMapLocation();
         }
 
+        /**
+         * function used to set the map to a certain location, and to add a marker.
+         */
         private void setMapLocation() {
             if (map == null) return;
             mLocation data = (mLocation) mapView.getTag();
@@ -179,11 +234,18 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
 
     }
 
+    /**
+     * innerclass holds the information in the radius item
+     */
     public class DistanceViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView title;
         private final TextView distance;
 
+        /**
+         * constructor of the class. Binds the UI elements
+         * @param view
+         */
         public DistanceViewHolder(View view) {
             super(view);
             // get reference to views
@@ -191,9 +253,11 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
             distance = (TextView) view.findViewById(R.id.textView_distance_radius);
         }
 
+        /**
+         * binds the item to a certain position
+         * @param position position of the item
+         */
         void bindView(int position) {
-            title.setText("Distance");
-            distance.setText(((mDistance)attributes.get(position)).getDistance() + " meters");
         }
 
     }

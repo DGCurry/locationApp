@@ -1,6 +1,7 @@
 package com.example.locationwake.Activities.HelperClasses;
 
 import android.content.Context;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mSetting;
+import com.example.locationwake.Backend.Database.DataHandler;
+import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -29,8 +35,8 @@ public class AddLocationRecAdapter extends RecyclerView.Adapter{
 
     ArrayList<String> settings, attributes;
 
-    private String name, setting, attribute, latitude, longitude, radius;
-    private EditText editName, editLatitude, editLongitude;
+    private String setting, attribute;
+    private EditText editName, editLatitude, editLongitude, editRadius;
 
     public AddLocationRecAdapter(Context context, Object parent, ArrayList<String> settings, ArrayList<String> attributes) {
         this.context = context;
@@ -114,6 +120,14 @@ public class AddLocationRecAdapter extends RecyclerView.Adapter{
         }
     }
 
+    public mAttribute getAttributes() {
+        return new mAttribute(null, null, new mDistance(editRadius.getText().toString()), new mSetting(setting));
+    }
+
+    public mLocation getLocation() {
+        return new mLocation(editLatitude.getText().toString(), editLongitude.getText().toString(), editName.getText().toString());
+    }
+
     public class settingViewHolder extends RecyclerView.ViewHolder {
 
         private final Spinner spinnerSetting;
@@ -146,6 +160,7 @@ public class AddLocationRecAdapter extends RecyclerView.Adapter{
             super(view);
             editLatitude = (EditText) view.findViewById(R.id.editText_ad_location_latitude);
             editLongitude = (EditText) view.findViewById(R.id.editText_ad_location_longitude);
+            editRadius = (EditText) view.findViewById(R.id.editText_ad_location_radius);
         }
 
         void bindView(int position) {
@@ -177,6 +192,4 @@ public class AddLocationRecAdapter extends RecyclerView.Adapter{
         void bindView(int position) {
         }
     }
-
-
 }

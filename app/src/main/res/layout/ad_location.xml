@@ -89,6 +89,14 @@
 
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/editText_ad_location_radius"
+        android:layout_width="@dimen/rc_item_textedit_size"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginStart="@dimen/rc_icon_size"
+        android:padding="@dimen/rc_text_padding"
+        tools:text="" />
 
 
 </LinearLayout>

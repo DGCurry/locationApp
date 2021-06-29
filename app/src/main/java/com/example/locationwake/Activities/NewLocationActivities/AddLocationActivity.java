@@ -1,12 +1,22 @@
 package com.example.locationwake.Activities.NewLocationActivities;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.locationwake.Activities.HelperClasses.AddLocationRecAdapter;
+import com.example.locationwake.Activities.HelperClasses.FormCallBack;
+import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mSetting;
+import com.example.locationwake.Backend.Database.DataHandler;
+import com.example.locationwake.Backend.Database.mAttribute;
+import com.example.locationwake.Backend.Workers.DataEntry.DataEntry;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -15,7 +25,7 @@ import java.util.ArrayList;
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class AddLocationActivity extends AppCompatActivity {
+public class AddLocationActivity extends AppCompatActivity implements FormCallBack {
 
     //TAG of the class
     static final private String TAG = "settingactivity";
@@ -27,8 +37,12 @@ public class AddLocationActivity extends AppCompatActivity {
 
     //GUI ELEMENTS
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private AddLocationRecAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    FormCallBack callBack = this;
+
+    private Button addButton;
 
     /**
      * Method to start activity
@@ -76,5 +90,27 @@ public class AddLocationActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new AddLocationRecAdapter(this.getApplicationContext(), this, settings, attributes);
         recyclerView.setAdapter(mAdapter);
+
+        addButton = findViewById(R.id.button_add_entry);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.logD(TAG, "createUI(): clicked on Send Button");
+                DataEntry dataEntry = new DataEntry(callBack, mAdapter.getAttributes(), mAdapter.getLocation(), getApplicationContext());
+                dataEntry.run();
+            }
+        });
+    }
+
+    @Override
+    public void onSuccess(int position, String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Logger.logD(TAG, message);
+    }
+
+    @Override
+    public void onFailure(int position, String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Logger.logD(TAG, message);
     }
 }
