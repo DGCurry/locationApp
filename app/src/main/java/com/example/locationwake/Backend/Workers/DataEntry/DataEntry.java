@@ -2,8 +2,9 @@ package com.example.locationwake.Backend.Workers.DataEntry;
 
 import android.content.Context;
 import android.location.Location;
+import android.telecom.Call;
 
-import com.example.locationwake.Activities.HelperClasses.FormCallBack;
+import com.example.locationwake.Activities.ExtendedActivities.CallBackActivity;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
@@ -18,14 +19,14 @@ public class DataEntry implements Runnable {
      */
     static final private String TAG = "LocationWorker";
 
-    final private FormCallBack callBack;
+    final private CallBackActivity callBack;
 
     private final mAttribute mAttribute;
     private final mLocation mLocation;
 
     private final Context context;
 
-    public DataEntry(FormCallBack callBack, mAttribute mAttribute, mLocation mLocation, Context context) {
+    public DataEntry(CallBackActivity callBack, mAttribute mAttribute, mLocation mLocation, Context context) {
         this.callBack = callBack;
 
         this.mAttribute = mAttribute;
@@ -43,24 +44,24 @@ public class DataEntry implements Runnable {
         if (!checkLocation(Float.parseFloat(mLocation.getLng()),
                 Float.parseFloat(mLocation.getLat()),
                 Integer.parseInt(mAttribute.getDistance().getDistance()))) {
-            callBack.onFailure(0, "location failed");
+            callBack.onCallBack(false, false, true, 'D', "location failed");
             return;
         }
 
         if (!checkSetting(mAttribute.getSetting().getSetting())) {
-            callBack.onFailure(0, "setting failed");
+            callBack.onCallBack(false, false, true, 'D', "setting failed");
             return;
         }
 
         if (!checkName(mLocation.getName())) {
-            callBack.onFailure(0, "name failed");
+            callBack.onCallBack(false, false, true, 'D', "name failed");
             return;
         }
 
         DataHandler.addData(mLocation.getName(), mLocation.getLat(), mLocation.getLng(),
                 mAttribute.getDistance().getDistance(), mAttribute.getSetting().getSetting(), context);
 
-        callBack.onSuccess(0, "succeeded");
+        callBack.onCallBack(false, true, false, 'D', "succeeded");
 
     }
 

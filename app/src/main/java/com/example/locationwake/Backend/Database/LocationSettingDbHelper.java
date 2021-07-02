@@ -112,7 +112,7 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
      *              row 1: latitude
      *              row 2: longitude
      */
-    public ArrayList<String[]> getLocation() {
+    public ArrayList<String[]> getLocations() {
         SQLiteDatabase db = this.getWritableDatabase();
         //query for the database to get all the locations
         String query = "SELECT id, latitude, longitude FROM " + TABLE_LOCATION;
@@ -134,6 +134,29 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
         db.close();
         Logger.logV(TAG, "getLocation(): returned locations");
         return locationList;
+    }
+
+
+    /**
+     * method to get the attributes of a certain ID out of the database
+     * @return String matrix with values stored in the rows
+     */
+    public String[] getLocation(String KID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        //query for the database to get all the locations
+        String query = "SELECT latitude, longitude FROM " + TABLE_LOCATION + " WHERE id ='" + KID + "'";
+        Cursor cursor = db.rawQuery(query, null);
+
+        //put in every entry with the correct data
+        String[] dataEntry = new String[2];
+        while (cursor.moveToNext()) {
+            dataEntry[0] = cursor.getString(0);
+            dataEntry[1] = cursor.getString(1);
+        }
+
+        cursor.close();
+        db.close();
+        return dataEntry;
     }
 
 

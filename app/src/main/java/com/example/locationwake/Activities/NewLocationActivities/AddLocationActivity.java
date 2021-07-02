@@ -5,17 +5,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.locationwake.Activities.ExtendedActivities.CallBackActivity;
 import com.example.locationwake.Activities.HelperClasses.AddLocationRecAdapter;
-import com.example.locationwake.Activities.HelperClasses.FormCallBack;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
-import com.example.locationwake.Backend.Database.Attributes.mSetting;
-import com.example.locationwake.Backend.Database.DataHandler;
-import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Backend.Workers.DataEntry.DataEntry;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
@@ -25,7 +19,7 @@ import java.util.ArrayList;
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class AddLocationActivity extends AppCompatActivity implements FormCallBack {
+public class AddLocationActivity extends CallBackActivity {
 
     //TAG of the class
     static final private String TAG = "settingactivity";
@@ -40,7 +34,7 @@ public class AddLocationActivity extends AppCompatActivity implements FormCallBa
     private AddLocationRecAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    FormCallBack callBack = this;
+    CallBackActivity callBack = this;
 
     private Button addButton;
 
@@ -84,7 +78,7 @@ public class AddLocationActivity extends AppCompatActivity implements FormCallBa
      */
     private void createUI() {
         Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
-        recyclerView = (RecyclerView) findViewById(R.id.add_location_recyclerview);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview_add_location);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -103,14 +97,20 @@ public class AddLocationActivity extends AppCompatActivity implements FormCallBa
     }
 
     @Override
-    public void onSuccess(int position, String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        Logger.logD(TAG, message);
-    }
-
-    @Override
-    public void onFailure(int position, String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        Logger.logD(TAG, message);
+    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
+        if (succeeded) {
+            switch(type) {
+                // D for data
+                case 'D':
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    Logger.logD(TAG, message);
+            }
+        } else if (failed) {
+            switch(type) {
+                case 'D':
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    Logger.logD(TAG, message);
+            }
+        }
     }
 }

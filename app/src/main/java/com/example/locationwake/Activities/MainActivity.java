@@ -1,25 +1,38 @@
 package com.example.locationwake.Activities;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.BackoffPolicy;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.locationwake.Activities.ExtendedActivities.CallBackActivity;
+import com.example.locationwake.Activities.HelperClasses.ActiveSettingRecAdapter;
 import com.example.locationwake.Activities.NewLocationActivities.AddLocationActivity;
 import com.example.locationwake.Activities.PermissionActivities.BackgroundLocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.LocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.NotificationPermissionActivity;
+import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.DataHandler;
+import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -29,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends CallBackActivity {
 
     //TAG of the class
     static final private String TAG = "MainActivity";
@@ -45,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText settingEdit;
     private Button addButton;
     private Button soundButton;
+
+    Button meh;
+    private ViewStub activeSettingStub;
+    private ViewStub nonActiveSettingStub;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+
 
     //activity finding location
     private Button goButton;
@@ -87,9 +109,7 @@ public class MainActivity extends AppCompatActivity {
         createUI();
 
         Logger.logV(TAG, "onStart() started startWorker()");
-        startWorker();
-        Intent intent = new Intent(MainActivity.this, AddLocationActivity.class);
-        startActivity(intent);
+        startPeriodicWorker();
     }
 
 
@@ -98,6 +118,51 @@ public class MainActivity extends AppCompatActivity {
      * Creates the GUI by adding the listeners
      */
     private void createUI() {
+
+        Logger.logD(TAG, "createIO(): retrieving saved setting");
+
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(
+                "SETTING_FILE_NAME", Context.MODE_PRIVATE);
+
+        int KID = pref.getInt("KID", -1);
+        int AID = pref.getInt("AID", -1);
+        String savedSetting = pref.getString("setting", null);
+
+        // if the setting is null, there is no active setting
+        if (savedSetting == null) {
+            //inflate one of the thingies
+            nonActiveSettingStub = findViewById(R.id.viewStub_main_no_active_setting);
+            nonActiveSettingStub.inflate();
+            meh = findViewById(R.id.button_ad_new_location);
+            meh.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Intent
+                    Intent intent = new Intent(MainActivity.this, AddLocationActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            //retrieve all the data and inflate one of the thingies
+            activeSettingStub = findViewById(R.id.viewStub_main_active_setting);
+            activeSettingStub.inflate();
+
+            mLocation mLocation = DataHandler.loadLocation(Integer.toString(KID), getApplicationContext());
+            mAttribute attribute = DataHandler.loadAttribute(KID, AID, getApplicationContext());
+            //Holds all the data that is in the database
+            ArrayList<AttributeInterface> list = new ArrayList<>();
+            list.add(attribute.getSetting());
+            list.add(attribute.getDistance());
+            list.add(mLocation);
+            recyclerView = (RecyclerView) findViewById(R.id.recyclerview_setting);
+            recyclerView.setHasFixedSize(true);
+            layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            mAdapter = new ActiveSettingRecAdapter(list, getApplicationContext(), "jemoeder");
+            recyclerView.setAdapter(mAdapter);
+        }
+
         Logger.logV(TAG, "createUI(): getting the UI elements");
 //        //adding location
 //        nameEdit = findViewById(R.id.editName);
@@ -235,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
      * method to start all worker background threads
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void startWorker() {
+    private void startPeriodicWorker() {
         Logger.logD(TAG, "startWorker(): starting workmanager");
         PeriodicWorkRequest  work = new PeriodicWorkRequest.Builder(
                 com.example.locationwake.Backend.Workers.WorkManager.class,
@@ -253,4 +318,34 @@ public class MainActivity extends AppCompatActivity {
         );
         Logger.logD(TAG, "startWorker(): started workmanager");
     }
+
+
+    /**
+     * method to start all worker background threads
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startOneTimeWorker() {
+        Logger.logD(TAG, "startWorker(): starting workmanager");
+        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(
+                com.example.locationwake.Backend.Workers.WorkManager.class)
+                .addTag("WorkManager")
+                .setBackoffCriteria(BackoffPolicy.LINEAR, 60*1000, TimeUnit.MILLISECONDS)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        workManager.enqueueUniqueWork(
+                "WorkManager",
+                ExistingWorkPolicy.KEEP,
+                work
+        );
+        Logger.logD(TAG, "startWorker(): started workmanager");
+    }
+
+
+
+    @Override
+    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
+        createUI();
+    }
+
 }

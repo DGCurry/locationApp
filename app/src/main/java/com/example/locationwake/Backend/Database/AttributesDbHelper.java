@@ -160,6 +160,29 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
 
 
     /**
+     * method to get the attributes of a certain KID and AID out of the database
+     * @return String matrix with values stored in the rows
+     */
+    public String[] getAttribute(int KID, int AID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] columns = {DISTANCE, SETTING};
+        String where = "k_id=? AND a_id=?";
+        String[] args = {Integer.toString(KID), Integer.toString(AID)};
+
+        Cursor cursor = db.query(TABLE_ATTRIBUTES, columns, where, args, null, null, null);
+        //put in every entry with the correct data
+        String[] dataEntry = new String[2];
+        while (cursor.moveToNext()) {
+            dataEntry[0] = cursor.getString(0);
+            dataEntry[1] = cursor.getString(1);
+        }
+        cursor.close();
+        db.close();
+        return dataEntry;
+    }
+
+
+    /**
      * method to get the attributes of a certain ID out of the database
      * @return String matrix with values stored in the rows
      */

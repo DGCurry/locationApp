@@ -68,7 +68,7 @@ public class ActiveSettingActivity extends AppCompatActivity {
      */
     private void createUI() {
         Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_items);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview_setting);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);

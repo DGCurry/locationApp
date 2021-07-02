@@ -7,6 +7,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.example.locationwake.Activities.ExtendedActivities.CallBackActivity;
 import com.example.locationwake.Logger;
 
 public class WorkManager extends Worker {
@@ -21,7 +22,7 @@ public class WorkManager extends Worker {
      * @param context
      * @param workerParams
      */
-    public WorkManager(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public WorkManager(@NonNull Context context, @NonNull WorkerParameters workerParams, CallBackActivity callBackActivity) {
         super(context, workerParams);
     }
 
