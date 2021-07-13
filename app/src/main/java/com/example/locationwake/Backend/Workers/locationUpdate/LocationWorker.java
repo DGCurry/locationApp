@@ -1,4 +1,4 @@
-package com.example.locationwake.Backend.Workers;
+package com.example.locationwake.Backend.Workers.locationUpdate;
 
 import android.Manifest;
 import android.app.Notification;

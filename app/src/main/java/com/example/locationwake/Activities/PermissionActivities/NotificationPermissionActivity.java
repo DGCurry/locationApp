@@ -1,18 +1,16 @@
-package com.example.locationwake.Activities.PermissionActivities;
+ package com.example.locationwake.Activities.PermissionActivities;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
-
-import java.util.ArrayList;
 
 public class NotificationPermissionActivity extends Permission {
 
@@ -34,6 +32,21 @@ public class NotificationPermissionActivity extends Permission {
     }
 
     private void askPermission(String permission, int REQUEST_CODE) {
+
+        NotificationManager notificationManager =
+                (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !notificationManager.isNotificationPolicyAccessGranted()) {
+
+            Intent intent = new Intent(
+                    android.provider.Settings
+                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+
+            startActivity(intent);
+        }
+
+
         if (Build.VERSION.SDK_INT >= 23) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
                 new AlertDialog.Builder(this)

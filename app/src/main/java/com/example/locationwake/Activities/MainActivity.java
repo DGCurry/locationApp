@@ -1,25 +1,36 @@
 package com.example.locationwake.Activities;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.BackoffPolicy;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
+import com.example.locationwake.Activities.HelperClasses.ActiveSettingRecAdapter;
 import com.example.locationwake.Activities.NewLocationActivities.AddLocationActivity;
 import com.example.locationwake.Activities.PermissionActivities.BackgroundLocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.LocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.NotificationPermissionActivity;
+import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.DataHandler;
+import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -29,26 +40,23 @@ import java.util.concurrent.TimeUnit;
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends CallBackActivity {
 
     //TAG of the class
     static final private String TAG = "MainActivity";
 
-
-
     //GUI ELEMENTS
-    //adding location
-    private EditText nameEdit;
-    private EditText longitudeEdit;
-    private EditText latitudeEdit;
-    private EditText distanceEdit;
-    private EditText settingEdit;
-    private Button addButton;
-    private Button soundButton;
+    Button meh;
+    private View activeSettingStub;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     //activity finding location
     private Button goButton;
 
+    //permission codes to identify and communicate the found permissions to be given
     protected static final int NOTIFICATION_PERMISSION_CODE = 100;
     protected static final int LOCATION_PERMISSION_CODE = 101;
     protected static final int BACKGROUNDLOCATION_PERMISSION_CODE = 102;
@@ -64,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Logger.logV(TAG, "onCreate(): created MainActivity");
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         // ask permissions -> create worker if needed -> gather data needed -> create GUI
         // only if sdk is greater than 23, otherwise permissions will be granted at install
@@ -71,9 +80,23 @@ public class MainActivity extends AppCompatActivity {
             Logger.logV(TAG, "onCreate(): asking permissions");
             askPermissions();
         }
-        setContentView(R.layout.activity_main);
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(): created MainActivity");
+        Logger.logV(TAG, "onCreate() started startWorker()");
+
+        Runnable runnableCallBack = new Runnable() {
+            @Override
+            public void run() {
+                addCallBack();
+            }
+        };
+        runnableCallBack.run();
+
+        Runnable runnableWorker = new Runnable() {
+            @Override
+            public void run() {
+                startWorker();
+            }
+        };
+        runnableWorker.run();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -85,74 +108,64 @@ public class MainActivity extends AppCompatActivity {
         //Log, TAG, method, action
         Logger.logV(TAG, "onStart() started createUI()");
         createUI();
-
-        Logger.logV(TAG, "onStart() started startWorker()");
-        startWorker();
-        Intent intent = new Intent(MainActivity.this, AddLocationActivity.class);
-        startActivity(intent);
     }
 
-
-
     /**
-     * Creates the GUI by adding the listeners
+     * Creates the GUI
      */
     private void createUI() {
         Logger.logV(TAG, "createUI(): getting the UI elements");
-//        //adding location
-//        nameEdit = findViewById(R.id.editName);
-//        longitudeEdit = findViewById(R.id.editLongitude);
-//        latitudeEdit = findViewById(R.id.editLatitude);
-//        distanceEdit = findViewById(R.id.editDistance);
-//        settingEdit = findViewById(R.id.editSetting);
-//
-//        Logger.logV(TAG, "createUI(): setting onClickListeners on the buttons");
-//
-//        addButton = findViewById(R.id.buttonAdd);
-//        addButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                //Log, TAG, method, action
-//                Logger.logV(TAG, "createUI(): onClick(View v): Clicked on addButton");
-//                //get the text that has been added
-//                //TODO: can not be done if there is no text or if the text is already in the database
-//                DataHandler.addData(nameEdit.getText().toString(),
-//                        latitudeEdit.getText().toString(),
-//                        longitudeEdit.getText().toString(),
-//                        distanceEdit.getText().toString(),
-//                        settingEdit.getText().toString(),
-//                        getApplicationContext());
-//            }
-//        });
-//
-//        //activity finding location
-//        goButton = findViewById(R.id.buttonFind);
-//        goButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                //Log, TAG, method, action
-//                Logger.logV(TAG, "createUI(): onClick(View v): Clicked on goButton");
-//                //create Intent
-//                Intent intent = new Intent(MainActivity.this, OverviewActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        //activity finding location
-//        soundButton = findViewById(R.id.buttonSound);
-//        soundButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                //Log, TAG, method, action
-//                Logger.logV(TAG, "createUI(): onClick(View v): Clicked on soundButton");
-//                //create Intent
-//                Intent intent = new Intent(MainActivity.this, ChangeSetting.class);
-//                startActivity(intent);
-//            }
-//        });
+        createSettingUI();
+
+        // Navigation
+        Button list = findViewById(R.id.button_main_list);
+        Button add = findViewById(R.id.button_main_add);
+        Button setting = findViewById(R.id.button_main_settings);
+
+        list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.logD(TAG, "onClick(): clicked on the list button");
+            }
+        });
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.logD(TAG, "onClick(): clicked on the add button");
+                Intent intent = new Intent(getApplicationContext(), AddLocationActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.logD(TAG, "onClick(): clicked on the setting button");
+            }
+        });
+
+    }
+
+    /**
+     * Creates the GUI for the Setting that is currently active, or not
+     */
+    private void createSettingUI() {
+
+        activeSettingStub = findViewById(R.id.include_main_active_setting);
+
+        Logger.logD(TAG, "createSettingUI(): retrieving saved setting");
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(
+                "SETTING_FILE_NAME", Context.MODE_PRIVATE);
+
+        String savedSetting = pref.getString("setting", null);
+
+        // if the setting is null, there is no active setting
+        if (savedSetting == null) {
+            updateUINoSettingFound();
+        } else {
+            updateUISettingFound(pref.getInt("KID", -1), pref.getInt("AID", -1));
+        }
     }
 
     /**
@@ -163,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Integer> permissionList = checkPermissions();
 
         if (permissionList.size() != 0) {
-            permissionList.remove(0);
             Intent intent;
 
             switch (permissionList.get(0)) {
@@ -171,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 case NOTIFICATION_PERMISSION_CODE:
                     Logger.logD(TAG, "askPermissions(): starting NotificationPermissionActivity");
                     intent = new Intent(getApplicationContext(), NotificationPermissionActivity.class);
+                    permissionList.remove(0);
                     intent.putExtra("PERMISSION_CODES", permissionList);
                     startActivity(intent);
                     break;
@@ -178,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                 case LOCATION_PERMISSION_CODE:
                     Logger.logD(TAG, "askPermissions(): starting LocationPermissionActivity");
                     intent = new Intent(getApplicationContext(), LocationPermissionActivity.class);
+                    permissionList.remove(0);
                     intent.putExtra("PERMISSION_CODES", permissionList);
                     startActivity(intent);
                     break;
@@ -185,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 case BACKGROUNDLOCATION_PERMISSION_CODE:
                     Logger.logD(TAG, "askPermissions(): starting BackgroundLocationPermissionActivity");
                     intent = new Intent(getApplicationContext(), BackgroundLocationPermissionActivity.class);
+                    permissionList.remove(0);
                     intent.putExtra("PERMISSION_CODES", permissionList);
                     startActivity(intent);
                     break;
@@ -203,28 +218,28 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(
                 getApplicationContext(), Manifest.permission.ACCESS_NOTIFICATION_POLICY) ==
                 PackageManager.PERMISSION_DENIED) {
-            Logger.logD(TAG, "askPermissions(): adding NOTIFICATION_PERMISSION_CODE to list");
+            Logger.logD(TAG, "checkPermissions(): adding NOTIFICATION_PERMISSION_CODE to list");
             permissionList.add(NOTIFICATION_PERMISSION_CODE);
         }
 
         if (ContextCompat.checkSelfPermission(
                 getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Logger.logD(TAG, "askPermissions(): adding LOCATION_PERMISSION_CODE to list");
+            Logger.logD(TAG, "checkPermissions(): adding LOCATION_PERMISSION_CODE to list");
             permissionList.add(LOCATION_PERMISSION_CODE);
         }
 
         if (ContextCompat.checkSelfPermission(
                 getApplicationContext(),
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Logger.logD(TAG, "askPermissions(): adding BACKGROUNDLOCATION_PERMISSION_CODE to list");
+            Logger.logD(TAG, "checkPermissions(): adding BACKGROUNDLOCATION_PERMISSION_CODE to list");
             permissionList.add(BACKGROUNDLOCATION_PERMISSION_CODE);
         }
 
         if (ContextCompat.checkSelfPermission(
                 getApplicationContext(),
                 Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-            Logger.logD(TAG, "askPermissions(): adding INTERNET_PERMISSION_CODE to list");
+            Logger.logD(TAG, "checkPermissions(): adding INTERNET_PERMISSION_CODE to list");
             permissionList.add(INTERNET_PERMISSION_CODE);
         }
 
@@ -238,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
     private void startWorker() {
         Logger.logD(TAG, "startWorker(): starting workmanager");
         PeriodicWorkRequest  work = new PeriodicWorkRequest.Builder(
-                com.example.locationwake.Backend.Workers.WorkManager.class,
+                com.example.locationwake.Backend.Workers.locationUpdate.WorkManager.class,
                 15,
                 TimeUnit.MINUTES)
                 .addTag("WorkManager")
@@ -251,6 +266,62 @@ public class MainActivity extends AppCompatActivity {
                 ExistingPeriodicWorkPolicy.KEEP,
                 work
         );
-        Logger.logD(TAG, "startWorker(): started workmanager");
+    }
+
+    private void updateUINoSettingFound() {
+        Logger.logD(TAG, "updateUISettingFound(): savedSetting is null, no location found");
+
+        TextView title = findViewById(R.id.textView_location_title_main);
+        TextView subtitle = findViewById(R.id.textView_setting_title_main);
+
+        title.setText("No location found");
+        subtitle.setText("Add location or wait 10 minutes");
+
+        subtitle.setVisibility(View.VISIBLE);
+        Toast.makeText(getApplicationContext(), "There is no location found, UI updated", Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateUISettingFound(int KID, int AID) {
+        Logger.logD(TAG, "createUI(): savedSetting is not null, location found");
+        //retrieve all the data and inflate one of the thingies
+        activeSettingStub.setVisibility(View.VISIBLE);
+
+        TextView title = findViewById(R.id.textView_location_title_main);
+
+        String name = DataHandler.loadLocation(Integer.toString(KID), getApplicationContext()).getName();
+
+        title.setText(name);
+
+        mLocation mLocation = DataHandler.loadLocation(Integer.toString(KID), getApplicationContext());
+        mAttribute attribute = DataHandler.loadAttribute(KID, AID, getApplicationContext());
+        //Holds all the data that is in the database
+        ArrayList<AttributeInterface> list = new ArrayList<>();
+        list.add(attribute.getSetting());
+        list.add(attribute.getDistance());
+        list.add(mLocation);
+
+        Logger.logD(TAG, "createUI(): populating recyclerview");
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_main_active_setting);
+        recyclerView.setVisibility(View.VISIBLE);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter = new ActiveSettingRecAdapter(list, getApplicationContext());
+        recyclerView.setAdapter(mAdapter);
+        Toast.makeText(getApplicationContext(), "There is a location found, UI updated", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
+        if (update) {
+
+        }
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
     }
 }

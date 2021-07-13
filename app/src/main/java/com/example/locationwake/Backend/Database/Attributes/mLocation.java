@@ -1,10 +1,18 @@
 package com.example.locationwake.Backend.Database.Attributes;
 
+import android.text.TextUtils;
+
+import com.example.locationwake.Logger;
+
 /**
  * Holder of the data. Create an instance of this class to save the data to the database
  */
 public class mLocation implements AttributeInterface{
 
+    /**
+     * Tag of the class
+     */
+    static final private String TAG = "mLocation";
 
     // Data needed for the database
     private String lat, lng;
@@ -93,5 +101,34 @@ public class mLocation implements AttributeInterface{
     @Override
     public int getType() {
         return AttributeInterface.LOCATION_TYPE;
+    }
+
+    @Override
+    public boolean isValid() {
+        Logger.logD(TAG,  "isValid(): checking validity of " + lat + " " + lng);
+        if (lat.trim().equals("") || lng.trim().equals("")) {
+            return false;
+        }
+
+        if (lat.trim().length() == 0 || lng.trim().length() == 0) {
+            return false;
+        }
+
+        if (lat == null || lng == null) {
+            return false;
+        }
+
+        try {
+            Float.parseFloat(this.getLat());
+            Float.parseFloat(this.getLng());
+        } catch (Exception e) {
+            Logger.logE(TAG, "isValid(): float is not valid");
+            System.out.println(e);
+            return false;
+        }
+
+        if (Float.parseFloat(lat) < -90 || Float.parseFloat(lat) > 90) {
+            return false;
+        } else return !(Float.parseFloat(lng) < -180) && !(Float.parseFloat(lng) > 180);
     }
 }

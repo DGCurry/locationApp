@@ -11,7 +11,7 @@
         android:background="#DEDEDE">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/add_location_recyclerview"
+            android:id="@+id/recyclerview_add_location"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="112dp"

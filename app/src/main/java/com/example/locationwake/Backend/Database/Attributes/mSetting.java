@@ -33,4 +33,9 @@ public class mSetting implements AttributeInterface {
     public int getType() {
         return AttributeInterface.SETTING_TYPE;
     }
+
+    @Override
+    public boolean isValid() {
+        return (setting.equals("VBR") || setting.equals("SLT") || setting.equals("SND"));
+    }
 }

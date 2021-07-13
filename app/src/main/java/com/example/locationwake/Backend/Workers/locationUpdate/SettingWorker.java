@@ -1,19 +1,31 @@
-package com.example.locationwake.Backend.Workers;
+package com.example.locationwake.Backend.Workers.locationUpdate;
 
+import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import androidx.work.ForegroundInfo;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.example.locationwake.Backend.CallBack.CallBackManager;
 import com.example.locationwake.Logger;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Behaviour.Components.LocationComponent;
 import com.example.locationwake.Backend.Behaviour.SettingObject;
+import com.example.locationwake.R;
 
 import java.util.ArrayList;
 
@@ -27,6 +39,12 @@ public class SettingWorker extends Worker {
      * Tag of the class
      */
     static final private String TAG = "SettingWorker";
+
+    /**
+     * Notification ID and Title for the notification needed for a Foreground Worker
+     */
+    String NOTIFICATION_ID = "notification_setting";
+    String notification_title = "Setting worker";
 
     Context mContext;
 
@@ -47,6 +65,7 @@ public class SettingWorker extends Worker {
      * also saves values to shared preferences.
      * @return
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @NonNull
     @Override
     public Result doWork() {
@@ -63,16 +82,74 @@ public class SettingWorker extends Worker {
         // in case there has not been found any active settings, set special values
         if (activeKeys == null) {
             saveCurrentSetting(-1, -1, null);
+            Logger.logD(TAG, "doWork(): calling callBack on activities for UI update");
+            CallBackManager.callBackActivities(false, false, true, 's', "setting has been updated, none found");
             return Result.success();
         }
 
         String setting = DataHandler.getSetting(activeKeys[0], activeKeys[1], getApplicationContext());
+
+        setForegroundAsync(createForegroundInfo());
+
         setSetting(setting);
+
+
         saveCurrentSetting(activeKeys[0], activeKeys[1], setting);
         Logger.logD(TAG, "doWork(): enabled setting " + setting);
 
+        Logger.logD(TAG, "doWork(): calling callBack on activities for UI update");
+        CallBackManager.callBackActivities(true, false, false, 's', "setting has been updated");
+
         Logger.logD(TAG, "doWork(): finished");
         return Result.success();
+    }
+
+    /**
+     * method that creates the foreground notification information
+     * @return
+     */
+    @NonNull
+    private ForegroundInfo createForegroundInfo() {
+        //TODO: check how to change notification information
+        //TODO: make notificationID a variable
+        return new ForegroundInfo(1, createNotification());
+    }
+
+    /**
+     * method that creates the notification to ensure the thread is foreground
+     * @return
+     */
+    private Notification createNotification() {
+        //TODO: change information into resource
+
+        String id = NOTIFICATION_ID;
+        String title = notification_title;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannel(id, title);
+        }
+
+        return new NotificationCompat.Builder(mContext, id)
+                .setContentTitle(title)
+                .setTicker(title)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setOngoing(true)
+                .build();
+    }
+
+    /**
+     * channel for notification
+     * @param channelID
+     * @param name
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private void createChannel(String channelID, String name) {
+        //TODO: get string from resources, get requiresApi working
+        String description = "mah";
+        NotificationChannel channel = new NotificationChannel(channelID, name, NotificationManager.IMPORTANCE_HIGH);
+        channel.setDescription(description);
+        NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 
     /**
@@ -120,23 +197,31 @@ public class SettingWorker extends Worker {
      * method to set the sound setting as requested and found
      * @param setting SND, SLT, VBR
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void setSetting(String setting) {
-
         Logger.logD(TAG, "setSetting(): setting is " + setting);
 
-        AudioManager am = (AudioManager) mContext.getSystemService(mContext.AUDIO_SERVICE);
-        switch(setting) {
-            case "SLT":
-                am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-                am.adjustVolume(AudioManager.ADJUST_MUTE, AudioManager.FLAG_SHOW_UI);
-            case "VBR":
-                am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-                am.adjustVolume(AudioManager.ADJUST_MUTE, AudioManager.FLAG_SHOW_UI);
-                //TODO: perhaps let user decide the volume
-            case "SND":
-                am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                am.adjustVolume(AudioManager.ADJUST_UNMUTE, AudioManager.FLAG_SHOW_UI);
+        if (ContextCompat.checkSelfPermission(
+                getApplicationContext(),
+                Manifest.permission.ACCESS_NOTIFICATION_POLICY) == PackageManager.PERMISSION_GRANTED) {
+
+            Logger.logD(TAG, "setSetting(): allowed to change setting");
+
+            AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+            switch(setting) {
+                case "SLT":
+                    am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                    am.adjustVolume(AudioManager.ADJUST_MUTE, AudioManager.FLAG_SHOW_UI);
+                case "VBR":
+                    am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+                    am.adjustVolume(AudioManager.ADJUST_MUTE, AudioManager.FLAG_SHOW_UI);
+                    //TODO: perhaps let user decide the volume
+                case "SND":
+                    am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                    am.adjustVolume(AudioManager.ADJUST_UNMUTE, AudioManager.FLAG_SHOW_UI);
+            }
         }
+
     }
 
 
@@ -144,7 +229,7 @@ public class SettingWorker extends Worker {
      * saves the location in shared preferences
      */
     private void saveCurrentSetting(int KID, int AID, String setting) {
-        SharedPreferences preferences = mContext.getSharedPreferences("SETTING_FILE_NAME", mContext.MODE_PRIVATE);
+        SharedPreferences preferences = mContext.getSharedPreferences("SETTING_FILE_NAME", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("KID", KID);
         editor.putInt("AID", AID);

@@ -1,6 +1,7 @@
 package com.example.locationwake.Backend.Database;
 
 import android.content.Context;
+import android.location.Location;
 
 import com.example.locationwake.Logger;
 import com.example.locationwake.Backend.Database.Attributes.mDistance;
@@ -92,7 +93,7 @@ public class DataHandler {
         //get the database
         LocationSettingDbHelper settingDbHelper = new LocationSettingDbHelper(context);
         //set the data we have in the correct lists
-        ArrayList<String[]> locationList = settingDbHelper.getLocation();
+        ArrayList<String[]> locationList = settingDbHelper.getLocations();
 
         for (String[] location:locationList) {
             mLocation mLocation = new mLocation(location[1], location[2]);
@@ -140,6 +141,18 @@ public class DataHandler {
         return returnList;
     }
 
+
+    /**
+     * loads the attributes that correspond with the ID from the AttributesDbHelper
+     * @param context context of the application
+     * @return ArrayList of all attributes that correspond with the location ID
+     */
+    public static mAttribute loadAttribute(int KID, int AID, Context context) {
+        AttributesDbHelper attributesDbHelper = new AttributesDbHelper(context);
+        String[] data = attributesDbHelper.getAttribute(KID, AID);
+        return new mAttribute(KID, AID, new mDistance(data[0]),new mSetting(data[1]));
+    }
+
     /**
      * Deletes all entries in the location and attribute database
      * @param context
@@ -161,5 +174,18 @@ public class DataHandler {
     public static String getSetting(int KID, int AID, Context context) {
         AttributesDbHelper attributesDbHelper = new AttributesDbHelper(context);
         return attributesDbHelper.getSetting(KID, AID);
+    }
+
+    /**
+     * Returns the mLocation object that is found with the KID
+     * @param KID
+     * @param context
+     * @return
+     */
+    public static mLocation loadLocation(String KID, Context context) {
+        LocationSettingDbHelper attributesDbHelper = new LocationSettingDbHelper(context);
+        String[] lat_long =  attributesDbHelper.getLocation(KID);
+        String name = attributesDbHelper.getName(KID);
+        return new mLocation(lat_long[0], lat_long[1], name);
     }
 }

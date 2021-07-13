@@ -28,8 +28,8 @@ public class LocationComponent extends Component {
     public LocationComponent(Context context, mLocation mLocation, mDistance mDistance) {
         this.context = context;
         this.radius = Integer.parseInt(mDistance.getDistance());
-        this.savedLatitude = Integer.parseInt(mLocation.getLat());
-        this.savedLongitude = Integer.parseInt(mLocation.getLng());
+        this.savedLatitude = Float.parseFloat(mLocation.getLat());
+        this.savedLongitude = Float.parseFloat(mLocation.getLng());
     }
 
     @Override

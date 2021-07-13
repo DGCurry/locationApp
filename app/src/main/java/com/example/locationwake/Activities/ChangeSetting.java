@@ -2,8 +2,11 @@ package com.example.locationwake.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,22 +24,22 @@ public class ChangeSetting extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_setting);
+        setContentView(R.layout.activity_main);
         am = (AudioManager)getSystemService(AUDIO_SERVICE);
         createUI();
     }
 
     private void createUI() {
-        Button silentButton = findViewById(R.id.button_silent);
-        Button vibrateButton = findViewById(R.id.button_vibrate);
-        Button soundButton = findViewById(R.id.button_sound);
+        Button silentButton = findViewById(R.id.button_main_list);
+        Button vibrateButton = findViewById(R.id.button_main_add);
+        Button soundButton = findViewById(R.id.button_main_settings);
 
         silentButton.setOnClickListener(new View.OnClickListener() {
         // TODO: lower API for AudioManager.ADJUST_MUTE
             @Override
             public void onClick(View v) {
                 if (!am.isVolumeFixed()) {
-                    am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                    am.setRingerMode(0);
                     am.adjustVolume(AudioManager.ADJUST_MUTE, AudioManager.FLAG_SHOW_UI);
                     Logger.logD(TAG, "createUI(): onClick(View v): put into SILENT mode " + am.getRingerMode());
 

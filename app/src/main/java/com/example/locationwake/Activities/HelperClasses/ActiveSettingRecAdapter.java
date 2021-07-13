@@ -41,9 +41,8 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
      * Constructor
      * @param list
      * @param context
-     * @param name
      */
-    public ActiveSettingRecAdapter(List<AttributeInterface> list, Context context, String name) {
+    public ActiveSettingRecAdapter(List<AttributeInterface> list, Context context) {
         if (attributes == null) {
             attributes = new ArrayList<>();
         }
@@ -53,8 +52,6 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
         notifyDataSetChanged();
 
         this.context = context;
-
-        this.name = name;
     }
 
     /**

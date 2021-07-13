@@ -7,22 +7,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.locationwake.Activities.HelperClasses.ActiveSettingRecAdapter;
-import com.example.locationwake.Logger;
-import com.example.locationwake.R;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
 import com.example.locationwake.Backend.Database.Attributes.mDistance;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
+import com.example.locationwake.Logger;
+import com.example.locationwake.R;
 
 import java.util.ArrayList;
 
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class ActiveSettingActivity extends AppCompatActivity {
+public class LocationListActivity extends AppCompatActivity {
 
     //TAG of the class
-    static final private String TAG = "settingactivity";
+    static final private String TAG = "LocationListActivity";
 
     //DATA ELEMENTS
     //Holds all the data that is in the database
@@ -59,7 +59,7 @@ public class ActiveSettingActivity extends AppCompatActivity {
         list = new ArrayList<>();
         list.add(new mSetting("SLT"));
         list.add(new mDistance("541"));
-        list.add(new mLocation("1", "20", "name"));
+        list.add(new mLocation("1", "20"));
     }
 
 

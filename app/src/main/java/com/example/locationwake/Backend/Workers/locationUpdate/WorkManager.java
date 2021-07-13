@@ -1,4 +1,4 @@
-package com.example.locationwake.Backend.Workers;
+package com.example.locationwake.Backend.Workers.locationUpdate;
 
 import android.content.Context;
 
@@ -49,7 +49,6 @@ public class WorkManager extends Worker {
                 .then(settingWorkRequest)
                 .enqueue();
 
-        androidx.work.WorkManager instance = androidx.work.WorkManager.getInstance(getApplicationContext());
         Logger.logD(TAG, "doWork(): finished");
         return Result.success();
     }

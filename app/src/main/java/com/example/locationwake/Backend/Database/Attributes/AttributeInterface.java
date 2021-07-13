@@ -7,4 +7,6 @@ public interface AttributeInterface {
 
     int getType();
 
+    boolean isValid();
+
 }

@@ -41,6 +41,7 @@ public class BackgroundLocationPermissionActivity extends Permission {
                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                Logger.logD(TAG, "askPermission(): permission accepted");
                                 ActivityCompat.requestPermissions(BackgroundLocationPermissionActivity.this,
                                         new String[]{permission}, REQUEST_CODE);
                             }

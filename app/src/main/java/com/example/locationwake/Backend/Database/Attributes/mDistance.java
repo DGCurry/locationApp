@@ -20,4 +20,24 @@ public class mDistance implements AttributeInterface{
     public int getType() {
         return AttributeInterface.DISTANCE_TYPE;
     }
+
+    @Override
+    public boolean isValid() {
+        if (distance.equals("")) {
+            return false;
+        }
+
+        if (distance.trim().length() == 0) {
+            return false;
+        }
+
+        try {
+            Float.parseFloat(distance);
+            return true;
+        } catch(NumberFormatException e) {
+            return false;
+        }
+    }
+
+
 }
