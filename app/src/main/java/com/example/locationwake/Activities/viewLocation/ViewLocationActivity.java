@@ -1,4 +1,4 @@
-package com.example.locationwake.Activities;
+package com.example.locationwake.Activities.viewLocation;
 
 import android.os.Bundle;
 
@@ -7,19 +7,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.locationwake.Activities.HelperClasses.ActiveSettingRecAdapter;
-import com.example.locationwake.Logger;
-import com.example.locationwake.R;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
 import com.example.locationwake.Backend.Database.Attributes.mDistance;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
+import com.example.locationwake.Logger;
+import com.example.locationwake.R;
 
 import java.util.ArrayList;
 
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class ActiveSettingActivity extends AppCompatActivity {
+public class ViewLocationActivity extends AppCompatActivity {
 
     //TAG of the class
     static final private String TAG = "settingactivity";

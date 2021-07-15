@@ -1,8 +1,14 @@
 package com.example.locationwake.Backend.Database.Attributes;
 
+import android.content.Context;
+import android.location.Location;
 import android.text.TextUtils;
 
+import com.example.locationwake.Backend.Database.DataHandler;
+import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Logger;
+
+import java.util.ArrayList;
 
 /**
  * Holder of the data. Create an instance of this class to save the data to the database
@@ -131,4 +137,5 @@ public class mLocation implements AttributeInterface{
             return false;
         } else return !(Float.parseFloat(lng) < -180) && !(Float.parseFloat(lng) > 180);
     }
+
 }

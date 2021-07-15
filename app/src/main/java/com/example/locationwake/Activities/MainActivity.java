@@ -23,10 +23,13 @@ import android.widget.Toast;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Activities.HelperClasses.ActiveSettingRecAdapter;
+import com.example.locationwake.Activities.HelperClasses.MainSettingRecAdapter;
 import com.example.locationwake.Activities.NewLocationActivities.AddLocationActivity;
+import com.example.locationwake.Activities.NewLocationActivities.AddNameActivity;
 import com.example.locationwake.Activities.PermissionActivities.BackgroundLocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.LocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.NotificationPermissionActivity;
+import com.example.locationwake.Activities.viewLocation.ViewLocationActivity;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.DataHandler;
@@ -46,15 +49,11 @@ public class MainActivity extends CallBackActivity {
     static final private String TAG = "MainActivity";
 
     //GUI ELEMENTS
-    Button meh;
     private View activeSettingStub;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-
-    //activity finding location
-    private Button goButton;
 
     //permission codes to identify and communicate the found permissions to be given
     protected static final int NOTIFICATION_PERMISSION_CODE = 100;
@@ -113,14 +112,14 @@ public class MainActivity extends CallBackActivity {
     /**
      * Creates the GUI
      */
-    private void createUI() {
+    protected void createUI() {
         Logger.logV(TAG, "createUI(): getting the UI elements");
         createSettingUI();
 
         // Navigation
-        Button list = findViewById(R.id.button_main_list);
-        Button add = findViewById(R.id.button_main_add);
-        Button setting = findViewById(R.id.button_main_settings);
+        Button list = findViewById(R.id.button_navigation_left);
+        Button add = findViewById(R.id.button_navigation_middle);
+        Button setting = findViewById(R.id.button_navigation_right);
 
         list.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +132,7 @@ public class MainActivity extends CallBackActivity {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): clicked on the add button");
-                Intent intent = new Intent(getApplicationContext(), AddLocationActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AddNameActivity.class);
                 startActivity(intent);
             }
         });
@@ -166,6 +165,15 @@ public class MainActivity extends CallBackActivity {
         } else {
             updateUISettingFound(pref.getInt("KID", -1), pref.getInt("AID", -1));
         }
+
+        Button editLocationButton = findViewById(R.id.button_header_change);
+        editLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ViewLocationActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -307,8 +315,9 @@ public class MainActivity extends CallBackActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ActiveSettingRecAdapter(list, getApplicationContext());
+        mAdapter = new MainSettingRecAdapter(list, getApplicationContext());
         recyclerView.setAdapter(mAdapter);
+
         Toast.makeText(getApplicationContext(), "There is a location found, UI updated", Toast.LENGTH_SHORT).show();
     }
 

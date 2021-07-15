@@ -13,29 +13,44 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:orientation="horizontal"
         >
+
+        <ImageView
+            android:layout_width="@dimen/rc_icon_size"
+            android:layout_height="@dimen/rc_icon_size"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_launcher_background">
+        </ImageView>
 
         <TextView
             android:id="@+id/textView_ad_name_title"
             android:layout_width="@dimen/rc_item_textbox_size"
-            android:layout_marginStart="@dimen/rc_icon_size"
             android:layout_height="wrap_content"
             android:textColor="#000"
-            android:textSize="30sp"
+            android:textSize="@dimen/extra_large_text_size"
             android:padding="@dimen/rc_text_padding"
             android:text="Name"
             />
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/editText_ad_name_name"
-        android:layout_width="@dimen/rc_item_textedit_size"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:layout_marginStart="@dimen/rc_icon_size"
-        android:padding="@dimen/rc_text_padding"
-        tools:text="" />
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editText_ad_name_name"
+            android:layout_width="@dimen/rc_item_textedit_size"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/normal_text_size"
+            android:layout_marginStart="@dimen/rc_icon_size"
+            android:padding="@dimen/rc_text_padding"
+            tools:text="" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </LinearLayout>

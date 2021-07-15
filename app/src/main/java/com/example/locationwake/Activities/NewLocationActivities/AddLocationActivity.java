@@ -1,23 +1,23 @@
 package com.example.locationwake.Activities.NewLocationActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Activities.HelperClasses.AddLocationRecAdapter;
+import com.example.locationwake.Activities.HelperClasses.NewLocationJSONHelper;
+import com.example.locationwake.Backend.Database.Attributes.mDistance;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
-import com.example.locationwake.Backend.Database.mAttribute;
-import com.example.locationwake.Backend.Services.DataEntry;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * This is a test class to test all func. The GUI will be added later on.
@@ -27,18 +27,9 @@ public class AddLocationActivity extends CallBackActivity {
     //TAG of the class
     static final private String TAG = "AddLocationActivity";
 
-    //Holds all the data that is in the database
-    private ArrayList<String> settings = new ArrayList<>();
-    private ArrayList<String> attributes = new ArrayList<>();
+    private JSONObject data = new JSONObject();
 
-    //GUI ELEMENTS
-    private RecyclerView recyclerView;
-    private AddLocationRecAdapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private Button addButton;
 
-    // Callback used by backend when done
-    CallBackActivity callBack = this;
 
     /**
      * Method to start activity
@@ -51,61 +42,87 @@ public class AddLocationActivity extends CallBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location);
 
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started loadData()");
-        loadData();
+        Logger.logV(TAG, "onCreate(): getting data from AddNameActivity");
+        Intent intent = getIntent();
+
+        if (getIntent().hasExtra("input")) {
+            try {
+                data = new JSONObject(getIntent().getStringExtra("input"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
         createUI();
     }
 
-    /**
-     * Loads data from the databases to an ArrayList
-     */
-    private void loadData() {
-        Logger.logV(TAG, "loadData(): loading the data from the database into dataList");
-        settings = new ArrayList<>();
-        settings.add("SLT");
-        settings.add("VBR");
-        settings.add("SND");
-
-        //TODO add real attributes
-        attributes = new ArrayList<>();
-        attributes.add("SLT");
-        attributes.add("VBR");
-        attributes.add("SND");
-    }
-
 
     /**
      * Creates the GUI by adding the listeners
      */
-    private void createUI() {
-        Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview_add_location);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new AddLocationRecAdapter(this.getApplicationContext(), this, settings, attributes);
-        recyclerView.setAdapter(mAdapter);
+    protected void createUI() {
+        Logger.logV(TAG, "createUI(): creating UI and assigning listeners");
 
-        addButton = findViewById(R.id.button_add_entry);
-        addButton.setOnClickListener(new View.OnClickListener() {
+        EditText latitudeInput = findViewById(R.id.editText_ad_location_latitude);
+        EditText longitudeInput = findViewById(R.id.editText_ad_location_longitude);
+
+        TextView radiusValue = findViewById(R.id.textView_ad_location_distance_value);
+
+        SeekBar radius = findViewById(R.id.seekBar_ad_location_radius);
+        radius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // updated continuously as the user slides the thumb
+                radiusValue.setText(progress + " meters");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // called when the user first touches the SeekBar
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // called after the user finishes moving the SeekBar
+            }
+        });
+
+        Button send = findViewById(R.id.button_ad_location_input);
+
+        send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "createUI(): clicked on Send Button");
-                if (mAdapter.getAttributes().getSetting().isValid()
-                        && mAdapter.getAttributes().getDistance().isValid()
-                        && mAdapter.getLocation().isValid()) {
-                    Logger.logD(TAG, "createUI(): " + mAdapter.getAttributes().getSetting().getSetting() + ", "
-                            + mAdapter.getAttributes().getDistance().getDistance() + ", " + mAdapter.getLocation().getLng() + ", "
-                            + mAdapter.getLocation().getLat() + ", " + mAdapter.getLocation().getName());
-                    DataEntry dataEntry = new DataEntry(callBack, mAdapter.getAttributes(), mAdapter.getLocation(), getApplicationContext());
-                    dataEntry.run();
-                } else {
-                    Logger.logD(TAG, "createUI: input is invalid");
+                //check the input data
+                if (!new mLocation(latitudeInput.getText().toString(), longitudeInput.getText().toString()).isValid()) {
+                    Logger.logE(TAG, "createUI(): onClick(): LOCATION is invalid");
+                    Toast.makeText(getApplicationContext(), "The item Location is invalid", Toast.LENGTH_LONG).show();
+                    return;
                 }
+
+                if (!new mDistance(Integer.toString(
+                        radius.getProgress())).isValid(getApplicationContext(),
+                        latitudeInput.getText().toString(),
+                        longitudeInput.getText().toString())) {
+                    Logger.logE(TAG, "createUI(): onClick(): RADIUS is invalid");
+                    Toast.makeText(getApplicationContext(), "The item Radius is invalid", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                try {
+                    data.put("latitude", latitudeInput.getText().toString());
+                    data.put("longitude", longitudeInput.getText().toString());
+                    data.put("radius", Integer.toString(radius.getProgress()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //go to the next activity
+                Intent intent = new Intent(getApplicationContext(), AddSettingActivity.class);
+                intent.putExtra("input", data.toString());
+                startActivity(intent);
             }
         });
     }

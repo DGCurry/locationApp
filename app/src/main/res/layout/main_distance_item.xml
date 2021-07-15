@@ -27,16 +27,9 @@
             android:layout_weight="0.4"
             android:layout_height="wrap_content"
             android:textColor="#000"
-            android:textSize="30sp"
+            android:textSize="@dimen/extra_large_text_size"
             android:padding="@dimen/rc_text_padding"
             android:text="Radius"/>
-
-        <Button
-            android:id="@+id/button_header_change"
-            android:layout_gravity="center"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size"
-            />
 
     </LinearLayout>
 
@@ -44,7 +37,7 @@
         android:id="@+id/textView_distance_radius"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="@dimen/large_text_size"
         android:layout_marginStart="@dimen/rc_icon_size"
         android:padding="@dimen/rc_text_padding"
         android:text="... meters " />

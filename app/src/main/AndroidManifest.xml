@@ -19,7 +19,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.LocationWake">
-        <activity android:name=".Activities.NewLocationActivities.AddLocationActivity"></activity>
+        <activity android:name=".Activities.NewLocationActivities.AddLocationActivity" />
+        <activity android:name=".Activities.NewLocationActivities.AddNameActivity" />
+        <activity android:name=".Activities.NewLocationActivities.AddOtherAttributeActivity" />
+        <activity android:name=".Activities.NewLocationActivities.AddSettingActivity" />
+        <activity android:name=".Activities.NewLocationActivities.AddLocationOverViewActivity" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -28,8 +32,8 @@
         <activity android:name=".Activities.PermissionActivities.NotificationPermissionActivity" />
         <activity android:name=".Activities.PermissionActivities.BackgroundLocationPermissionActivity" />
         <activity android:name=".Activities.PermissionActivities.LocationPermissionActivity" />
-        <activity android:name=".Activities.ActiveSettingActivity" />
         <activity android:name=".Activities.ChangeSetting" />
+        <activity android:name=".Activities.viewLocation.ViewLocationActivity" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

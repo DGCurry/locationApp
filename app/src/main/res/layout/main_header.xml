@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
-                android:textSize="30sp"
+                android:textSize="@dimen/extra_large_text_size"
                 android:padding="@dimen/rc_text_padding"
                 android:text="Location" />
 
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
-                android:textSize="25sp"
+                android:textSize="@dimen/large_text_size"
                 android:padding="@dimen/rc_text_padding"
                 android:text="Location"
                 android:visibility="gone"/>

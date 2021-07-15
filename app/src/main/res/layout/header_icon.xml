@@ -35,7 +35,7 @@
                 android:textColor="#000"
                 android:textSize="30sp"
                 android:padding="@dimen/rc_text_padding"
-                android:text="Location" />
+                android:text="Title" />
 
             <TextView
                 android:id="@+id/textView_setting_title_main"
@@ -44,18 +44,12 @@
                 android:textColor="#000"
                 android:textSize="25sp"
                 android:padding="@dimen/rc_text_padding"
-                android:text="Location"
+                android:text="Subtitle"
                 android:visibility="gone"/>
 
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button_header_change"
-            android:layout_gravity="center"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size"
-            />
     </LinearLayout>
 
 </LinearLayout>

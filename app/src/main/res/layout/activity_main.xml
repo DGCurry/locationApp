@@ -23,62 +23,15 @@
         android:id="@+id/recyclerView_main_active_setting"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:overScrollMode="never"
+        android:visibility="visible"
         app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@+id/layout_button_main"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="spread"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/include_main_active_setting"
-        app:layout_constraintWidth_default="wrap"
-        >
+        app:layout_constraintWidth_default="wrap" />
 
-    </androidx.recyclerview.widget.RecyclerView>
-    <LinearLayout
-        android:id="@+id/layout_button_main"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-        </Space>
-        <Button
-            android:id="@+id/button_main_list"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size">
-        </Button>
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-        </Space>
-        <Button
-            android:id="@+id/button_main_add"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size">
-        </Button>
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-        </Space>
-        <Button
-            android:id="@+id/button_main_settings"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size">
-        </Button>
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-        </Space>
-
-    </LinearLayout>
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/navigation_buttons"
+        tools:layout_editor_absoluteX="45dp"
+        tools:layout_editor_absoluteY="339dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

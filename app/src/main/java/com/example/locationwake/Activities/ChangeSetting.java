@@ -30,9 +30,9 @@ public class ChangeSetting extends AppCompatActivity {
     }
 
     private void createUI() {
-        Button silentButton = findViewById(R.id.button_main_list);
-        Button vibrateButton = findViewById(R.id.button_main_add);
-        Button soundButton = findViewById(R.id.button_main_settings);
+        Button silentButton = findViewById(R.id.button_navigation_left);
+        Button vibrateButton = findViewById(R.id.button_navigation_middle);
+        Button soundButton = findViewById(R.id.button_navigation_right);
 
         silentButton.setOnClickListener(new View.OnClickListener() {
         // TODO: lower API for AudioManager.ADJUST_MUTE
