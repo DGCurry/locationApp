@@ -32,6 +32,10 @@ public class LocationComponent extends Component {
         this.savedLongitude = Float.parseFloat(mLocation.getLng());
     }
 
+    /**
+     * Whether the object the component is added to should be activated or not
+     * @return True iff the criteria for the component has been met, else False
+     */
     @Override
     public boolean isActive() {
         Location currentLocation = new Location("");

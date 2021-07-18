@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * For instance, can add the behaviour that only when the phone is charging, or certain time, or certain days etc to a location
  */
 public class SettingObject {
+
     private int KID, AID;
     //important components are not attributes, they are derived from attributes
     //important this setting object represents one attribute

@@ -61,18 +61,34 @@ public class mAttribute {
         return AID;
     }
 
+    /**
+     * method to retrieve the attribute mDistance
+     * @return mDistance
+     */
     public com.example.locationwake.Backend.Database.Attributes.mDistance getDistance() {
         return mDistance;
     }
 
+    /**
+     * sets the attribute mDistance
+     * @param mDistance
+     */
     public void setDistance(com.example.locationwake.Backend.Database.Attributes.mDistance mDistance) {
         this.mDistance = mDistance;
     }
 
+    /**
+     * method to retrieve the attribute mSetting
+     * @return mSetting
+     */
     public com.example.locationwake.Backend.Database.Attributes.mSetting getSetting() {
         return mSetting;
     }
 
+    /**
+     * sets the attribute mSetting
+     * @param mSetting
+     */
     public void setSetting(com.example.locationwake.Backend.Database.Attributes.mSetting mSetting) {
         this.mSetting = mSetting;
     }

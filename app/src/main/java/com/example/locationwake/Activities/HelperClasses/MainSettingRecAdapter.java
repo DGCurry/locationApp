@@ -21,27 +21,31 @@ import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Recyclerview that is used by the MainActivity to display the location and attributes that is active
+ */
 public class MainSettingRecAdapter extends RecyclerView.Adapter {
 
     //TAG of the class
     static final private String TAG = "MainSettingRecAdapter";
 
+    //Holds the different attributes of the location that is in the Recyclerview
     private List<AttributeInterface> attributes;
     private String name;
 
+    //Context of the Activity
     Context context;
 
     /**
      * Constructor
-     *
-     * @param list
-     * @param context
+     * @param list holds all the different attributes of the location
+     * @param context context of the application
      */
     public MainSettingRecAdapter(List<AttributeInterface> list, Context context) {
         if (attributes == null) {
             attributes = new ArrayList<>();
         }
-
+        //Clear the previous Recyclerview(if exists) and add the data
         attributes.clear();
         attributes.addAll(list);
         notifyDataSetChanged();
@@ -50,10 +54,9 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * Returns the type of the item
-     *
-     * @param position
-     * @return
+     * Returns the type of the item contained in the Recyclerview
+     * @param position of the item
+     * @return the position of the item in the Recyclerview
      */
     @Override
     public int getItemViewType(int position) {
@@ -61,9 +64,10 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * @param parent
-     * @param viewType
-     * @return
+     *
+     * @param parent View that holds the Recyclerview items
+     * @param viewType type of the item contained in the parent View
+     * @return a new View that holds the item that is contained in the parent View
      */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -88,8 +92,7 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
 
     /**
      * when the item in bind, this determines what function should be called to bind the position
-     *
-     * @param holder   holder of the item
+     * @param holder holder of the item
      * @param position position in the recyclerview
      */
     @Override

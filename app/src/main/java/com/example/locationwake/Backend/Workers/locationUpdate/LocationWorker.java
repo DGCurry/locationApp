@@ -96,6 +96,7 @@ public class LocationWorker extends Worker {
         }
 
         if (!gps_enabled) {
+//            NotificationManager notificationManager = new com.example.locationwake.Backend.Managers.NotificationManager();
             //TODO: notify the user that location should be enabled
             Logger.logD(TAG, "doWork(): finished");
             return Result.retry();
@@ -110,6 +111,7 @@ public class LocationWorker extends Worker {
                         Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             Logger.logD(TAG, "doWork(): permission for fine location and background location");
+
 
             setForegroundAsync(createForegroundInfo());
 

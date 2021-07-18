@@ -109,6 +109,10 @@ public class mLocation implements AttributeInterface{
         return AttributeInterface.LOCATION_TYPE;
     }
 
+    /**
+     * Method to check whether the current object is valid
+     * @return True if the criteria for the attribute has been met, else False
+     */
     @Override
     public boolean isValid() {
         Logger.logD(TAG,  "isValid(): checking validity of " + lat + " " + lng);

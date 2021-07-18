@@ -18,7 +18,7 @@ import androidx.work.ForegroundInfo;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.example.locationwake.Backend.CallBack.CallBackManager;
+import com.example.locationwake.Backend.Managers.CallBackManager;
 import com.example.locationwake.Logger;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;

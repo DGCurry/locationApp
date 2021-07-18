@@ -1,23 +1,23 @@
 package com.example.locationwake.Activities.NewLocationActivities;
 
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Activities.HelperClasses.AddLocationRecAdapter;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class AddOtherAttributeActivity extends CallBackActivity {
+public class AddOtherAttributeActivity extends AppCompatActivity {
 
     //TAG of the class
     static final private String TAG = "AddLocationActivity";
@@ -26,14 +26,7 @@ public class AddOtherAttributeActivity extends CallBackActivity {
     private ArrayList<String> settings = new ArrayList<>();
     private ArrayList<String> attributes = new ArrayList<>();
 
-    //GUI ELEMENTS
-    private RecyclerView recyclerView;
-    private AddLocationRecAdapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private Button addButton;
-
-    // Callback used by backend when done
-    CallBackActivity callBack = this;
+    private JSONObject data = new JSONObject();
 
     /**
      * Method to start activity
@@ -46,8 +39,6 @@ public class AddOtherAttributeActivity extends CallBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location);
 
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started loadData()");
         loadData();
 
         //Log, TAG, method, action
@@ -56,7 +47,7 @@ public class AddOtherAttributeActivity extends CallBackActivity {
     }
 
     /**
-     * Loads data from the databases to an ArrayList
+     * Method to load the data send by other activities, and populates the attributes and settings lists
      */
     private void loadData() {
         Logger.logV(TAG, "loadData(): loading the data from the database into dataList");
@@ -70,6 +61,15 @@ public class AddOtherAttributeActivity extends CallBackActivity {
         attributes.add("SLT");
         attributes.add("VBR");
         attributes.add("SND");
+
+        Logger.logV(TAG, "loadData(): getting data from AddNameActivity");
+        if (getIntent().hasExtra("input")) {
+            try {
+                data = new JSONObject(getIntent().getStringExtra("input"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -114,21 +114,4 @@ public class AddOtherAttributeActivity extends CallBackActivity {
 //        });
     }
 
-    @Override
-    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
-        if (succeeded) {
-            switch(type) {
-                // D for data
-                case 'D':
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                    Logger.logD(TAG, message);
-            }
-        } else if (failed) {
-            switch(type) {
-                case 'D':
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                    Logger.logD(TAG, message);
-            }
-        }
-    }
 }

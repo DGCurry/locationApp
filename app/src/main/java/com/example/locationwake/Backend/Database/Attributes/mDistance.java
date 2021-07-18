@@ -15,10 +15,18 @@ public class mDistance implements AttributeInterface{
     //used to determine isValid
     private mLocation location;
 
+    /**
+     * Constructor, sets the distance
+     * @param distance String which holds the radius in meter
+     */
     public mDistance(String distance) {
         this.distance = distance;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDistance() {
         return distance;
     }
@@ -32,11 +40,19 @@ public class mDistance implements AttributeInterface{
         return AttributeInterface.DISTANCE_TYPE;
     }
 
+    /**
+     * Method to check whether the current object is valid
+     * @return True if the criteria for the attribute has been met, else False
+     */
     @Override
     public boolean isValid() {
         return false;
     }
 
+    /**
+     * Method to check whether the current object is valid
+     * @return True if the criteria for the attribute has been met, else False
+     */
     public boolean isValid(Context context, String latitude, String longitude) {
         if (distance.equals("")) {
             return false;

@@ -1,5 +1,7 @@
 package com.example.locationwake.Activities.NewLocationActivities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -51,7 +53,18 @@ public class AddLocationOverViewActivity extends CallBackActivity {
         };
         runnableCallBack.run();
 
-        Logger.logV(TAG, "onCreate(): getting data from AddNameActivity");
+        loadData();
+
+        //Log, TAG, method, action
+        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
+        createUI();
+    }
+
+    /**
+     * Method to load the data send by other activities
+     */
+    private void loadData() {
+        Logger.logV(TAG, "loadData(): getting data from AddNameActivity");
         if (getIntent().hasExtra("input")) {
             try {
                 data = new JSONObject(getIntent().getStringExtra("input"));
@@ -59,10 +72,6 @@ public class AddLocationOverViewActivity extends CallBackActivity {
                 e.printStackTrace();
             }
         }
-
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
-        createUI();
     }
 
 
@@ -96,19 +105,77 @@ public class AddLocationOverViewActivity extends CallBackActivity {
         radius.setText(radiusEntry);
         setting.setText(settingEntry);
 
+        addNavigation(nameEntry, latitudeEntry, longitudeEntry, radiusEntry, settingEntry);
+    }
 
-        Button sendButton = findViewById(R.id.button_ad_overview_input);
-        sendButton.setOnClickListener(new View.OnClickListener() {
+    /**
+     * Method to add navigation behaviour to the bottom navigation bar
+     * @param nameEntry String that holds the given name by the user
+     * @param latitudeEntry String that holds the given latitude by the user
+     * @param longitudeEntry String that holds the given longitude by the user
+     * @param radiusEntry String that holds the given radius by the user
+     * @param settingEntry String that holds the given setting by the user
+     */
+    private void addNavigation(String nameEntry, String latitudeEntry, String longitudeEntry, String radiusEntry
+    , String settingEntry) {
+
+        // Navigation
+        Button back = findViewById(R.id.button_navigation_left);
+        Button stop = findViewById(R.id.button_navigation_middle);
+        Button send = findViewById(R.id.button_navigation_right);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.logD(TAG, "onClick(): clicked on the list button");
+            }
+        });
+
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.logD(TAG, "onClick(): clicked on the add button");
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Yes button clicked
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+            }
+        });
+
+        send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DataEntry dataEntry = new DataEntry(new mAttribute(null, null, new mDistance(radiusEntry), new mSetting(settingEntry)),
                         new mLocation(latitudeEntry, longitudeEntry, nameEntry),
                         getApplicationContext());
-                dataEntry.run();
-            }
+                dataEntry.run();            }
         });
     }
 
+    /**
+     * If the data entry has succeeded, it will call the callback method, which will be catched here
+     * @param update if the Activity should update components of itself, this is true
+     * @param succeeded if an action called by the Activity has succeeded, this is true
+     * @param failed if an action called by the Activity has failed, this is true
+     * @param type to distinguish between more CallBacks with the same boolean values, a Char can be added
+     * @param message to give the user or developer feedback, a message can be added
+     */
     @Override
     public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
         if (succeeded) {

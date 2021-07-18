@@ -19,17 +19,24 @@ public class ChangeSetting extends AppCompatActivity {
     //TAG of the class
     static final private String TAG = "ChangeSetting";
 
-    AudioManager am;
-
+    /**
+     * Method to start activity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        am = (AudioManager)getSystemService(AUDIO_SERVICE);
         createUI();
     }
 
+    /**
+     * Creates the GUI
+     */
     private void createUI() {
+        AudioManager am = (AudioManager)getSystemService(AUDIO_SERVICE);
+
         Button silentButton = findViewById(R.id.button_navigation_left);
         Button vibrateButton = findViewById(R.id.button_navigation_middle);
         Button soundButton = findViewById(R.id.button_navigation_right);

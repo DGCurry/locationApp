@@ -18,6 +18,11 @@ public class LocationPermissionActivity extends Permission {
     //TAG of the class
     static final private String TAG = "NotificationPermissionActivity";
 
+    /**
+     * Method to start activity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +37,12 @@ public class LocationPermissionActivity extends Permission {
 
     }
 
-    private void askPermission(String permission, int REQUEST_CODE) {
+    /**
+     * Method used to start the UI to prompt the user to deny or accept a permission
+     * @param permission MANIFEST String that indicates which permission has to be requested
+     * @param REQUEST_CODE int to distinguish between permissions, used to see which permission is
+     */
+    protected void askPermission(String permission, int REQUEST_CODE) {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
                 new AlertDialog.Builder(this)

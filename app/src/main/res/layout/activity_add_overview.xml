@@ -181,31 +181,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_add_overview_input_inner_continue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView_ad_overview_continue_title"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/rc_icon_size"
-                android:padding="@dimen/rc_text_padding"
-                android:textColor="#000"
-                android:textSize="@dimen/extra_large_text_size"
-                android:text="Send"/>
-
-            <Button
-                android:id="@+id/button_ad_overview_input"
-                android:layout_width="@dimen/rc_icon_size"
-                android:layout_height="@dimen/rc_icon_size"/>
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <include

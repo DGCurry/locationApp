@@ -1,5 +1,7 @@
 package com.example.locationwake.Activities.NewLocationActivities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,8 +11,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Activities.HelperClasses.NewLocationJSONHelper;
+import com.example.locationwake.Activities.MainActivity;
 import com.example.locationwake.Backend.Database.Attributes.mDistance;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Logger;
@@ -20,16 +25,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * This is a test class to test all func. The GUI will be added later on.
+ * Activity to add a location to the database
  */
-public class AddLocationActivity extends CallBackActivity {
+public class AddLocationActivity extends AppCompatActivity {
 
     //TAG of the class
     static final private String TAG = "AddLocationActivity";
 
+    // JSON object used to communicate between activities
     private JSONObject data = new JSONObject();
-
-
 
     /**
      * Method to start activity
@@ -42,9 +46,18 @@ public class AddLocationActivity extends CallBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location);
 
-        Logger.logV(TAG, "onCreate(): getting data from AddNameActivity");
-        Intent intent = getIntent();
+        loadData();
 
+        //Log, TAG, method, action
+        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
+        createUI();
+    }
+
+    /**
+     * Method to load the data send by other activities
+     */
+    private void loadData() {
+        Logger.logV(TAG, "loadData(): getting data from AddNameActivity");
         if (getIntent().hasExtra("input")) {
             try {
                 data = new JSONObject(getIntent().getStringExtra("input"));
@@ -52,10 +65,6 @@ public class AddLocationActivity extends CallBackActivity {
                 e.printStackTrace();
             }
         }
-
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
-        createUI();
     }
 
 
@@ -89,7 +98,55 @@ public class AddLocationActivity extends CallBackActivity {
             }
         });
 
-        Button send = findViewById(R.id.button_ad_location_input);
+        addNavigation(latitudeInput, longitudeInput, radius);
+    }
+
+    /**
+     * Method to add navigation behaviour to the bottom navigation bar
+     * @param latitudeInput EditText for user to enter the latitude of the location
+     * @param longitudeInput EditText for user to enter the longitude of the location
+     * @param radius SeekBar for user to enter the radius of the location
+     */
+    private void addNavigation(EditText latitudeInput, EditText longitudeInput, SeekBar radius) {
+
+        // Navigation
+        Button back = findViewById(R.id.button_navigation_left);
+        Button stop = findViewById(R.id.button_navigation_middle);
+        Button send = findViewById(R.id.button_navigation_right);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.logD(TAG, "onClick(): clicked on the list button");
+            }
+        });
+
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.logD(TAG, "onClick(): clicked on the add button");
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Yes button clicked
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+            }
+        });
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,26 +179,7 @@ public class AddLocationActivity extends CallBackActivity {
                 //go to the next activity
                 Intent intent = new Intent(getApplicationContext(), AddSettingActivity.class);
                 intent.putExtra("input", data.toString());
-                startActivity(intent);
-            }
+                startActivity(intent);            }
         });
-    }
-
-    @Override
-    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
-        if (succeeded) {
-            switch(type) {
-                // D for data
-                case 'D':
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                    Logger.logD(TAG, message);
-            }
-        } else if (failed) {
-            switch(type) {
-                case 'D':
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                    Logger.logD(TAG, message);
-            }
-        }
     }
 }

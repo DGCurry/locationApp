@@ -1,4 +1,4 @@
-package com.example.locationwake.Backend.Workers.locationUpdate;
+package com.example.locationwake.Backend.Managers;
 
 import android.content.Context;
 
@@ -7,6 +7,8 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.example.locationwake.Backend.Workers.locationUpdate.LocationWorker;
+import com.example.locationwake.Backend.Workers.locationUpdate.SettingWorker;
 import com.example.locationwake.Logger;
 
 public class WorkManager extends Worker {

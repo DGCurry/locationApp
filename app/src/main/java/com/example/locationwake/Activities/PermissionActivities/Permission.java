@@ -12,7 +12,7 @@ import com.example.locationwake.Logger;
 
 import java.util.ArrayList;
 
-public class Permission extends AppCompatActivity {
+public abstract class Permission extends AppCompatActivity {
 
     static final private String TAG = "Permission";
 
@@ -24,6 +24,11 @@ public class Permission extends AppCompatActivity {
     protected static final int INTERNET_PERMISSION_CODE = 103;
 
 
+    /**
+     * Returns the String with the permission for each permission int
+     * @param permission
+     * @return
+     */
     protected String getPermissionMapping(int permission) {
         switch (permission) {
             case NOTIFICATION_PERMISSION_CODE:
@@ -51,7 +56,15 @@ public class Permission extends AppCompatActivity {
         }
     }
 
-    public void onFinish() {
+    /**
+     * Method used to start the UI to prompt the user to deny or accept a permission
+     * @param permission MANIFEST String that indicates which permission has to be requested
+     * @param REQUEST_CODE int to distinguish between permissions, used to see which permission is
+     *                     granted or denied by the user
+     */
+    protected abstract void askPermission(String permission, int REQUEST_CODE);
+
+    protected void onFinish() {
         Logger.logE(TAG, "onFinish(): the permission list is: ");
         for (Integer permission:permissionList) {
             Logger.logE(TAG, permission + " " + getPermissionMapping(permission));

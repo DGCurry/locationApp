@@ -1,17 +1,12 @@
 package com.example.locationwake.Backend.Services;
 
 import android.content.Context;
-import android.location.Location;
-import android.text.TextUtils;
 
-import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Backend.CallBack.CallBackManager;
+import com.example.locationwake.Backend.Managers.CallBackManager;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Logger;
-
-import java.util.ArrayList;
 
 
 public class DataEntry implements Runnable {
@@ -26,6 +21,12 @@ public class DataEntry implements Runnable {
 
     private final Context context;
 
+    /**
+     * Constructor that sets the data to be added to the database
+     * @param mAttribute holds all attributes
+     * @param mLocation holds the location and name
+     * @param context context of the application
+     */
     public DataEntry(mAttribute mAttribute, mLocation mLocation, Context context) {
         this.mAttribute = mAttribute;
         Logger.logE(TAG, "DataEntry(): mLocation " + mLocation.getLat() + " " + mLocation.getLng());

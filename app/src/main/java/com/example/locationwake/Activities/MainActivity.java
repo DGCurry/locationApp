@@ -22,9 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Activities.HelperClasses.ActiveSettingRecAdapter;
 import com.example.locationwake.Activities.HelperClasses.MainSettingRecAdapter;
-import com.example.locationwake.Activities.NewLocationActivities.AddLocationActivity;
 import com.example.locationwake.Activities.NewLocationActivities.AddNameActivity;
 import com.example.locationwake.Activities.PermissionActivities.BackgroundLocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.LocationPermissionActivity;
@@ -98,6 +96,10 @@ public class MainActivity extends CallBackActivity {
         runnableWorker.run();
     }
 
+    /**
+     * Method called on start of the activity
+     *
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onStart() {
@@ -115,6 +117,14 @@ public class MainActivity extends CallBackActivity {
     protected void createUI() {
         Logger.logV(TAG, "createUI(): getting the UI elements");
         createSettingUI();
+        addNavigation();
+
+    }
+
+    /**
+     * Method to add navigation behaviour to the bottom navigation bar
+     */
+    private void addNavigation() {
 
         // Navigation
         Button list = findViewById(R.id.button_navigation_left);
@@ -143,7 +153,6 @@ public class MainActivity extends CallBackActivity {
                 Logger.logD(TAG, "onClick(): clicked on the setting button");
             }
         });
-
     }
 
     /**
@@ -261,7 +270,7 @@ public class MainActivity extends CallBackActivity {
     private void startWorker() {
         Logger.logD(TAG, "startWorker(): starting workmanager");
         PeriodicWorkRequest  work = new PeriodicWorkRequest.Builder(
-                com.example.locationwake.Backend.Workers.locationUpdate.WorkManager.class,
+                com.example.locationwake.Backend.Managers.WorkManager.class,
                 15,
                 TimeUnit.MINUTES)
                 .addTag("WorkManager")
@@ -276,6 +285,9 @@ public class MainActivity extends CallBackActivity {
         );
     }
 
+    /**
+     * method called when the backend has found no setting to be enabled.
+     */
     private void updateUINoSettingFound() {
         Logger.logD(TAG, "updateUISettingFound(): savedSetting is null, no location found");
 
@@ -289,6 +301,9 @@ public class MainActivity extends CallBackActivity {
         Toast.makeText(getApplicationContext(), "There is no location found, UI updated", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * method called when the backend has found a setting to be enabled. The UI is updated
+     */
     private void updateUISettingFound(int KID, int AID) {
         Logger.logD(TAG, "createUI(): savedSetting is not null, location found");
         //retrieve all the data and inflate one of the thingies
@@ -321,6 +336,14 @@ public class MainActivity extends CallBackActivity {
         Toast.makeText(getApplicationContext(), "There is a location found, UI updated", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Method to handle the callback from the backend
+     * @param update if the Activity should update components of itself, this is true
+     * @param succeeded if an action called by the Activity has succeeded, this is true
+     * @param failed if an action called by the Activity has failed, this is true
+     * @param type to distinguish between more CallBacks with the same boolean values, a Char can be added
+     * @param message to give the user or developer feedback, a message can be added
+     */
     @Override
     public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
         if (update) {

@@ -1,34 +1,29 @@
 package com.example.locationwake.Activities.NewLocationActivities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Activities.HelperClasses.AddLocationRecAdapter;
-import com.example.locationwake.Activities.HelperClasses.NewLocationJSONHelper;
+import com.example.locationwake.Activities.MainActivity;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class AddNameActivity extends CallBackActivity {
+public class AddNameActivity extends AppCompatActivity {
 
     //TAG of the class
     static final private String TAG = "AddNameActivity";
-
     private JSONObject data = new JSONObject();
     /**
      * Method to start activity
@@ -41,6 +36,18 @@ public class AddNameActivity extends CallBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_name);
 
+        loadData();
+
+        //Log, TAG, method, action
+        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
+        createUI();
+    }
+
+    /**
+     * Method to load the data send by other activities
+     */
+    private void loadData() {
+        Logger.logV(TAG, "loadData(): getting data from AddNameActivity");
         if (getIntent().hasExtra("input")) {
             try {
                 data = new JSONObject(getIntent().getStringExtra("input"));
@@ -48,10 +55,6 @@ public class AddNameActivity extends CallBackActivity {
                 e.printStackTrace();
             }
         }
-
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
-        createUI();
     }
 
     /**
@@ -61,8 +64,34 @@ public class AddNameActivity extends CallBackActivity {
         Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
         EditText name = findViewById(R.id.editText_ad_name_name);
 
-        Button button = findViewById(R.id.button_ad_name_input);
-        button.setOnClickListener(new View.OnClickListener() {
+        addNavigation(name);
+    }
+
+    /**
+     * Method to add navigation behaviour to the bottom navigation bar
+     * @param name EditText that holds the input given by the user
+     */
+    private void addNavigation(EditText name) {
+        // Navigation
+        Button back = findViewById(R.id.button_navigation_left);
+        Button stop = findViewById(R.id.button_navigation_middle);
+        Button send = findViewById(R.id.button_navigation_right);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.logD(TAG, "onClick(): clicked on the list button");
+            }
+        });
+
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.logD(TAG, "onClick(): clicked on the add button");
+            }
+        });
+
+        send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -73,26 +102,8 @@ public class AddNameActivity extends CallBackActivity {
 
                 Intent intent = new Intent(getApplicationContext(), AddLocationActivity.class);
                 intent.putExtra("input", data.toString());
-                startActivity(intent);
-            }
+                startActivity(intent);            }
         });
     }
 
-    @Override
-    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
-        if (succeeded) {
-            switch(type) {
-                // D for data
-                case 'D':
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                    Logger.logD(TAG, message);
-            }
-        } else if (failed) {
-            switch(type) {
-                case 'D':
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                    Logger.logD(TAG, message);
-            }
-        }
-    }
 }

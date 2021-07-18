@@ -26,26 +26,32 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Helper class for a RecyclerView that displays the setting which is active
+ */
 public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
 
     //TAG of the class
     static final private String TAG = "ActiveSettingRecAdapter";
 
+    //List that holds all the different attributes of the location displayed with the Recyclerview
     private List<AttributeInterface> attributes;
     private String name;
 
+    //Context of the application
     Context context;
 
     /**
      * Constructor
-     * @param list
-     * @param context
+     * @param list holds all the different attributes of the location
+     * @param context context of the application
      */
     public ActiveSettingRecAdapter(List<AttributeInterface> list, Context context) {
         if (attributes == null) {
             attributes = new ArrayList<>();
         }
 
+        //Clear the previous Recyclerview(if exists) and add the data
         attributes.clear();
         attributes.addAll(list);
         notifyDataSetChanged();
@@ -54,9 +60,9 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
     }
 
     /**
-     * Returns the type of the item
-     * @param position
-     * @return
+     * Returns the type of the item contained in the Recyclerview
+     * @param position of the item
+     * @return the position of the item in the Recyclerview
      */
     @Override
     public int getItemViewType(int position) {
@@ -65,9 +71,9 @@ public class ActiveSettingRecAdapter extends RecyclerView.Adapter{
 
     /**
      * 
-     * @param parent
-     * @param viewType
-     * @return
+     * @param parent View that holds the Recyclerview items
+     * @param viewType type of the item contained in the parent View
+     * @return a new View that holds the item that is contained in the parent View
      */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

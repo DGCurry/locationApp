@@ -90,6 +90,13 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    /**
+     * Method to change attributes in the database
+     * @param KID key of the LocationSettingDbHelper
+     * @param AID key of the AttributesDbHelper
+     * @param mDistance attribute radius
+     * @param mSetting attribute setting
+     */
     public void updateAttribute(String KID, String AID, mDistance mDistance, mSetting mSetting) {
         SQLiteDatabase db = this.getWritableDatabase();
 

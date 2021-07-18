@@ -17,6 +17,11 @@ public class NotificationPermissionActivity extends Permission {
     //TAG of the class
     static final private String TAG = "NotificationPermissionActivity";
 
+    /**
+     * Method to start activity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,14 +29,15 @@ public class NotificationPermissionActivity extends Permission {
 
         permissionList = getIntent().getIntegerArrayListExtra("PERMISSION_CODES");
 
-        int permissionI = NOTIFICATION_PERMISSION_CODE;
-        String permissionS = getPermissionMapping(permissionI);
-
-        askPermission(permissionS, permissionI);
-
+        askPermission(getPermissionMapping(NOTIFICATION_PERMISSION_CODE), NOTIFICATION_PERMISSION_CODE);
     }
 
-    private void askPermission(String permission, int REQUEST_CODE) {
+    /**
+     * Method used to start the UI to prompt the user to deny or accept a permission
+     * @param permission MANIFEST String that indicates which permission has to be requested
+     * @param REQUEST_CODE int to distinguish between permissions, used to see which permission is
+     */
+    protected void askPermission(String permission, int REQUEST_CODE) {
 
         NotificationManager notificationManager =
                 (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
