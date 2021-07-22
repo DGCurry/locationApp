@@ -9,6 +9,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.work.ForegroundInfo;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
@@ -24,16 +25,21 @@ public class NotificationManager {
      */
     static final private String TAG = "NotificationManager";
 
-    private final String NOTIFICATION_ID;
+    private final int PRIORITY_INT;
+    private final int NOTIFICATION_ID;
+    private final String CHANNEL_ID;
     private String NOTIFICATION_TITLE;
     private String message;
     private final Context context;
 
-    public NotificationManager(String NOTIFICATION_ID, String NOTIFICATION_TITLE, String message, Context context) {
+    public NotificationManager(int NOTIFICATION_ID, String NOTIFICATION_TITLE, String message,
+                               Context context, int PRIORITY_INT, String CHANNEL_ID) {
         this.NOTIFICATION_ID = NOTIFICATION_ID;
         this.NOTIFICATION_TITLE = NOTIFICATION_TITLE;
         this.message = message;
         this.context = context;
+        this.PRIORITY_INT = PRIORITY_INT;
+        this.CHANNEL_ID = CHANNEL_ID;
     }
 
     /**
@@ -44,38 +50,47 @@ public class NotificationManager {
     public ForegroundInfo createForegroundInfo() {
         //TODO: check how to change notification information
         //TODO: make notificationID a variable
-        return new ForegroundInfo(1, createNotification());
+        return new ForegroundInfo(NOTIFICATION_ID, createNotification());
     }
 
     /**
-     * method that creates the notification to ensure the thread is foreground
+     * Method that creates a notification from the front-end
+     */
+    public void createNotificationFromFrontEnd() {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(NOTIFICATION_ID, createNotification());
+    }
+
+
+    /**
+     * method that creates the notification
      * @return
      */
     private Notification createNotification() {
         //TODO: change information into resource
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannel(NOTIFICATION_ID, NOTIFICATION_TITLE);
+            createChannel(CHANNEL_ID, NOTIFICATION_TITLE, message);
         }
 
-        return new NotificationCompat.Builder(context, NOTIFICATION_ID)
+        return new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentTitle(NOTIFICATION_TITLE)
-                .setTicker(NOTIFICATION_TITLE)
+                .setContentText("Much longer text that cannot fit one line... TODO")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setOngoing(true)
+                .setPriority(PRIORITY_INT)
                 .build();
     }
 
     /**
      * channel for notification
-     * @param channelID
+     * @param CHANNEL_ID
      * @param name
      */
     @RequiresApi(Build.VERSION_CODES.O)
-    private void createChannel(String channelID, String name) {
+    private void createChannel(String CHANNEL_ID, String name, String description) {
         //TODO: get string from resources, get requiresApi working
-        String description = "mah";
-        NotificationChannel channel = new NotificationChannel(channelID, name, android.app.NotificationManager.IMPORTANCE_HIGH);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, PRIORITY_INT);
         channel.setDescription(description);
         android.app.NotificationManager notificationManager = context.getSystemService(android.app.NotificationManager.class);
         notificationManager.createNotificationChannel(channel);

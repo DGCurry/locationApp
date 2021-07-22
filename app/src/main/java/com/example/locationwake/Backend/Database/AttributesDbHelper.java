@@ -22,15 +22,16 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
     private String TAG = "AttributesDbHelper";
 
     // If you change the database schema, you must increment this number below
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 7;
 
     //information kept in the database
     private static final String DATABASE_NAME = "attributeDatabase";
 
     //attributes(id, setting, distance)
     private static final String TABLE_ATTRIBUTES = "attributes";
-    private static final String KEY_ID = "k_id";
+    private static final String LOCATION_ID = "l_id";
     private static final String ATTRIBUTE_ID = "a_id";
+    private static final String ATTRIBUTE_NAME = "name";
     private static final String DISTANCE = "distance";
     private static final String SETTING = "setting";
 
@@ -51,10 +52,11 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
         Logger.logV(TAG, "onCreate(SQLiteDatabase db): opened database");
         String CREATE_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_ATTRIBUTES + "(" +
                 ATTRIBUTE_ID + " INTEGER NOT NULL," +
-                KEY_ID + " INTEGER NOT NULL," +
+                LOCATION_ID + " INTEGER NOT NULL," +
+                ATTRIBUTE_NAME + " TEXT NOT NULL," +
                 DISTANCE + " TEXT NOT NULL," +
                 SETTING + " TEXT NOT NULL," +
-                "PRIMARY KEY (" + ATTRIBUTE_ID + ", " + KEY_ID + ")" +
+                "PRIMARY KEY (" + ATTRIBUTE_ID + ", " + LOCATION_ID + ")" +
                 ")";
         db.execSQL(CREATE_LOCATION_TABLE);
     }
@@ -74,50 +76,53 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
      * Add the attributes in the mAttribute into the database
      * @param
      */
-    public int addAttribute(String KID, mDistance mDistance, mSetting mSetting) {
+    public String addAttribute(mAttribute attribute) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
         //attributes(id, setting, distance)
-        values.put(KEY_ID, KID);
-        values.put(DISTANCE, mDistance.getDistance());
-        values.put(SETTING, mSetting.getSetting());
+        values.put(LOCATION_ID, attribute.getLID());
+        values.put(ATTRIBUTE_NAME, attribute.getName());
+        values.put(DISTANCE, attribute.getDistance().getDistance());
+        values.put(SETTING, attribute.getSetting().getSetting());
         values.put(ATTRIBUTE_ID, getMax(db) + 1);
 
         int id = (int)db.insert(TABLE_ATTRIBUTES, null, values);
         db.close();
-        return id;
+        return Integer.toString(id);
     }
 
     /**
      * Method to change attributes in the database
-     * @param KID key of the LocationSettingDbHelper
-     * @param AID key of the AttributesDbHelper
-     * @param mDistance attribute radius
-     * @param mSetting attribute setting
      */
-    public void updateAttribute(String KID, String AID, mDistance mDistance, mSetting mSetting) {
+    public void updateAttribute(mAttribute attribute) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
         //attributes(id, setting, distance)
-        values.put(DISTANCE, mDistance.getDistance());
-        values.put(SETTING, mSetting.getSetting());
+        values.put(ATTRIBUTE_NAME, attribute.getName());
+        values.put(DISTANCE, attribute.getDistance().getDistance());
+        values.put(SETTING, attribute.getSetting().getSetting());
 
-        db.update(TABLE_ATTRIBUTES, values, KEY_ID + " = ? AND " + ATTRIBUTE_ID + " = ? ", new String[]{KID, AID});
+        db.update(TABLE_ATTRIBUTES,
+                values,
+                LOCATION_ID + " = ? AND " + ATTRIBUTE_ID + " = ? ",
+                new String[]{attribute.getLID(), attribute.getAID()});
         db.close();
     }
 
     /**
      * deletes the attribute wiht KID and AID
-     * @param KID
+     * @param LID
      * @param AID
      */
-    public void deleteAttribute(int KID, int AID) {
+    public void deleteAttribute(String LID, String AID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_ATTRIBUTES, KEY_ID + " = " + KID + " AND " + ATTRIBUTE_ID + " = " + AID, null);
+        db.delete(TABLE_ATTRIBUTES,
+                LOCATION_ID + " = " + LID + " AND " + ATTRIBUTE_ID + " = " + AID,
+                null);
         db.close();
     }
 
@@ -140,29 +145,30 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
      * method to get the attributes of a certain ID out of the database
      * @return String matrix with values stored in the rows
      */
-    public ArrayList<String[]> getAttributes(int KID) {
+    public ArrayList<mAttribute> getAttributes(String LID) {
         SQLiteDatabase db = this.getWritableDatabase();
         //query for the database to get all the locations
-        String query = "SELECT k_id, a_id, distance, setting FROM " + TABLE_ATTRIBUTES + " WHERE k_id ='" + KID + "'";
+        String query = "SELECT l_id, a_id, name, distance, setting FROM " +
+                TABLE_ATTRIBUTES + " WHERE l_id ='" + LID + "'";
         Cursor cursor = db.rawQuery(query, null);
 
         //list with single entry stored in matrix for all entries
-        ArrayList<String[]> attributeList = new ArrayList<>();
+        ArrayList<mAttribute> attributes = new ArrayList<>();
         //put in every entry with the correct data
         while (cursor.moveToNext()) {
-            String[] dataEntry = new String[4];
-            dataEntry[0] = cursor.getString(cursor.getColumnIndex(KEY_ID));
-            dataEntry[1] = cursor.getString(cursor.getColumnIndex(ATTRIBUTE_ID));
-            dataEntry[2] = cursor.getString(cursor.getColumnIndex(DISTANCE));
-            dataEntry[3] = cursor.getString(cursor.getColumnIndex(SETTING));
-
-            attributeList.add(dataEntry);
+            mAttribute attribute = new mAttribute(
+                    cursor.getString(cursor.getColumnIndex(LOCATION_ID)),
+                    cursor.getString(cursor.getColumnIndex(ATTRIBUTE_ID)),
+                    cursor.getString(cursor.getColumnIndex(ATTRIBUTE_NAME)),
+                    new mDistance(cursor.getString(cursor.getColumnIndex(DISTANCE))),
+                    new mSetting(cursor.getString(cursor.getColumnIndex(SETTING))));
+            attributes.add(attribute);
         }
 
         cursor.close();
         db.close();
         Logger.logV(TAG, "getAttribute(): returned attributes");
-        return attributeList;
+        return attributes;
     }
 
 
@@ -170,22 +176,25 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
      * method to get the attributes of a certain KID and AID out of the database
      * @return String matrix with values stored in the rows
      */
-    public String[] getAttribute(int KID, int AID) {
+    public mAttribute getAttribute(String LID, String AID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String[] columns = {DISTANCE, SETTING};
-        String where = "k_id=? AND a_id=?";
-        String[] args = {Integer.toString(KID), Integer.toString(AID)};
+        String[] columns = {LOCATION_ID, ATTRIBUTE_ID, ATTRIBUTE_NAME, DISTANCE, SETTING};
+        String where = "l_id=? AND a_id=?";
+        String[] args = {LID, AID};
 
         Cursor cursor = db.query(TABLE_ATTRIBUTES, columns, where, args, null, null, null);
         //put in every entry with the correct data
-        String[] dataEntry = new String[2];
+        mAttribute attribute = new mAttribute(null, null, null, null, null);
         while (cursor.moveToNext()) {
-            dataEntry[0] = cursor.getString(0);
-            dataEntry[1] = cursor.getString(1);
+            attribute.setLID(cursor.getString(0));
+            attribute.setAID(cursor.getString(1));
+            attribute.setName(cursor.getString(2));
+            attribute.setDistance(new mDistance(cursor.getString(3)));
+            attribute.setSetting(new mSetting(cursor.getString(4)));
         }
         cursor.close();
         db.close();
-        return dataEntry;
+        return attribute;
     }
 
 
@@ -193,21 +202,21 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
      * method to get the attributes of a certain ID out of the database
      * @return String matrix with values stored in the rows
      */
-    public String getSetting(int KID, int AID) {
+    public mSetting getSetting(String LID, String AID) {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns = {SETTING};
-        String where = "k_id=? AND a_id=?";
-        String[] args = {Integer.toString(KID), Integer.toString(AID)};
+        String where = "l_id=? AND a_id=?";
+        String[] args = {LID, AID};
 
         Cursor cursor = db.query(TABLE_ATTRIBUTES, columns, where, args, null, null, null);
         //put in every entry with the correct data
-        String dataEntry = null;
+        mSetting setting = new mSetting(null);
         while (cursor.moveToNext()) {
-            dataEntry = cursor.getString(0);
+            setting.setSetting(cursor.getString(0));
         }
         cursor.close();
         db.close();
-        return dataEntry;
+        return setting;
     }
 
     /**

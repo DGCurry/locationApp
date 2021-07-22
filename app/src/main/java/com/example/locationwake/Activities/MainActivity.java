@@ -22,12 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
+import com.example.locationwake.Activities.AddNewLocationAttributeActivities.ChooseAttributeOrLocation;
 import com.example.locationwake.Activities.HelperClasses.MainSettingRecAdapter;
-import com.example.locationwake.Activities.NewLocationActivities.AddNameActivity;
 import com.example.locationwake.Activities.PermissionActivities.BackgroundLocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.LocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.NotificationPermissionActivity;
-import com.example.locationwake.Activities.viewLocation.ViewLocationActivity;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.DataHandler;
@@ -142,7 +141,7 @@ public class MainActivity extends CallBackActivity {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): clicked on the add button");
-                Intent intent = new Intent(getApplicationContext(), AddNameActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ChooseAttributeOrLocation.class);
                 startActivity(intent);
             }
         });
@@ -172,17 +171,9 @@ public class MainActivity extends CallBackActivity {
         if (savedSetting == null) {
             updateUINoSettingFound();
         } else {
-            updateUISettingFound(pref.getInt("KID", -1), pref.getInt("AID", -1));
+            updateUISettingFound(pref.getString("LID", "None"), pref.getString("AID", "None"));
         }
 
-        Button editLocationButton = findViewById(R.id.button_header_change);
-        editLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ViewLocationActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     /**
@@ -304,19 +295,19 @@ public class MainActivity extends CallBackActivity {
     /**
      * method called when the backend has found a setting to be enabled. The UI is updated
      */
-    private void updateUISettingFound(int KID, int AID) {
+    private void updateUISettingFound(String LID, String AID) {
         Logger.logD(TAG, "createUI(): savedSetting is not null, location found");
         //retrieve all the data and inflate one of the thingies
         activeSettingStub.setVisibility(View.VISIBLE);
 
         TextView title = findViewById(R.id.textView_location_title_main);
 
-        String name = DataHandler.loadLocation(Integer.toString(KID), getApplicationContext()).getName();
+        String name = DataHandler.loadLocation(LID, getApplicationContext()).getName();
 
         title.setText(name);
 
-        mLocation mLocation = DataHandler.loadLocation(Integer.toString(KID), getApplicationContext());
-        mAttribute attribute = DataHandler.loadAttribute(KID, AID, getApplicationContext());
+        mLocation mLocation = DataHandler.loadLocation(LID, getApplicationContext());
+        mAttribute attribute = DataHandler.loadAttribute(LID, AID, getApplicationContext());
         //Holds all the data that is in the database
         ArrayList<AttributeInterface> list = new ArrayList<>();
         list.add(attribute.getSetting());

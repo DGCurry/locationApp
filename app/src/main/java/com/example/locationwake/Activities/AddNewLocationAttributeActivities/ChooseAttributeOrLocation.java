@@ -1,16 +1,17 @@
-package com.example.locationwake.Activities;
+package com.example.locationwake.Activities.AddNewLocationAttributeActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.locationwake.Activities.HelperClasses.ActiveSettingRecAdapter;
-import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Activities.HelperClasses.AddAttributeLocationListRecAdapter;
+import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
-import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -19,14 +20,14 @@ import java.util.ArrayList;
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class LocationListActivity extends AppCompatActivity {
+public class ChooseAttributeOrLocation extends AppCompatActivity {
 
     //TAG of the class
-    static final private String TAG = "LocationListActivity";
+    static final private String TAG = "ChooseAttributeOrLocation";
 
     //DATA ELEMENTS
     //Holds all the data that is in the database
-    private ArrayList<AttributeInterface> list = new ArrayList<>();
+    private ArrayList<mLocation> list = new ArrayList<>();
 
     //GUI ELEMENTS
     private RecyclerView recyclerView;
@@ -42,12 +43,19 @@ public class LocationListActivity extends AppCompatActivity {
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started MainActivity");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+        setContentView(R.layout.activity_choose_att_loc);
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started loadData()");
         loadData();
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
+        createUI();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
         createUI();
     }
 
@@ -57,9 +65,8 @@ public class LocationListActivity extends AppCompatActivity {
     private void loadData() {
         Logger.logV(TAG, "loadData(): loading the data from the database into dataList");
         list = new ArrayList<>();
-        list.add(new mSetting("SLT"));
-        list.add(new mDistance("541"));
-        list.add(new mLocation("1", "20"));
+        ArrayList<mLocation> locations = DataHandler.loadLocations(getApplicationContext());
+        list.addAll(locations);
     }
 
 
@@ -68,11 +75,21 @@ public class LocationListActivity extends AppCompatActivity {
      */
     private void createUI() {
         Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview_setting);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_list_location);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ActiveSettingRecAdapter(list, getApplicationContext());
+        mAdapter = new AddAttributeLocationListRecAdapter(list, getApplicationContext());
         recyclerView.setAdapter(mAdapter);
+
+        Button addLocationButton = findViewById(R.id.choose_att_loc_new_loc);
+        addLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), com.example.locationwake.Activities.
+                        AddNewLocationAttributeActivities.AddLocationActivities.AddNameActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

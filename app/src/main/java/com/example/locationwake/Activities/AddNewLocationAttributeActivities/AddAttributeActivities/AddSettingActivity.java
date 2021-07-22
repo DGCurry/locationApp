@@ -1,4 +1,4 @@
-package com.example.locationwake.Activities.NewLocationActivities;
+package com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,17 +8,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
+import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddLocationActivities.AddLocationOverViewActivity;
 import com.example.locationwake.Activities.MainActivity;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
@@ -69,9 +66,9 @@ public class AddSettingActivity extends AppCompatActivity {
         settings.add("SND");
 
         Logger.logV(TAG, "loadData(): getting data from AddNameActivity");
-        if (getIntent().hasExtra("input")) {
+        if (getIntent().hasExtra("data")) {
             try {
-                data = new JSONObject(getIntent().getStringExtra("input"));
+                data = new JSONObject(getIntent().getStringExtra("data"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -101,6 +98,17 @@ public class AddSettingActivity extends AppCompatActivity {
             }
         });
 
+        TextView title = findViewById(R.id.textView_location_title_main);
+        TextView subTitle = findViewById(R.id.textView_setting_title_main);
+        subTitle.setVisibility(View.VISIBLE);
+
+        try {
+            title.setText(data.get("locationName").toString());
+            subTitle.setText(data.get("attributeName").toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         addNavigation(setting);
     }
 
@@ -118,40 +126,26 @@ public class AddSettingActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.logD(TAG, "onClick(): clicked on the list button");
+                Logger.logD(TAG, "onClick(): clicked on the back button");
+                Intent intent = new Intent(getApplicationContext(), AddNameActivity.class);
+                intent.putExtra("data", data.toString());
+                startActivity(intent);
+                finish();
             }
         });
 
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.logD(TAG, "onClick(): clicked on the add button");
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                //Yes button clicked
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
-                                break;
-
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //No button clicked
-                                break;
-                        }
-                    }
-                };
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
+                Logger.logD(TAG, "onClick(): clicked on the stop button");
+                finish();
             }
         });
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Logger.logD(TAG, "onClick(): clicked on the send button");
                 if (!new mSetting(setting[0]).isValid()) {
                     Logger.logE(TAG, "createUI(): onClick(): SETTING is invalid");
                     Toast.makeText(getApplicationContext(), "The item Setting is invalid", Toast.LENGTH_LONG).show();
@@ -165,9 +159,10 @@ public class AddSettingActivity extends AppCompatActivity {
                 }
 
                 //go to the next activity
-                Intent intent = new Intent(getApplicationContext(), AddLocationOverViewActivity.class);
-                intent.putExtra("input", data.toString());
+                Intent intent = new Intent(getApplicationContext(), AddDistanceActivity.class);
+                intent.putExtra("data", data.toString());
                 startActivity(intent);
+                finish();
             }
         });
     }

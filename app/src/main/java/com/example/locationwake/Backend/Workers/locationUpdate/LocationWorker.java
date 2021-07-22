@@ -42,8 +42,9 @@ public class LocationWorker extends Worker {
     /**
      * Notification ID and Title for the notification needed for a Foreground Worker
      */
-    String NOTIFICATION_ID = "notification_GPS";
-    String notification_title = "GPS worker";
+    int NOTIFICATION_ID = 1;
+    String CHANNEL_ID = "notification_GPS";
+    String NOTIFICATION_TITLE = "GPS worker";
     Context mContext;
 
     /**
@@ -86,34 +87,39 @@ public class LocationWorker extends Worker {
         //TODO: check whether location is enabled, if not, send notification to turn it on
         //TODO: if no permission, send notification to let the user enable permission(go directly to settings)
 
-        LocationManager lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
 
         try {
+            LocationManager lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         } catch (Exception e) {
             Logger.logE(TAG, "doWork(): " + e);
         }
 
         if (!gps_enabled) {
-//            NotificationManager notificationManager = new com.example.locationwake.Backend.Managers.NotificationManager();
+            com.example.locationwake.Backend.Managers.NotificationManager notificationManager =
+                    new com.example.locationwake.Backend.Managers.NotificationManager(NOTIFICATION_ID
+                            , NOTIFICATION_TITLE, "Cannot retrieve location, please enable GPS",
+                            getApplicationContext(), 3, CHANNEL_ID);
+            setForegroundAsync(notificationManager.createForegroundInfo());
             //TODO: notify the user that location should be enabled
             Logger.logD(TAG, "doWork(): finished");
-            return Result.retry();
+            return Result.failure();
         }
 
-        if (ContextCompat.checkSelfPermission(
-                getApplicationContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+        if (ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED &&
 
-                ContextCompat.checkSelfPermission(
-                        getApplicationContext(),
-                        Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
 
             Logger.logD(TAG, "doWork(): permission for fine location and background location");
 
-
-            setForegroundAsync(createForegroundInfo());
+            com.example.locationwake.Backend.Managers.NotificationManager notificationManager =
+                    new com.example.locationwake.Backend.Managers.NotificationManager(NOTIFICATION_ID
+                            , NOTIFICATION_TITLE, "Retrieving location", getApplicationContext(),
+                            3, CHANNEL_ID);
+            setForegroundAsync(notificationManager.createForegroundInfo());
 
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
 
@@ -131,64 +137,27 @@ public class LocationWorker extends Worker {
 
             createLocationRequest();
             requestLocationUpdates();
+
             try {
                 countDownLatch.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             Logger.logD(TAG, "doWork(): finished");
             return Result.success();
+        } else {
+            Logger.logD(TAG, "doWork(): no permission for fine location and background location");
+            com.example.locationwake.Backend.Managers.NotificationManager notificationManager =
+                    new com.example.locationwake.Backend.Managers.NotificationManager(NOTIFICATION_ID
+                            , NOTIFICATION_TITLE, "Permission not granted to retrieve location", getApplicationContext(),
+                            3, CHANNEL_ID);
+            setForegroundAsync(notificationManager.createForegroundInfo());
+
         }
+
         Logger.logD(TAG, "doWork(): finished");
         return Result.failure();
-    }
-
-    /**
-     * method that creates the foreground notification information
-     * @return
-     */
-    @NonNull
-    private ForegroundInfo createForegroundInfo() {
-        //TODO: check how to change notification information
-        //TODO: make notificationID a variable
-        return new ForegroundInfo(1, createNotification());
-    }
-
-    /**
-     * method that creates the notification to ensure the thread is foreground
-     * @return
-     */
-    private Notification createNotification() {
-        //TODO: change information into resource
-
-        String id = NOTIFICATION_ID;
-        String title = notification_title;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannel(id, title);
-        }
-
-        return new NotificationCompat.Builder(mContext, id)
-                .setContentTitle(title)
-                .setTicker(title)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setOngoing(true)
-                .build();
-    }
-
-    /**
-     * channel for notification
-     * @param channelID
-     * @param name
-     */
-    @RequiresApi(Build.VERSION_CODES.O)
-    private void createChannel(String channelID, String name) {
-        //TODO: get string from resources, get requiresApi working
-        String description = "mah";
-        NotificationChannel channel = new NotificationChannel(channelID, name, NotificationManager.IMPORTANCE_HIGH);
-        channel.setDescription(description);
-        NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
     }
 
     /**

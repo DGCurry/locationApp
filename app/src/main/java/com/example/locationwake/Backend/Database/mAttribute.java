@@ -8,12 +8,19 @@ import com.example.locationwake.Backend.Database.Attributes.mSetting;
  */
 public class mAttribute {
 
+    /**
+     * Tag of the class
+     */
+    static final private String TAG = "mAttribute";
+
     // Data needed for the database
-    private Integer KID;
-    private Integer AID;
+    private String LID;
+    private String AID;
 
     private com.example.locationwake.Backend.Database.Attributes.mDistance mDistance;
     private com.example.locationwake.Backend.Database.Attributes.mSetting mSetting;
+
+    private String name;
 
     /**
      * Constructor to create a data holder from the beginning
@@ -21,19 +28,20 @@ public class mAttribute {
      * @param AID key id to link to LocationSettingDbHelper entry
      * All objects here are the least an attribute should have. Any other must be set by getters and setters.
      */
-    public mAttribute(Integer KID, Integer AID, mDistance mDistance, mSetting mSetting) {
-        this.KID = KID;
+    public mAttribute(String LID, String AID, String name, mDistance mDistance, mSetting mSetting) {
+        this.LID = LID;
         this.AID = AID;
+        this.name = name;
         this.mDistance = mDistance;
         this.mSetting = mSetting;
     }
 
     /**
      * Add the ID information as Integer.
-     * @param KID key id to link to LocationSettingDbHelper entry
+     * @param LID key id to link to LocationSettingDbHelper entry
      */
-    public void setKID(Integer KID) {
-        this.KID = KID;
+    public void setLID(String LID) {
+        this.LID = LID;
     }
 
 
@@ -41,7 +49,7 @@ public class mAttribute {
      * Add the ID information as Integer.
      * @param A_ID key id to link to LocationSettingDbHelper entry
      */
-    public void setAID(Integer A_ID) {
+    public void setAID(String A_ID) {
         this.AID = A_ID;
     }
 
@@ -49,15 +57,15 @@ public class mAttribute {
      * Return the KEY ID information as Integer
      * @return KEY ID key id to link to LocationSettingDbHelper entry
      */
-    public Integer getKID() {
-        return KID;
+    public String getLID() {
+        return LID;
     }
 
     /**
      * Return the ATTRIBUTE ID information as Integer
      * @return ATTRIBUTE ID id to link to LocationSettingDbHelper entry
      */
-    public Integer getAID() {
+    public String getAID() {
         return AID;
     }
 
@@ -91,5 +99,30 @@ public class mAttribute {
      */
     public void setSetting(com.example.locationwake.Backend.Database.Attributes.mSetting mSetting) {
         this.mSetting = mSetting;
+    }
+
+    /**
+     * method to retrieve the name of the attribute
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * method to set the name of the attribute
+     * @param name of the attribute
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Special method to be called if the set items (name, distance, setting etc) needs to be retrieved
+     * @return if an item is not null, +1
+     */
+    public int getItemCount() {
+        //TODO: if there is an attribute that is optional(not applicable now) actually count
+        return 3;
     }
 }

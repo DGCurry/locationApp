@@ -6,15 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.locationwake.Activities.HelperClasses.ActiveSettingRecAdapter;
+import com.example.locationwake.Activities.HelperClasses.SettingRecAdapter;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
 import com.example.locationwake.Backend.Database.Attributes.mDistance;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
+import com.example.locationwake.Backend.Database.mAttribute;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a test class to test all func. The GUI will be added later on.
@@ -26,7 +28,9 @@ public class ViewLocationActivity extends AppCompatActivity {
 
     //DATA ELEMENTS
     //Holds all the data that is in the database
-    private ArrayList<AttributeInterface> list = new ArrayList<>();
+    private List<List<AttributeInterface>> attributes = new ArrayList<>();
+    private mLocation location;
+    List<String> names;
 
     //GUI ELEMENTS
     private RecyclerView recyclerView;
@@ -42,7 +46,7 @@ public class ViewLocationActivity extends AppCompatActivity {
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started MainActivity");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+        setContentView(R.layout.activity_view_location);
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started loadData()");
         loadData();
@@ -56,10 +60,10 @@ public class ViewLocationActivity extends AppCompatActivity {
      */
     private void loadData() {
         Logger.logV(TAG, "loadData(): loading the data from the database into dataList");
-        list = new ArrayList<>();
-        list.add(new mSetting("SLT"));
-        list.add(new mDistance("541"));
-        list.add(new mLocation("1", "20", "name"));
+
+        attributes = new ArrayList<>();
+        location = new mLocation("1", "HOME", "1", "2");
+        attributes.add();
     }
 
 
@@ -68,11 +72,11 @@ public class ViewLocationActivity extends AppCompatActivity {
      */
     private void createUI() {
         Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview_setting);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_view_location);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ActiveSettingRecAdapter(list, getApplicationContext());
+        mAdapter = new SettingRecAdapter(attributes, location, getApplicationContext());
         recyclerView.setAdapter(mAdapter);
     }
 }

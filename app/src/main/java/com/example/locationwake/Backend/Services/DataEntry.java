@@ -6,7 +6,6 @@ import com.example.locationwake.Backend.Managers.CallBackManager;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
-import com.example.locationwake.Logger;
 
 
 public class DataEntry implements Runnable {
@@ -16,22 +15,30 @@ public class DataEntry implements Runnable {
      */
     static final private String TAG = "LocationWorker";
 
-    private final mAttribute mAttribute;
-    private final mLocation mLocation;
+    private mAttribute attribute;
+    private mLocation location;
 
     private final Context context;
 
     /**
      * Constructor that sets the data to be added to the database
-     * @param mAttribute holds all attributes
-     * @param mLocation holds the location and name
+     * @param attribute holds all attributes
+     * @param location holds the location and name
      * @param context context of the application
      */
-    public DataEntry(mAttribute mAttribute, mLocation mLocation, Context context) {
-        this.mAttribute = mAttribute;
-        Logger.logE(TAG, "DataEntry(): mLocation " + mLocation.getLat() + " " + mLocation.getLng());
-        this.mLocation = mLocation;
+    public DataEntry(mAttribute attribute, mLocation location, Context context) {
+        this.attribute = attribute;
+        this.location = location;
+        this.context = context;
+    }
 
+    public DataEntry(mAttribute attribute, Context context) {
+        this.attribute = attribute;
+        this.context = context;
+    }
+
+    public DataEntry(mLocation location, Context context) {
+        this.location = location;
         this.context = context;
     }
 
@@ -41,11 +48,22 @@ public class DataEntry implements Runnable {
      */
     @Override
     public void run() {
-        DataHandler.addData(mLocation.getName(), mLocation.getLat(), mLocation.getLng(),
-                mAttribute.getDistance().getDistance(), mAttribute.getSetting().getSetting(), context);
-        CallBackManager.callBackActivities(false, true, false, 'D',  "succeeded");
-
+        if (attribute == null && location == null) {
+            CallBackManager.callBackActivities(false, false, true, 'B',
+                    "failed, attribute and location is null");
+        } else if (attribute != null) {
+            DataHandler.addAttribute(attribute, context);
+            CallBackManager.callBackActivities(false, true, false, 'A',
+                    "succeeded, added attribute");
+        } else if (location != null) {
+            DataHandler.addLocation(location, context);
+            CallBackManager.callBackActivities(false, true, false, 'L',
+                    "succeeded, added location");
+        } else {
+            DataHandler.addData(attribute, location, context);
+            CallBackManager.callBackActivities(false, true, false, 'B',
+                    "succeeded, added attribute and location");
+        }
     }
 
-    
 }

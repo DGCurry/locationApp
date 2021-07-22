@@ -12,9 +12,6 @@ public class mDistance implements AttributeInterface{
 
     private String distance;
 
-    //used to determine isValid
-    private mLocation location;
-
     /**
      * Constructor, sets the distance
      * @param distance String which holds the radius in meter
@@ -46,7 +43,7 @@ public class mDistance implements AttributeInterface{
      */
     @Override
     public boolean isValid() {
-        return false;
+        return true;
     }
 
     /**
@@ -73,7 +70,7 @@ public class mDistance implements AttributeInterface{
         ArrayList<mLocation> locations = DataHandler.loadLocations(context);
 
         for (mLocation location : locations) {
-            ArrayList<mAttribute> attributes = DataHandler.loadAttributes(location.getKID(), context);
+            ArrayList<mAttribute> attributes = DataHandler.loadAttributes(location.getLID(), context);
             for (mAttribute attribute : attributes) {
                 // get distance from new location to old location
                 // check if this distance is smaller than one of the radius'

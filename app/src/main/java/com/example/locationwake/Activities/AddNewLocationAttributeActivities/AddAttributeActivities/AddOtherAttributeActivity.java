@@ -1,11 +1,9 @@
-package com.example.locationwake.Activities.NewLocationActivities;
+package com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -27,6 +25,8 @@ public class AddOtherAttributeActivity extends AppCompatActivity {
     private ArrayList<String> attributes = new ArrayList<>();
 
     private JSONObject data = new JSONObject();
+
+    private boolean locationExist = false;
 
     /**
      * Method to start activity
@@ -69,6 +69,9 @@ public class AddOtherAttributeActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+        if (getIntent().hasExtra("locationExist")) {
+            locationExist = getIntent().getBooleanExtra("locationExist", false);
         }
     }
 

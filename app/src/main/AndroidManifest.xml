@@ -19,11 +19,20 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.LocationWake">
-        <activity android:name=".Activities.NewLocationActivities.AddLocationActivity" />
-        <activity android:name=".Activities.NewLocationActivities.AddNameActivity" />
-        <activity android:name=".Activities.NewLocationActivities.AddOtherAttributeActivity" />
-        <activity android:name=".Activities.NewLocationActivities.AddSettingActivity" />
-        <activity android:name=".Activities.NewLocationActivities.AddLocationOverViewActivity" />
+
+        <activity android:name=".Activities.AddNewLocationAttributeActivities.AddLocationActivities.AddLocationActivity" />
+        <activity android:name=".Activities.AddNewLocationAttributeActivities.AddLocationActivities.AddNameActivity" />
+        <activity android:name=".Activities.AddNewLocationAttributeActivities.AddLocationActivities.AddLocationOverViewActivity" />
+
+        <activity android:name=".Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddOtherAttributeActivity" />
+        <activity android:name=".Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddSettingActivity" />
+        <activity android:name=".Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddDistanceActivity" />
+        <activity android:name=".Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddNameActivity" />
+        <activity android:name=".Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddAttributeOverViewActivity" />
+
+        <activity android:name=".Activities.AddNewLocationAttributeActivities.ChooseAttributeOrLocation" />
+
+        <activity android:name=".Activities.viewLocation.ViewLocationActivity" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -32,8 +41,7 @@
         <activity android:name=".Activities.PermissionActivities.NotificationPermissionActivity" />
         <activity android:name=".Activities.PermissionActivities.BackgroundLocationPermissionActivity" />
         <activity android:name=".Activities.PermissionActivities.LocationPermissionActivity" />
-        <activity android:name=".Activities.ChangeSetting" />
-        <activity android:name=".Activities.viewLocation.ViewLocationActivity" />
+<!--        <activity android:name=".Activities.viewLocation.ViewLocationActivity" />-->
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

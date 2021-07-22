@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <include
-        android:id="@+id/include_add_location_header"
+        android:id="@+id/include_add_overview_header"
         layout="@layout/header_icon"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -20,22 +21,22 @@
     </include>
 
     <LinearLayout
-        android:id="@+id/layout_add_location_input_outer"
+        android:id="@+id/layout_add_overview_input_outer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:layout_constraintTop_toBottomOf="@id/include_add_location_header"
+        app:layout_constraintTop_toBottomOf="@id/include_add_overview_header"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/layout_add_location_input_inner_latitude"
+            android:id="@+id/layout_add_overview_input_inner_latitude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView_ad_location_latitude_title"
+                android:id="@+id/textView_ad_overview_latitude_title"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -45,8 +46,8 @@
                 android:textSize="@dimen/extra_large_text_size"
                 android:text="Latitude"/>
 
-            <EditText
-                android:id="@+id/editText_ad_location_latitude"
+            <TextView
+                android:id="@+id/textView_ad_overview_latitude"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -58,14 +59,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_add_location_input_inner_longitude"
+            android:id="@+id/layout_add_overview_input_inner_longitude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView_ad_location_longitude_title"
+                android:id="@+id/textView_ad_overview_longitude_title"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -75,8 +76,8 @@
                 android:textSize="@dimen/extra_large_text_size"
                 android:text="Longitude"/>
 
-            <EditText
-                android:id="@+id/editText_ad_location_longitude"
+            <TextView
+                android:id="@+id/textView_ad_overview_longitude"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -87,57 +88,10 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_add_location_input_inner_distance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/textView_ad_location_distance_title"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/rc_icon_size"
-                    android:padding="@dimen/rc_text_padding"
-                    android:textColor="#000"
-                    android:textSize="@dimen/extra_large_text_size"
-                    android:text="Radius"/>
-
-                <TextView
-                    android:id="@+id/textView_ad_location_distance_value"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/rc_icon_size"
-                    android:padding="@dimen/rc_text_padding"
-                    android:textColor="#000"
-                    android:textSize="@dimen/extra_large_text_size"
-                    android:text="0 meters"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-            <SeekBar
-                android:id="@+id/seekBar_ad_location_radius"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/rc_icon_size"
-                android:padding="@dimen/rc_text_padding"
-                android:max="100"
-                android:progress="50"/>
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <include
         android:id="@+id/navigation_bar"
         layout="@layout/navigation_buttons"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

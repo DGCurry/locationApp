@@ -60,7 +60,5 @@
 
     <include
         android:id="@+id/navigation_bar"
-        layout="@layout/navigation_buttons"
-        tools:layout_editor_absoluteX="45dp"
-        tools:layout_editor_absoluteY="339dp" />
+        layout="@layout/navigation_buttons"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

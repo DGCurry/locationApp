@@ -1,16 +1,16 @@
-package com.example.locationwake.Activities.NewLocationActivities;
+package com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.locationwake.Activities.MainActivity;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -25,6 +25,7 @@ public class AddNameActivity extends AppCompatActivity {
     //TAG of the class
     static final private String TAG = "AddNameActivity";
     private JSONObject data = new JSONObject();
+
     /**
      * Method to start activity
      * @param savedInstanceState
@@ -34,7 +35,7 @@ public class AddNameActivity extends AppCompatActivity {
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started AddLocationActivity");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_name);
+        setContentView(R.layout.activity_add_name_location);
 
         loadData();
 
@@ -48,9 +49,9 @@ public class AddNameActivity extends AppCompatActivity {
      */
     private void loadData() {
         Logger.logV(TAG, "loadData(): getting data from AddNameActivity");
-        if (getIntent().hasExtra("input")) {
+        if (getIntent().hasExtra("data")) {
             try {
-                data = new JSONObject(getIntent().getStringExtra("input"));
+                data = new JSONObject(getIntent().getStringExtra("data"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -62,7 +63,31 @@ public class AddNameActivity extends AppCompatActivity {
      */
     protected void createUI() {
         Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
+        TextView title = findViewById(R.id.textView_location_title_main);
+        TextView subTitle = findViewById(R.id.textView_setting_title_main);
+        subTitle.setVisibility(View.VISIBLE);
+
         EditText name = findViewById(R.id.editText_ad_name_name);
+
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                subTitle.setText(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        try {
+            title.setText(data.get("locationName").toString());
+        } catch (JSONException e) {
+            title.setText("None");
+            e.printStackTrace();
+        }
 
         addNavigation(name);
     }
@@ -80,29 +105,35 @@ public class AddNameActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.logD(TAG, "onClick(): clicked on the list button");
+                Logger.logD(TAG, "onClick(): clicked on the back button");
+                finish();
             }
         });
 
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.logD(TAG, "onClick(): clicked on the add button");
+                Logger.logD(TAG, "onClick(): clicked on the stop button");
+                finish();
             }
         });
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Logger.logD(TAG, "onClick(): clicked on the send button");
                 try {
-                    data.put("name", name.getText().toString());
+                    data.put("attributeName", name.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    return;
                 }
 
-                Intent intent = new Intent(getApplicationContext(), AddLocationActivity.class);
-                intent.putExtra("input", data.toString());
-                startActivity(intent);            }
+                Intent intent = new Intent(getApplicationContext(), AddSettingActivity.class);
+                intent.putExtra("data", data.toString());
+                startActivity(intent);
+                finish();
+            }
         });
     }
 

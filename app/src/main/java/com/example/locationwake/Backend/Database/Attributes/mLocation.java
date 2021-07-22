@@ -1,19 +1,12 @@
 package com.example.locationwake.Backend.Database.Attributes;
 
-import android.content.Context;
-import android.location.Location;
-import android.text.TextUtils;
-
-import com.example.locationwake.Backend.Database.DataHandler;
-import com.example.locationwake.Backend.Database.mAttribute;
+import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
 import com.example.locationwake.Logger;
-
-import java.util.ArrayList;
 
 /**
  * Holder of the data. Create an instance of this class to save the data to the database
  */
-public class mLocation implements AttributeInterface{
+public class mLocation implements AttributeInterface {
 
     /**
      * Tag of the class
@@ -23,7 +16,7 @@ public class mLocation implements AttributeInterface{
     // Data needed for the database
     private String lat, lng;
     private String name;
-    private Integer KID;
+    private String LID;
 
     /**
      * Constructor to create a data holder from the beginning
@@ -31,22 +24,12 @@ public class mLocation implements AttributeInterface{
      * @param lng longitude the user has given
      * @param name name the user has given
      */
-    public mLocation(String lat, String lng, String name) {
+    public mLocation(String LID, String name, String lat, String lng) {
+        this.LID = LID;
         this.lat = lat;
         this.lng = lng;
         this.name = name;
     }
-
-    /**
-     * Constructor to create a data holder from the beginning
-     * @param lat latitude the user has given
-     * @param lng longitude the user has given
-     */
-    public mLocation(String lat, String lng) {
-        this.lat = lat;
-        this.lng = lng;
-    }
-
 
     /**
      * Add the latitude information as String.
@@ -66,10 +49,10 @@ public class mLocation implements AttributeInterface{
 
     /**
      * Add the ID that corresponds to the database entry
-     * @param KID ID the database has generated for an entry
+     * @param LID ID the database has generated for an entry
      */
-    public void setKID(Integer KID) {
-        this.KID = KID;
+    public void setLID(String LID) {
+        this.LID = LID;
     }
 
     /**
@@ -92,8 +75,8 @@ public class mLocation implements AttributeInterface{
      * Return the ID key that corresponds to the location
      * @return ID key
      */
-    public Integer getKID() {
-        return KID;
+    public String getLID() {
+        return LID;
     }
 
     public String getName() {

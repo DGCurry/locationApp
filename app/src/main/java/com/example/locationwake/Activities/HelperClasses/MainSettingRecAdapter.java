@@ -4,14 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.locationwake.Backend.Database.Attributes.mDistance;
-import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
@@ -75,17 +73,17 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
         switch (viewType) {
             case AttributeInterface.DISTANCE_TYPE:
                 itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.main_distance_item, parent, false);
+                        .inflate(R.layout.distance_item, parent, false);
                 return new DistanceViewHolder(itemView);
 
             case AttributeInterface.SETTING_TYPE:
                 itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.main_setting_item, parent, false);
+                        .inflate(R.layout.setting_item, parent, false);
                 return new SettingViewHolder(itemView);
 
             default:
                 itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.main_location_item, parent, false);
+                        .inflate(R.layout.location_item, parent, false);
                 return new LocationViewHolder(itemView);
         }
     }

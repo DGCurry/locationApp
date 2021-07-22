@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class SettingObject {
 
-    private int KID, AID;
+    private String LID, AID;
     //important components are not attributes, they are derived from attributes
     //important this setting object represents one attribute
     private ArrayList<Component> behaviourList;
@@ -17,8 +17,8 @@ public class SettingObject {
      * constructor, takes over the Key ID
      * @param KID
      */
-    public SettingObject(int KID, int AID) {
-        this.KID = KID;
+    public SettingObject(String LID, String AID) {
+        this.LID = LID;
         this.AID = AID;
         behaviourList = new ArrayList<>();
     }
@@ -35,9 +35,9 @@ public class SettingObject {
      * checks if every component in the Setting Object is active
      * @return AID if one is active, else -1
      */
-    public int isActive() {
+    public String isActive() {
         for (Component c:behaviourList) {
-            if (!c.isActive()) return -1;
+            if (!c.isActive()) return "None";
         }
         return AID;
     }
@@ -46,7 +46,7 @@ public class SettingObject {
      * gets the KID of this settingobject
      * @return KID
      */
-    public int getKID() {
-        return KID;
+    public String getLID() {
+        return LID;
     }
 }

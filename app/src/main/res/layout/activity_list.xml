@@ -7,28 +7,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <include
-        android:id="@+id/include_main_active_setting"
-        layout="@layout/header_icon_button"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="wrap"
-        app:layout_constraintWidth_default="spread"
-        android:visibility="visible">
-    </include>
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_main_active_setting"
+        android:id="@+id/recyclerView_list_location"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
         android:overScrollMode="never"
         android:visibility="visible"
         app:layout_constrainedHeight="true"
-        app:layout_constraintTop_toBottomOf="@id/include_main_active_setting"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_default="wrap" />
 
     <include

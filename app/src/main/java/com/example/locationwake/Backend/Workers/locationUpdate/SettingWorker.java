@@ -1,9 +1,6 @@
 package com.example.locationwake.Backend.Workers.locationUpdate;
 
 import android.Manifest;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,9 +9,7 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import androidx.work.ForegroundInfo;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -25,7 +20,6 @@ import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Behaviour.Components.LocationComponent;
 import com.example.locationwake.Backend.Behaviour.SettingObject;
-import com.example.locationwake.R;
 
 import java.util.ArrayList;
 
@@ -43,8 +37,9 @@ public class SettingWorker extends Worker {
     /**
      * Notification ID and Title for the notification needed for a Foreground Worker
      */
-    String NOTIFICATION_ID = "notification_setting";
-    String notification_title = "Setting worker";
+    int NOTIFICATION_ID = 1;
+    String CHANNEL_ID = "notification_SETTING";
+    String NOTIFICATION_TITLE = "SETTING worker";
 
     Context mContext;
 
@@ -70,7 +65,14 @@ public class SettingWorker extends Worker {
     @Override
     public Result doWork() {
         Logger.logD(TAG, "doWork(): started");
+
         //create notification channel
+        com.example.locationwake.Backend.Managers.NotificationManager notificationManager =
+                new com.example.locationwake.Backend.Managers.NotificationManager(NOTIFICATION_ID
+                        , NOTIFICATION_TITLE, "Retrieving and checking settings for your system", getApplicationContext(),
+                        3, CHANNEL_ID);
+        setForegroundAsync(notificationManager.createForegroundInfo());
+
         //get all from database
         //TODO: for these to work, need to create instances of Component, that all have the correct implementation to check
         // TODO: begin easy, with only location
@@ -78,21 +80,17 @@ public class SettingWorker extends Worker {
 
         ArrayList<SettingObject> settingObjects = createSettingObjects();
 
-        Integer[] activeKeys = getActiveKeys(settingObjects);
+        String[] activeKeys = getActiveKeys(settingObjects);
         // in case there has not been found any active settings, set special values
         if (activeKeys == null) {
-            saveCurrentSetting(-1, -1, null);
+            saveCurrentSetting("None", "None", null);
             Logger.logD(TAG, "doWork(): calling callBack on activities for UI update");
             CallBackManager.callBackActivities(false, false, true, 's', "setting has been updated, none found");
             return Result.success();
         }
 
-        String setting = DataHandler.getSetting(activeKeys[0], activeKeys[1], getApplicationContext());
-
-        setForegroundAsync(createForegroundInfo());
-
+        String setting = DataHandler.getSetting(activeKeys[0], activeKeys[1], getApplicationContext()).getSetting();
         setSetting(setting);
-
 
         saveCurrentSetting(activeKeys[0], activeKeys[1], setting);
         Logger.logD(TAG, "doWork(): enabled setting " + setting);
@@ -105,63 +103,15 @@ public class SettingWorker extends Worker {
     }
 
     /**
-     * method that creates the foreground notification information
-     * @return
-     */
-    @NonNull
-    private ForegroundInfo createForegroundInfo() {
-        //TODO: check how to change notification information
-        //TODO: make notificationID a variable
-        return new ForegroundInfo(1, createNotification());
-    }
-
-    /**
-     * method that creates the notification to ensure the thread is foreground
-     * @return
-     */
-    private Notification createNotification() {
-        //TODO: change information into resource
-
-        String id = NOTIFICATION_ID;
-        String title = notification_title;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannel(id, title);
-        }
-
-        return new NotificationCompat.Builder(mContext, id)
-                .setContentTitle(title)
-                .setTicker(title)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setOngoing(true)
-                .build();
-    }
-
-    /**
-     * channel for notification
-     * @param channelID
-     * @param name
-     */
-    @RequiresApi(Build.VERSION_CODES.O)
-    private void createChannel(String channelID, String name) {
-        //TODO: get string from resources, get requiresApi working
-        String description = "mah";
-        NotificationChannel channel = new NotificationChannel(channelID, name, NotificationManager.IMPORTANCE_HIGH);
-        channel.setDescription(description);
-        NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
-    }
-
-    /**
      * returns the setting which should be enabled by the system
      * @param settingObjects all objects that should be checked for active settings
      * @return SLT if silent, SND if sound, VBR if vibrate, None if no setting found
      */
-    private Integer[] getActiveKeys(ArrayList<SettingObject> settingObjects) {
+    private String[] getActiveKeys(ArrayList<SettingObject> settingObjects) {
         for (SettingObject settingObject:settingObjects) {
-            int activeAID = settingObject.isActive();
-            if (activeAID != -1) {
-                return new Integer[]{settingObject.getKID(), activeAID};
+            String activeAID = settingObject.isActive();
+            if (!activeAID.equals("None")) {
+                return new String[]{settingObject.getLID(), activeAID};
             }
         }
         return null;
@@ -179,9 +129,9 @@ public class SettingWorker extends Worker {
         ArrayList<mLocation> locations =  DataHandler.loadLocations(mContext);
         // going through each location, get the ID, create a SettingObject with this.
         for (mLocation location:locations) {
-            ArrayList<mAttribute> mAttributes = DataHandler.loadAttributes(location.getKID(), mContext);
+            ArrayList<mAttribute> mAttributes = DataHandler.loadAttributes(location.getLID(), mContext);
             for (mAttribute attribute:mAttributes) {
-                SettingObject cSettingObject = new SettingObject(attribute.getKID(), attribute.getAID());
+                SettingObject cSettingObject = new SettingObject(attribute.getLID(), attribute.getAID());
                 LocationComponent addLocationComponent = new LocationComponent(mContext,
                         location,
                         attribute.getDistance());
@@ -228,11 +178,11 @@ public class SettingWorker extends Worker {
     /**
      * saves the location in shared preferences
      */
-    private void saveCurrentSetting(int KID, int AID, String setting) {
+    private void saveCurrentSetting(String LID, String AID, String setting) {
         SharedPreferences preferences = mContext.getSharedPreferences("SETTING_FILE_NAME", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("KID", KID);
-        editor.putInt("AID", AID);
+        editor.putString("LID", LID);
+        editor.putString("AID", AID);
         editor.putString("setting", setting);
         editor.apply();
     }
