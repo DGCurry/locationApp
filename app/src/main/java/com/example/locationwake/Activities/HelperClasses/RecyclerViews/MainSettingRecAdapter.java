@@ -1,4 +1,4 @@
-package com.example.locationwake.Activities.HelperClasses;
+package com.example.locationwake.Activities.HelperClasses.RecyclerViews;
 
 import android.content.Context;
 import android.view.LayoutInflater;

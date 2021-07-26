@@ -102,6 +102,7 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
         values.put(LOCATION_NAME, location.getName());
 
         db.update(TABLE_LOCATION, values, LOCATION_ID + " = ?", new String[]{location.getLID()});
+        db.close();
     }
 
 

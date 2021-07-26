@@ -37,6 +37,10 @@ public class CallBackManager {
         callBackActivityList.add(activity);
     }
 
+    public void removeActivity(CallBackActivity activity) {
+        callBackActivityList.remove(activity);
+    }
+
     /**
      * Goes through all classes/activities that has subscribed for a callback. Checks first if the
      * activity is still active, and if so, calls the callback

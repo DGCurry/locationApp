@@ -1,17 +1,20 @@
-package com.example.locationwake.Activities.HelperClasses;
+package com.example.locationwake.Activities.HelperClasses.RecyclerViews;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddNameAttributeActivity;
 import com.example.locationwake.Activities.HelperClasses.JSON.AttributeJSONHelper;
-import com.example.locationwake.Activities.viewLocation.ViewLocationActivity;
+import com.example.locationwake.Activities.HelperClasses.JSON.LocationJSONHelper;
+import com.example.locationwake.Activities.ViewLocation.ViewLocationActivity;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
@@ -80,8 +83,9 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): Clicked on an item");
                 Intent intent = new Intent(v.getContext(), ViewLocationActivity.class);
-                JSONObject data = new AttributeJSONHelper(locations.get(position).getName(),
-                        locations.get(position).getLID(), null, null, null)
+                JSONObject data = new LocationJSONHelper(locations.get(position).getLID(),
+                        locations.get(position).getName(), locations.get(position).getLat(),
+                        locations.get(position).getLng())
                         .build();
                 intent.putExtra("data", data.toString());
                 v.getContext().startActivity(intent);
@@ -108,6 +112,7 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
     public class headerViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView title;
+        View v;
 
         /**
          * constructor of the class. Binds the UI elements
@@ -115,6 +120,7 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
          */
         public headerViewHolder(View view) {
             super(view);
+            v = view;
             title = (TextView) view.findViewById(R.id.textView_location_title_main);
         }
 
@@ -124,6 +130,24 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
          */
         void bindView(int position) {
             title.setText(locations.get(position).getName());
+
+            Button addAttribute = v.findViewById(R.id.button_invisible);
+            addAttribute.setVisibility(View.VISIBLE);
+            addAttribute.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), AddNameAttributeActivity.class);
+                    intent.putExtra("data",
+                            new AttributeJSONHelper(
+                                    locations.get(position).getName(),
+                                    locations.get(position).getLID(),
+                                    null,
+                                    null,
+                                    null,
+                                    null).build().toString());
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
 
     }

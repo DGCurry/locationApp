@@ -106,23 +106,25 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
         values.put(DISTANCE, attribute.getDistance().getDistance());
         values.put(SETTING, attribute.getSetting().getSetting());
 
+        Logger.logE(TAG, "muaw " + attribute.getAID() + " " + attribute.getLID());
+
         db.update(TABLE_ATTRIBUTES,
                 values,
-                LOCATION_ID + " = ? AND " + ATTRIBUTE_ID + " = ? ",
+                LOCATION_ID + "=? AND " + ATTRIBUTE_ID + "=? ",
                 new String[]{attribute.getLID(), attribute.getAID()});
         db.close();
     }
 
     /**
-     * deletes the attribute wiht KID and AID
+     * deletes the attribute wiht LID and AID
      * @param LID
      * @param AID
      */
     public void deleteAttribute(String LID, String AID) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_ATTRIBUTES,
-                LOCATION_ID + " = " + LID + " AND " + ATTRIBUTE_ID + " = " + AID,
-                null);
+                LOCATION_ID + " = ? AND " + ATTRIBUTE_ID + " = ? ",
+                new String[]{LID, AID});
         db.close();
     }
 
@@ -173,7 +175,7 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
 
 
     /**
-     * method to get the attributes of a certain KID and AID out of the database
+     * method to get the attributes of a certain LID and AID out of the database
      * @return String matrix with values stored in the rows
      */
     public mAttribute getAttribute(String LID, String AID) {

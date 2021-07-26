@@ -1,4 +1,4 @@
-package com.example.locationwake.Activities.AddNewLocationAttributeActivities;
+package com.example.locationwake.Activities.ViewLocation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,10 +21,10 @@ import java.util.ArrayList;
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class ChooseAttributeOrLocation extends AppCompatActivity {
+public class LocationListActivity extends AppCompatActivity {
 
     //TAG of the class
-    static final private String TAG = "ChooseAttributeOrLocation";
+    static final private String TAG = "LocationListActivity";
 
     //DATA ELEMENTS
     //Holds all the data that is in the database

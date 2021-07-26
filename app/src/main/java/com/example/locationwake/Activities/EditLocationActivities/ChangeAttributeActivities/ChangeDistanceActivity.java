@@ -1,4 +1,4 @@
-package com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities;
+package com.example.locationwake.Activities.EditLocationActivities.ChangeAttributeActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,20 +10,26 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mSetting;
+import com.example.locationwake.Backend.Database.mAttribute;
+import com.example.locationwake.Backend.Services.ChangeAttributeEntry;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class AddDistanceActivity extends AppCompatActivity {
+public class ChangeDistanceActivity extends CallBackActivity {
 
     //TAG of the class
-    static final private String TAG = "AddSettingActivity";
+    static final private String TAG = "ChangeDistanceActivity";
 
     private JSONObject data = new JSONObject();
 
@@ -37,6 +43,14 @@ public class AddDistanceActivity extends AppCompatActivity {
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started AddLocationActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_distance);
+
+        Runnable runnableCallBack = new Runnable() {
+            @Override
+            public void run() {
+                addCallBack();
+            }
+        };
+        runnableCallBack.run();
 
         loadData();
 
@@ -118,9 +132,6 @@ public class AddDistanceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): clicked on the back button");
-                Intent intent = new Intent(getApplicationContext(), AddNameAttributeActivity.class);
-                intent.putExtra("data", data.toString());
-                startActivity(intent);
                 finish();
             }
         });
@@ -142,20 +153,48 @@ public class AddDistanceActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "The item RADIUS is invalid", Toast.LENGTH_LONG).show();
                     return;
                 }
-
                 try {
-                    data.put("radius", Integer.toString(radius.getProgress()));
+                    ChangeAttributeEntry attributeEntry = new ChangeAttributeEntry(
+                            new mAttribute(data.get("LID").toString(),
+                                    data.get("AID").toString(),
+                                    data.get("attributeName").toString(),
+                                    new mDistance(Integer.toString(radius.getProgress())),
+                                    new mSetting(data.get("setting").toString())),
+                            getApplicationContext());
+                    attributeEntry.run();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                //go to the next activity
-                Intent intent = new Intent(getApplicationContext(), AddAttributeOverViewActivity.class);
-                intent.putExtra("data", data.toString());
-                startActivity(intent);
-                finish();
             }
         });
+    }
+
+
+    /**
+     * If the data entry has succeeded, it will call the callback method, which will be catched here
+     * @param update if the Activity should update components of itself, this is true
+     * @param succeeded if an action called by the Activity has succeeded, this is true
+     * @param failed if an action called by the Activity has failed, this is true
+     * @param type to distinguish between more CallBacks with the same boolean values, a Char can be added
+     * @param message to give the user or developer feedback, a message can be added
+     */
+    @Override
+    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
+        if (update) {
+            switch(type) {
+                // D for data
+                case 'A':
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    Logger.logD(TAG, message);
+                    finish();
+            }
+        } else if (failed) {
+            switch(type) {
+                case 'A':
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    Logger.logD(TAG, message);
+            }
+        }
     }
 
 }

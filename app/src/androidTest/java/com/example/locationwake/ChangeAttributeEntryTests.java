@@ -2,14 +2,13 @@ package com.example.locationwake;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.internal.runner.junit4.statement.UiThreadStatement;
 
-import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Services.ChangeAttributeEntry;
 import com.example.locationwake.Backend.Services.DataEntry;
 
 import org.junit.Test;
@@ -18,24 +17,25 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class DataEntryTests {
+public class ChangeAttributeEntryTests {
 
     @Test
-    public void addDataTest() throws InterruptedException {
-        DataHandler.deleteAll(ApplicationProvider.getApplicationContext());
+    public void changeNameTest() throws InterruptedException {
+        //ensure the test is running, and adds data
+        DataEntryTests dataEntryTests = new DataEntryTests();
+        dataEntryTests.addDataTest();
+        mLocation location = DataHandler.loadLocations(ApplicationProvider.getApplicationContext()).get(0);
+        mAttribute loadedAttribute = DataHandler.loadAttributes(location.getLID(), ApplicationProvider.getApplicationContext()).get(0);
 
-        DataEntry dataEntry = new DataEntry(
+        ChangeAttributeEntry dataEntry = new ChangeAttributeEntry(
                 new mAttribute(
-                        "1",
-                        "2",
-                        "Evening",
-                        new mDistance("500"),
-                        new mSetting("SLT")),
-                new mLocation("5", "Home", "5", "5"),
+                        loadedAttribute.getLID(),
+                        loadedAttribute.getAID(),
+                        "Morning",
+                        loadedAttribute.getDistance(),
+                        loadedAttribute.getSetting()),
                 ApplicationProvider.getApplicationContext());
         dataEntry.run();
 
@@ -45,7 +45,7 @@ public class DataEntryTests {
 
         ArrayList<mAttribute> attributes = DataHandler.loadAttributes(LID, ApplicationProvider.getApplicationContext());
         assertEquals(1, attributes.size());
-        assertEquals(attributes.get(0).getName(), "Evening");
+        assertEquals(attributes.get(0).getName(), "Morning");
         assertEquals(attributes.get(0).getDistance().getDistance(), "500");
         assertEquals(attributes.get(0).getSetting().getSetting(), "SLT");
     }

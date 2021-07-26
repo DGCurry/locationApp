@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Activities.AddNewLocationAttributeActivities.ChooseAttributeOrLocation;
-import com.example.locationwake.Activities.HelperClasses.MainSettingRecAdapter;
+import com.example.locationwake.Activities.HelperClasses.RecyclerViews.MainSettingRecAdapter;
 import com.example.locationwake.Activities.PermissionActivities.BackgroundLocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.LocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.NotificationPermissionActivity;

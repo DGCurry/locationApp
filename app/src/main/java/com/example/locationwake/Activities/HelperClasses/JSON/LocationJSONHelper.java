@@ -15,9 +15,10 @@ public class LocationJSONHelper {
      * @param latitude latitude of the location
      * @param longitude longitude of the location
      */
-    public LocationJSONHelper(String locationName, String latitude, String longitude) {
+    public LocationJSONHelper(String LID, String locationName, String latitude, String longitude) {
         data = new JSONObject();
         try {
+            data.put("LID", LID);
             data.put("locationName", locationName);
             data.put("latitude", latitude);
             data.put("longitude", longitude);

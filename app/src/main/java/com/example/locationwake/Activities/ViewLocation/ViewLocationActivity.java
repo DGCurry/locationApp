@@ -1,19 +1,23 @@
-package com.example.locationwake.Activities.viewLocation;
+package com.example.locationwake.Activities.ViewLocation;
 
 import android.os.Bundle;
+import android.widget.HorizontalScrollView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.locationwake.Activities.HelperClasses.SettingRecAdapter;
-import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
-import com.example.locationwake.Backend.Database.Attributes.mSetting;
+import com.example.locationwake.Activities.HelperClasses.RecyclerViews.CustomItemDecoration.LocationListDividerLine;
+import com.example.locationwake.Activities.HelperClasses.RecyclerViews.SettingRecAdapter;
+import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +28,14 @@ import java.util.List;
 public class ViewLocationActivity extends AppCompatActivity {
 
     //TAG of the class
-    static final private String TAG = "settingactivity";
+    static final private String TAG = "ViewLocationActivity";
 
     //DATA ELEMENTS
     //Holds all the data that is in the database
-    private List<List<AttributeInterface>> attributes = new ArrayList<>();
+    private List<mAttribute> attributes = new ArrayList<>();
     private mLocation location;
-    List<String> names;
+
+    JSONObject data;
 
     //GUI ELEMENTS
     private RecyclerView recyclerView;
@@ -61,9 +66,33 @@ public class ViewLocationActivity extends AppCompatActivity {
     private void loadData() {
         Logger.logV(TAG, "loadData(): loading the data from the database into dataList");
 
+        if (getIntent().hasExtra("data")) {
+            try {
+                data = new JSONObject(getIntent().getStringExtra("data"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         attributes = new ArrayList<>();
-        location = new mLocation("1", "HOME", "1", "2");
-        attributes.add();
+
+        try {
+            String LID = data.get("LID").toString();
+            List<mAttribute> attributesList = DataHandler.loadAttributes(LID, getApplicationContext());
+            attributes.addAll(attributesList);
+
+            location = DataHandler.loadLocation(LID, getApplicationContext());
+
+            Logger.logD(TAG, "loadData(): attributes have been loaded in, location is assigned");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (attributes.isEmpty() || location == null) {
+            Logger.logE(TAG, "loadData(): nothing has been found");
+        }
+
     }
 
 
@@ -76,6 +105,8 @@ public class ViewLocationActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.addItemDecoration(new LocationListDividerLine(getApplicationContext(), R.drawable.drawable_divider));
         mAdapter = new SettingRecAdapter(attributes, location, getApplicationContext());
         recyclerView.setAdapter(mAdapter);
     }

@@ -1,4 +1,4 @@
-package com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities;
+package com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddLocationActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import org.json.JSONObject;
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class AddNameActivity extends AppCompatActivity {
+public class AddNameLocationActivity extends AppCompatActivity {
 
     //TAG of the class
     static final private String TAG = "AddNameActivity";
@@ -63,31 +63,26 @@ public class AddNameActivity extends AppCompatActivity {
      */
     protected void createUI() {
         Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
-        TextView title = findViewById(R.id.textView_location_title_main);
-        TextView subTitle = findViewById(R.id.textView_setting_title_main);
-        subTitle.setVisibility(View.VISIBLE);
-
         EditText name = findViewById(R.id.editText_ad_name_name);
+
+        TextView title = findViewById(R.id.textView_location_title_main);
 
         name.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                subTitle.setText(s);
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
-        });
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                title.setText(s);
+            }
 
-        try {
-            title.setText(data.get("locationName").toString());
-        } catch (JSONException e) {
-            title.setText("None");
-            e.printStackTrace();
-        }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         addNavigation(name);
     }
@@ -123,13 +118,12 @@ public class AddNameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): clicked on the send button");
                 try {
-                    data.put("attributeName", name.getText().toString());
+                    data.put("locationName", name.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    return;
                 }
 
-                Intent intent = new Intent(getApplicationContext(), AddSettingActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AddLocationActivity.class);
                 intent.putExtra("data", data.toString());
                 startActivity(intent);
                 finish();

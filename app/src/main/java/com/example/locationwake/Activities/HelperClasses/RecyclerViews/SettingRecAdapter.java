@@ -1,14 +1,23 @@
-package com.example.locationwake.Activities.HelperClasses;
+package com.example.locationwake.Activities.HelperClasses.RecyclerViews;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddNameAttributeActivity;
+import com.example.locationwake.Activities.EditLocationActivities.ChangeAttributeActivities.ChangeDistanceActivity;
+import com.example.locationwake.Activities.EditLocationActivities.ChangeAttributeActivities.ChangeNameAttributeActivity;
+import com.example.locationwake.Activities.EditLocationActivities.ChangeAttributeActivities.ChangeSettingActivity;
+import com.example.locationwake.Activities.EditLocationActivities.ChangeLocationActivities.ChangeLocationActivity;
+import com.example.locationwake.Activities.HelperClasses.JSON.AttributeJSONHelper;
+import com.example.locationwake.Activities.HelperClasses.JSON.LocationJSONHelper;
 import com.example.locationwake.Backend.Database.Attributes.mDistance;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Backend.Database.mAttribute;
@@ -17,10 +26,11 @@ import com.example.locationwake.R;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 
-import org.w3c.dom.Attr;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -32,8 +42,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
     static final private String TAG = "SettingRecAdapter";
 
     //List that holds all the different attributes of the location displayed with the Recyclerview
-    private List<List<AttributeInterface>> attributes;
-    private List<String> names;
+    private List<mAttribute> attributes;
     private mLocation location;
 
     //Context of the application
@@ -41,24 +50,96 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
 
     private int attributeCount = 0;
     private int itemCount = 0;
+    private Stack<AttributeInterface> attributeStack;
+    private Map<Integer, Integer> positionAttributeTypeMapping;
 
     /**
      * Constructor
      * @param list holds all the different attributes of the location
      * @param context context of the application
      */
-    public SettingRecAdapter(List<List<AttributeInterface>> list, mLocation location, Context context) {
+    public SettingRecAdapter(List<mAttribute> list, mLocation location, Context context) {
         if (attributes == null) {
             attributes = new ArrayList<>();
         }
-
         //Clear the previous Recyclerview(if exists) and add the data
         attributes.clear();
         attributes.addAll(list);
         this.location = location;
         this.context = context;
 
+        attributeStack = new Stack<>();
+        positionAttributeTypeMapping = new HashMap<>();
+        setPositionAttributeTypeMapping();
+
         notifyDataSetChanged();
+    }
+
+    private void setPositionAttributeTypeMapping() {
+        if (attributes.isEmpty()) {
+            positionAttributeTypeMapping.put(0, AttributeInterface.LOCATION_TYPE);
+            return;
+        }
+
+        int maxPosition = getItemCount();
+        //Load in the attributes
+        attributeStack.push(attributes.get(attributeCount).getDistance());
+        attributeStack.push(attributes.get(attributeCount).getSetting());
+
+        for (int position = 0; position < maxPosition; position++) {
+            Logger.logE(TAG, "\n Going into the loop with values: \n" +
+                    "attributeCount: " + attributeCount + "\n" +
+                    "itemCount: " + itemCount + "\n" +
+                    "position: " + position + "\n");
+
+            if (position == 0) {
+                //this is the location of the list
+                Logger.logD(TAG, "setPositionAttributeTypeMapping(): returning with values: \n" +
+                        "attributeCount: " + attributeCount + "\n" +
+                        "itemCount: " + itemCount + "\n" +
+                        "position: " + position);
+
+                Logger.logD(TAG, "setPositionAttributeTypeMapping(): attribute location type");
+                positionAttributeTypeMapping.put(position, AttributeInterface.LOCATION_TYPE);
+                Logger.logE(TAG, "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
+                continue;
+            }
+
+            //Check if all items have been dealt with for the attributes list
+            if (attributes.get(attributeCount).getItemCount() == itemCount) {
+                Logger.logD(TAG, "setPositionAttributeTypeMapping(): all attributes for the list has been dealt " +
+                        "with, going to the next attributes list");
+                itemCount = 0;
+                attributeCount++;
+
+                //Load in the attributes
+                attributeStack.push(attributes.get(attributeCount).getDistance());
+                attributeStack.push(attributes.get(attributeCount).getSetting());
+            }
+
+            if (itemCount == 0) {
+                //this is the name of the attribute
+                Logger.logD(TAG, "setPositionAttributeTypeMapping(): returning with values: \n" +
+                        "attributeCount: " + attributeCount + "\n" +
+                        "itemCount: " + itemCount + "\n" +
+                        "position: " + position);
+                Logger.logD(TAG, "setPositionAttributeTypeMapping(): attribute name type");
+                positionAttributeTypeMapping.put(position, AttributeInterface.NAME_TYPE);
+                Logger.logE(TAG, "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
+                itemCount++;
+                continue;
+            }
+
+            int returnValue = attributeStack.pop().getType();
+            Logger.logD(TAG, "setPositionAttributeTypeMapping(): returning with values: \n" +
+                    "attributeCount: " + attributeCount + "\n" +
+                    "itemCount: " + itemCount + "\n" +
+                    "position: " + position);
+            Logger.logD(TAG, "setPositionAttributeTypeMapping(): attribute " + returnValue + " type");
+            positionAttributeTypeMapping.put(position, returnValue);
+            itemCount++;
+            Logger.logE(TAG, "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
+        }
     }
 
     /**
@@ -68,37 +149,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
      */
     @Override
     public int getItemViewType(int position) {
-        Logger.logD(TAG, "getItemViewType(): position is " + position);
-        if (position == 0) {
-            Logger.logD(TAG, "getItemViewType(): first position, is the Location");
-            return AttributeInterface.LOCATION_TYPE;
-        }
-
-        if (attributeCount == attributes.size()) {
-            Logger.logE(TAG, "getItemViewType(): Something is wrong");
-            return -1;
-        }
-
-        //Check if all items have been dealt with for the attributes list
-        if (attributes.get(attributeCount).size() == itemCount) {
-            Logger.logD(TAG, "getItemViewType(): all attributes for the list has been dealt " +
-                    "with, going to the next attributes list");
-            itemCount = 0;
-            attributeCount++;
-        }
-
-        Logger.logD(TAG, "getItemViewType(): attributeCount " + attributeCount);
-
-        if (itemCount == 0) {
-            Logger.logD(TAG, "getItemViewType(): attribute name type");
-            itemCount++;
-            return AttributeInterface.NAME_TYPE;
-        }
-
-        // Keep popping the stack for new types
-        itemCount++;
-        Logger.logD(TAG, "getItemViewType(): type is " + attributes.get(attributeCount).get(itemCount).getType());
-        return attributes.get(attributeCount).get(itemCount).getType();
+        return positionAttributeTypeMapping.get(position);
     }
 
     /**
@@ -110,8 +161,8 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
         Logger.logD(TAG, "positionConverter(): converting " + position);
         int relativePosition = position - 1;
         int attributeC = 0;
-        for (List<AttributeInterface> attributesList:attributes) {
-            relativePosition -= attributesList.size();
+        for (mAttribute attribute:attributes) {
+            relativePosition -= attribute.getItemCount();
             if (relativePosition < 0) {
                 Logger.logD(TAG, "positionConverter(): found position " + attributeC);
                 return attributeC;
@@ -142,7 +193,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
 
             case AttributeInterface.LOCATION_TYPE:
                 itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.location_item, parent, false);
+                        .inflate(R.layout.location_item_expanded, parent, false);
                 return new LocationViewHolder(itemView);
 
             //name
@@ -204,8 +255,8 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
             return c;
         }
         // get the amount of attributes per mAttribute that is not null or set
-        for (List<AttributeInterface> attributeList:attributes) {
-            c += attributeList.size();
+        for (mAttribute attribute:attributes) {
+            c += attribute.getItemCount();
         }
         Logger.logD(TAG, "getItemCount(): found " + c + " items");
         return c;
@@ -217,6 +268,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
     public class SettingViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView setting;
+        private View v;
 
         /**
          * constructor of the class. Binds the UI elements
@@ -224,6 +276,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
          */
         public SettingViewHolder(View view) {
             super(view);
+            v = view;
             setting = (TextView) view.findViewById(R.id.textView_header_setting);
         }
 
@@ -233,8 +286,25 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
          */
         void bindView(int position) {
             int attributeArrayPosition = positionConverter(position);
-            mSetting settingObject = (mSetting)attributes.get(attributeArrayPosition).get(1);
+            mSetting settingObject = attributes.get(attributeArrayPosition).getSetting();
             setting.setText(settingObject.getSetting());
+
+            Button button = v.findViewById(R.id.button_invisible);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ChangeSettingActivity.class);
+                    intent.putExtra("data", new AttributeJSONHelper(
+                            location.getName(),
+                            location.getLID(),
+                            attributes.get(attributeArrayPosition).getName(),
+                            attributes.get(attributeArrayPosition).getAID(),
+                            attributes.get(attributeArrayPosition).getDistance().getDistance(),
+                            attributes.get(attributeArrayPosition).getSetting().getSetting()).build().toString());
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
     }
 
@@ -243,7 +313,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
      */
     public class LocationViewHolder extends RecyclerView.ViewHolder {
 
-//        MapView mapView;
+        //        MapView mapView;
 //        GoogleMap map;
         View layout;
 
@@ -256,21 +326,51 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
             layout = view;
 //            mapView = layout.findViewById(R.id.lite_listrow_map);
 //            if (mapView != null) {
-                // Initialise the MapView
+            // Initialise the MapView
 //                mapView.onCreate(null);
-                // Set the map ready callback to receive the GoogleMap object
+            // Set the map ready callback to receive the GoogleMap object
 //                mapView.getMapAsync(this);
-            }
+        }
 
         /**
          * binds the item to a certain position
          * @param position position of the item
          */
         void bindView(int position) {
+            TextView name = layout.findViewById(R.id.textView_distance_title);
             TextView latitude = layout.findViewById(R.id.textView_main_location_latitude);
             TextView longitude = layout.findViewById(R.id.textView_main_location_longitude);
+            name.setText(location.getName());
             latitude.setText(location.getLat());
             longitude.setText(location.getLng());
+
+            Button changeLocation = layout.findViewById(R.id.button_header_change);
+            changeLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ChangeLocationActivity.class);
+                    intent.putExtra("data", new LocationJSONHelper(location.getLID(),
+                            location.getName(), location.getLat(), location.getLng()).build().toString());
+                    v.getContext().startActivity(intent);
+                }
+            });
+
+            Button addAttribute = layout.findViewById(R.id.button_header_add_attribute);
+            addAttribute.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                Logger.logD(TAG, "LocationViewHolder.bindView(): sending name " + location.getName());
+                    Intent intent = new Intent(v.getContext(), AddNameAttributeActivity.class);
+                    intent.putExtra("data", new AttributeJSONHelper(
+                            location.getName(),
+                            location.getLID(),
+                            null,
+                            null,
+                            null,
+                            null).build().toString());
+                    v.getContext().startActivity(intent);
+                }
+            });
 
             // Store a reference of the ViewHolder object in the layout.
 //            layout.setTag(this);
@@ -317,6 +417,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
     public class DistanceViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView distance;
+        View v;
 
         /**
          * constructor of the class. Binds the UI elements
@@ -324,6 +425,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
          */
         public DistanceViewHolder(View view) {
             super(view);
+            v = view;
             // get reference to views
             distance = (TextView) view.findViewById(R.id.textView_distance_radius);
 
@@ -335,8 +437,25 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
          */
         void bindView(int position) {
             int attributeArrayPosition = positionConverter(position);
-            mDistance distanceObject = (mDistance)attributes.get(attributeArrayPosition).get(2);
+            mDistance distanceObject = attributes.get(attributeArrayPosition).getDistance();
             distance.setText(distanceObject.getDistance());
+
+            Button button = v.findViewById(R.id.button_invisible);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ChangeDistanceActivity.class);
+                    intent.putExtra("data", new AttributeJSONHelper(
+                            location.getName(),
+                            location.getLID(),
+                            attributes.get(attributeArrayPosition).getName(),
+                            attributes.get(attributeArrayPosition).getAID(),
+                            attributes.get(attributeArrayPosition).getDistance().getDistance(),
+                            attributes.get(attributeArrayPosition).getSetting().getSetting()).build().toString());
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
 
     }
@@ -347,13 +466,14 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
     public class NameViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView title;
-
+        private View v;
         /**
          * constructor of the class. Binds the UI elements
          * @param view
          */
         public NameViewHolder(View view) {
             super(view);
+            v = view;
             // get reference to views
             title = (TextView) view.findViewById(R.id.textView_location_title_main);
         }
@@ -364,7 +484,26 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
          */
         void bindView(int position) {
             int attributeArrayPosition = positionConverter(position);
-            title.setText(names.get(attributeArrayPosition));
+            String name = attributes.get(attributeArrayPosition).getName();
+
+            title.setText(name);
+
+            Button button = v.findViewById(R.id.button_invisible);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ChangeNameAttributeActivity.class);
+                    intent.putExtra("data", new AttributeJSONHelper(
+                            location.getName(),
+                            location.getLID(),
+                            attributes.get(attributeArrayPosition).getName(),
+                            attributes.get(attributeArrayPosition).getAID(),
+                            attributes.get(attributeArrayPosition).getDistance().getDistance(),
+                            attributes.get(attributeArrayPosition).getSetting().getSetting()).build().toString());
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
 
     }

@@ -1,39 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30dp"
+    android:padding="15dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    android:background="@color/space_cadet">
 
-    <include
-        android:id="@+id/include_name_view_location"
-        layout="@layout/header_icon_button"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="wrap"
-        app:layout_constraintWidth_default="spread"
-        android:visibility="visible">
-    </include>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_view_location"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="30dp"
-        android:overScrollMode="never"
-        android:visibility="visible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintTop_toBottomOf="@id/include_name_view_location"
-        app:layout_constraintWidth_default="wrap" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_view_location"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            android:visibility="visible"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="wrap"
+            android:layout_marginBottom="@dimen/navigation_buttons_height"/>
 
     <include
         android:id="@+id/navigation_bar"
-        layout="@layout/navigation_buttons"
-        tools:layout_editor_absoluteX="45dp"
-        tools:layout_editor_absoluteY="339dp" />
+        layout="@layout/navigation_buttons" />
 </androidx.constraintlayout.widget.ConstraintLayout>

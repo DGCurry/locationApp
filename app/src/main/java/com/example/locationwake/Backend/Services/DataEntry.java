@@ -6,6 +6,7 @@ import com.example.locationwake.Backend.Managers.CallBackManager;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
+import com.example.locationwake.Logger;
 
 
 public class DataEntry implements Runnable {
@@ -13,7 +14,7 @@ public class DataEntry implements Runnable {
     /**
      * Tag of the class
      */
-    static final private String TAG = "LocationWorker";
+    static final private String TAG = "DataEntry";
 
     private mAttribute attribute;
     private mLocation location;
@@ -49,20 +50,25 @@ public class DataEntry implements Runnable {
     @Override
     public void run() {
         if (attribute == null && location == null) {
+            Logger.logE(TAG, "run(): Failed to add data, both objects are null");
             CallBackManager.callBackActivities(false, false, true, 'B',
                     "failed, attribute and location is null");
-        } else if (attribute != null) {
-            DataHandler.addAttribute(attribute, context);
-            CallBackManager.callBackActivities(false, true, false, 'A',
-                    "succeeded, added attribute");
+        } else if (attribute != null && location != null) {
+            Logger.logD(TAG, "run(): Succeeded to add data, both location and attribute " +
+                    "objects are not null");
+            DataHandler.addData(attribute, location, context);
+            CallBackManager.callBackActivities(false, true, false, 'B',
+                    "succeeded, added attribute and location");
         } else if (location != null) {
+            Logger.logD(TAG, "run(): Succeeded to add data, location object is not null");
             DataHandler.addLocation(location, context);
             CallBackManager.callBackActivities(false, true, false, 'L',
                     "succeeded, added location");
         } else {
-            DataHandler.addData(attribute, location, context);
-            CallBackManager.callBackActivities(false, true, false, 'B',
-                    "succeeded, added attribute and location");
+            Logger.logD(TAG, "run(): Succeeded to add data, attribute object is not null");
+            DataHandler.addAttribute(attribute, context);
+            CallBackManager.callBackActivities(false, true, false, 'A',
+                    "succeeded, added attribute");
         }
     }
 

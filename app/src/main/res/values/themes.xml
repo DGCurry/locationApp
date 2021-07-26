@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.LocationWake" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/blue_violet</item>
-        <item name="colorPrimaryVariant">@color/blue_violet_light</item>
+        <item name="colorPrimary">@color/fulvous</item>
+        <item name="colorPrimaryVariant">@color/fulvous_dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/blue_jeans</item>
-        <item name="colorSecondaryVariant">@color/blue_jeans_dark</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/space_cadet</item>
+        <item name="colorSecondaryVariant">@color/space_cadet_light</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Customize your theme here. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="android:windowContentTransitions">true</item>

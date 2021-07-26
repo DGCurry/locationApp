@@ -15,7 +15,7 @@ public class SettingObject {
 
     /**
      * constructor, takes over the Key ID
-     * @param KID
+     * @param LID
      */
     public SettingObject(String LID, String AID) {
         this.LID = LID;
@@ -43,8 +43,8 @@ public class SettingObject {
     }
 
     /**
-     * gets the KID of this settingobject
-     * @return KID
+     * gets the LID of this settingobject
+     * @return LID
      */
     public String getLID() {
         return LID;

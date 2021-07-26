@@ -7,7 +7,7 @@
         android:id="@+id/layout_button_main"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/navigation_buttons_height"
         android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="horizontal">

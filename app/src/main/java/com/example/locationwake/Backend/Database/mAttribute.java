@@ -24,7 +24,7 @@ public class mAttribute {
 
     /**
      * Constructor to create a data holder from the beginning
-     * @param KID key id to link to LocationSettingDbHelper entry
+     * @param LID key id to link to LocationSettingDbHelper entry
      * @param AID key id to link to LocationSettingDbHelper entry
      * All objects here are the least an attribute should have. Any other must be set by getters and setters.
      */

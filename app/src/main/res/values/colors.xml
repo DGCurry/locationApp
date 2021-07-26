@@ -8,5 +8,13 @@
     <color name="selective_yellow">#F7B801</color>
     <color name="selective_yellow_dark">#dea501</color>
     <color name="black">#FF000000</color>
+
+    main colors
+    <color name="space_cadet">#263454</color>
+    <color name="space_cadet_light">#4C68A8</color>
+    <color name="fulvous">#E98A15</color>
+    <color name="fulvous_dark">#A3600F</color>
     <color name="white">#FFFFFFFF</color>
+
+
 </resources>

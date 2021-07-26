@@ -1,17 +1,16 @@
-package com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddLocationActivities;
+package com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddNameAttributeActivity;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -19,14 +18,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Activity to add a location to the database
+ * This is a test class to test all func. The GUI will be added later on.
  */
-public class AddLocationActivity extends AppCompatActivity {
+public class AddNameAttributeActivity extends AppCompatActivity {
 
     //TAG of the class
-    static final private String TAG = "AddLocationActivity";
-
-    // JSON object used to communicate between activities
+    static final private String TAG = "AddNameActivity";
     private JSONObject data = new JSONObject();
 
     /**
@@ -38,7 +35,7 @@ public class AddLocationActivity extends AppCompatActivity {
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started AddLocationActivity");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_location);
+        setContentView(R.layout.activity_add_name_location);
 
         loadData();
 
@@ -56,37 +53,51 @@ public class AddLocationActivity extends AppCompatActivity {
             try {
                 data = new JSONObject(getIntent().getStringExtra("data"));
             } catch (JSONException e) {
+                Logger.logE(TAG, "loadData(): could not load the data");
                 e.printStackTrace();
             }
         }
     }
 
-
     /**
      * Creates the GUI by adding the listeners
      */
     protected void createUI() {
-        Logger.logV(TAG, "createUI(): creating UI and assigning listeners");
-
-        EditText latitudeInput = findViewById(R.id.editText_ad_location_latitude);
-        EditText longitudeInput = findViewById(R.id.editText_ad_location_longitude);
-
+        Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
         TextView title = findViewById(R.id.textView_location_title_main);
+        TextView subTitle = findViewById(R.id.textView_setting_title_main);
+        subTitle.setVisibility(View.VISIBLE);
+
+        EditText name = findViewById(R.id.editText_ad_name_name);
+
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                subTitle.setText(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         try {
             title.setText(data.get("locationName").toString());
         } catch (JSONException e) {
+            title.setText("None");
             e.printStackTrace();
         }
-        addNavigation(latitudeInput, longitudeInput);
+
+        addNavigation(name);
     }
 
     /**
      * Method to add navigation behaviour to the bottom navigation bar
-     * @param latitudeInput EditText for user to enter the latitude of the location
-     * @param longitudeInput EditText for user to enter the longitude of the location
+     * @param name EditText that holds the input given by the user
      */
-    private void addNavigation(EditText latitudeInput, EditText longitudeInput) {
-
+    private void addNavigation(EditText name) {
         // Navigation
         Button back = findViewById(R.id.button_navigation_left);
         Button stop = findViewById(R.id.button_navigation_middle);
@@ -96,9 +107,6 @@ public class AddLocationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): clicked on the back button");
-                Intent intent = new Intent(getApplicationContext(), AddNameAttributeActivity.class);
-                intent.putExtra("data", data.toString());
-                startActivity(intent);
                 finish();
             }
         });
@@ -114,28 +122,20 @@ public class AddLocationActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.logD(TAG, "createUI(): clicked on send Button");
-                //check the input data
-                if (!new mLocation(null, null, latitudeInput.getText().toString(),
-                        longitudeInput.getText().toString()).isValid()) {
-                    Logger.logE(TAG, "createUI(): onClick(): LOCATION is invalid");
-                    Toast.makeText(getApplicationContext(), "The item Location is invalid", Toast.LENGTH_LONG).show();
+                Logger.logD(TAG, "onClick(): clicked on the send button");
+                try {
+                    data.put("attributeName", name.getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
                     return;
                 }
 
-                try {
-                    data.put("latitude", latitudeInput.getText().toString());
-                    data.put("longitude", longitudeInput.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                //go to the next activity
-                Intent intent = new Intent(getApplicationContext(), AddLocationOverViewActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AddSettingActivity.class);
                 intent.putExtra("data", data.toString());
                 startActivity(intent);
                 finish();
             }
         });
     }
+
 }

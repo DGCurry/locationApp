@@ -1,35 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="15dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    android:background="@color/space_cadet">
 
-    <include
-        android:id="@+id/include_main_active_setting"
-        layout="@layout/header_icon_button"
-        android:layout_height="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="wrap"
-        app:layout_constraintWidth_default="spread"
-        android:visibility="visible">
-    </include>
+        android:layout_marginBottom="@dimen/navigation_buttons_height"
+        >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_main_active_setting"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="30dp"
-        android:overScrollMode="never"
-        android:visibility="visible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintTop_toBottomOf="@id/include_main_active_setting"
-        app:layout_constraintWidth_default="wrap" />
+        <include
+            android:id="@+id/include_main_active_setting"
+            layout="@layout/header_icon"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintWidth_default="spread"
+            android:visibility="visible">
+        </include>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_main_active_setting"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="30dp"
+            android:overScrollMode="never"
+            android:visibility="visible"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintTop_toBottomOf="@id/include_main_active_setting"
+            app:layout_constraintWidth_default="wrap" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:id="@+id/navigation_bar"

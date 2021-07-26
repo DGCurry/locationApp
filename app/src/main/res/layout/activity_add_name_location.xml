@@ -1,62 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="15dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/space_cadet">
 
-    <include
-        android:id="@+id/include_add_name_header"
-        layout="@layout/header_icon"
-        android:layout_height="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="wrap"
-        app:layout_constraintWidth_default="spread"
-        android:visibility="visible">
-    </include>
+        android:layout_marginBottom="@dimen/navigation_buttons_height"
+        >
 
-    <LinearLayout
-        android:id="@+id/layout_add_name_input_outer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:layout_constraintTop_toBottomOf="@id/include_add_name_header"
-        android:orientation="vertical">
+        <include
+            android:id="@+id/include_add_name_header"
+            layout="@layout/header_icon"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintWidth_default="spread"
+            android:visibility="visible">
+        </include>
 
         <LinearLayout
-            android:id="@+id/layout_add_name_input_inner"
+            android:id="@+id/layout_add_name_input_outer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_add_name_header"
+            android:orientation="vertical"
+            android:background="@color/white">
 
-            <TextView
-                android:id="@+id/textView_ad_name_title"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/rc_icon_size"
-                android:padding="@dimen/rc_text_padding"
-                android:textColor="#000"
-                android:textSize="@dimen/extra_large_text_size"
-                android:text="Name"/>
 
-            <EditText
-                android:id="@+id/editText_ad_name_name"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <LinearLayout
+                android:id="@+id/layout_add_name_input_inner"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/normal_text_size"
-                android:layout_marginStart="@dimen/rc_icon_size"
-                android:padding="@dimen/rc_text_padding"
-                tools:text="" />
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView_ad_name_title"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/rc_icon_size"
+                    android:padding="@dimen/rc_text_padding"
+                    android:textColor="#000"
+                    android:textSize="@dimen/extra_large_text_size"
+                    android:text="Name"/>
+
+                <EditText
+                    android:id="@+id/editText_ad_name_name"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/normal_text_size"
+                    android:layout_marginStart="@dimen/rc_icon_size"
+                    android:padding="@dimen/rc_text_padding"
+                    tools:text="" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:id="@+id/navigation_bar"

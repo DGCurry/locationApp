@@ -1,4 +1,4 @@
-package com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddLocationActivities;
+package com.example.locationwake.Activities.EditLocationActivities.ChangeLocationActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,10 +8,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddNameAttributeActivity;
+import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
+import com.example.locationwake.Activities.EditLocationActivities.ChangeAttributeActivities.ChangeNameAttributeActivity;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Services.ChangeLocationEntry;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -21,10 +21,10 @@ import org.json.JSONObject;
 /**
  * Activity to add a location to the database
  */
-public class AddLocationActivity extends AppCompatActivity {
+public class ChangeLocationActivity extends CallBackActivity {
 
     //TAG of the class
-    static final private String TAG = "AddLocationActivity";
+    static final private String TAG = "ChangeLocationActivity";
 
     // JSON object used to communicate between activities
     private JSONObject data = new JSONObject();
@@ -39,6 +39,14 @@ public class AddLocationActivity extends AppCompatActivity {
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started AddLocationActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location);
+
+        Runnable runnableCallBack = new Runnable() {
+            @Override
+            public void run() {
+                addCallBack();
+            }
+        };
+        runnableCallBack.run();
 
         loadData();
 
@@ -74,6 +82,8 @@ public class AddLocationActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.textView_location_title_main);
         try {
             title.setText(data.get("locationName").toString());
+            latitudeInput.setText(data.get("latitude").toString());
+            longitudeInput.setText(data.get("longitude").toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -96,7 +106,7 @@ public class AddLocationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): clicked on the back button");
-                Intent intent = new Intent(getApplicationContext(), AddNameAttributeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ChangeNameAttributeActivity.class);
                 intent.putExtra("data", data.toString());
                 startActivity(intent);
                 finish();
@@ -122,20 +132,45 @@ public class AddLocationActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "The item Location is invalid", Toast.LENGTH_LONG).show();
                     return;
                 }
-
                 try {
-                    data.put("latitude", latitudeInput.getText().toString());
-                    data.put("longitude", longitudeInput.getText().toString());
+                    ChangeLocationEntry locationEntry = new ChangeLocationEntry(
+                            new mLocation(data.get("LID").toString(),
+                                    data.get("locationName").toString(),
+                                    latitudeInput.getText().toString(),
+                                    longitudeInput.getText().toString()), getApplicationContext());
+                    locationEntry.run();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                //go to the next activity
-                Intent intent = new Intent(getApplicationContext(), AddLocationOverViewActivity.class);
-                intent.putExtra("data", data.toString());
-                startActivity(intent);
-                finish();
             }
         });
+    }
+
+
+    /**
+     * If the data entry has succeeded, it will call the callback method, which will be catched here
+     * @param update if the Activity should update components of itself, this is true
+     * @param succeeded if an action called by the Activity has succeeded, this is true
+     * @param failed if an action called by the Activity has failed, this is true
+     * @param type to distinguish between more CallBacks with the same boolean values, a Char can be added
+     * @param message to give the user or developer feedback, a message can be added
+     */
+    @Override
+    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
+        if (update) {
+            switch(type) {
+                // D for data
+                case 'L':
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    Logger.logD(TAG, message);
+                    finish();
+            }
+        } else if (failed) {
+            switch(type) {
+                case 'L':
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    Logger.logD(TAG, message);
+            }
+        }
     }
 }

@@ -123,12 +123,32 @@ public class DataHandler {
 
     /**
      * Returns the mLocation object that is found with the KID
-     * @param KID
+     * @param LID
      * @param context
      * @return
      */
     public static mLocation loadLocation(String LID, Context context) {
-        LocationSettingDbHelper attributesDbHelper = new LocationSettingDbHelper(context);
-        return attributesDbHelper.getLocation(LID);
+        LocationSettingDbHelper locationSettingDbHelper = new LocationSettingDbHelper(context);
+        return locationSettingDbHelper.getLocation(LID);
+    }
+
+    /**
+     * Updates the location in the database with LID = LID
+     * @param location object that contains the new updated data
+     * @param context of the application
+     */
+    public static void updateLocation(mLocation location, Context context) {
+        LocationSettingDbHelper locationSettingDbHelper = new LocationSettingDbHelper(context);
+        locationSettingDbHelper.updateLocation(location);
+    }
+
+    /**
+     * Updates the attribute for a certain location in the database with LID = LID
+     * @param attribute object that contains the new updated data
+     * @param context of the application
+     */
+    public static void updateAttribute(mAttribute attribute, Context context) {
+        AttributesDbHelper attributesDbHelper = new AttributesDbHelper(context);
+        attributesDbHelper.updateAttribute(attribute);
     }
 }
