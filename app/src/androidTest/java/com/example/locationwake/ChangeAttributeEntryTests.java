@@ -3,13 +3,10 @@ package com.example.locationwake;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
-import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Backend.Services.ChangeAttributeEntry;
-import com.example.locationwake.Backend.Services.DataEntry;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +43,7 @@ public class ChangeAttributeEntryTests {
         ArrayList<mAttribute> attributes = DataHandler.loadAttributes(LID, ApplicationProvider.getApplicationContext());
         assertEquals(1, attributes.size());
         assertEquals(attributes.get(0).getName(), "Morning");
-        assertEquals(attributes.get(0).getDistance().getDistance(), "500");
+        assertEquals(attributes.get(0).getDistance().getRadius(), "500");
         assertEquals(attributes.get(0).getSetting().getSetting(), "SLT");
     }
 }

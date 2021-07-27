@@ -2,10 +2,8 @@ package com.example.locationwake;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.internal.runner.junit4.statement.UiThreadStatement;
 
-import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
@@ -33,7 +31,7 @@ public class DataEntryTests {
                         "1",
                         "2",
                         "Evening",
-                        new mDistance("500"),
+                        new mRadius("500"),
                         new mSetting("SLT")),
                 new mLocation("5", "Home", "5", "5"),
                 ApplicationProvider.getApplicationContext());
@@ -46,7 +44,7 @@ public class DataEntryTests {
         ArrayList<mAttribute> attributes = DataHandler.loadAttributes(LID, ApplicationProvider.getApplicationContext());
         assertEquals(1, attributes.size());
         assertEquals(attributes.get(0).getName(), "Evening");
-        assertEquals(attributes.get(0).getDistance().getDistance(), "500");
+        assertEquals(attributes.get(0).getDistance().getRadius(), "500");
         assertEquals(attributes.get(0).getSetting().getSetting(), "SLT");
     }
 }

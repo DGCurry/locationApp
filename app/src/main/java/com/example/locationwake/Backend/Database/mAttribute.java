@@ -1,6 +1,6 @@
 package com.example.locationwake.Backend.Database;
 
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 
 /**
@@ -17,7 +17,7 @@ public class mAttribute {
     private String LID;
     private String AID;
 
-    private com.example.locationwake.Backend.Database.Attributes.mDistance mDistance;
+    private mRadius mDistance;
     private com.example.locationwake.Backend.Database.Attributes.mSetting mSetting;
 
     private String name;
@@ -28,7 +28,7 @@ public class mAttribute {
      * @param AID key id to link to LocationSettingDbHelper entry
      * All objects here are the least an attribute should have. Any other must be set by getters and setters.
      */
-    public mAttribute(String LID, String AID, String name, mDistance mDistance, mSetting mSetting) {
+    public mAttribute(String LID, String AID, String name, mRadius mDistance, mSetting mSetting) {
         this.LID = LID;
         this.AID = AID;
         this.name = name;
@@ -73,7 +73,7 @@ public class mAttribute {
      * method to retrieve the attribute mDistance
      * @return mDistance
      */
-    public com.example.locationwake.Backend.Database.Attributes.mDistance getDistance() {
+    public mRadius getDistance() {
         return mDistance;
     }
 
@@ -81,7 +81,7 @@ public class mAttribute {
      * sets the attribute mDistance
      * @param mDistance
      */
-    public void setDistance(com.example.locationwake.Backend.Database.Attributes.mDistance mDistance) {
+    public void setDistance(mRadius mDistance) {
         this.mDistance = mDistance;
     }
 

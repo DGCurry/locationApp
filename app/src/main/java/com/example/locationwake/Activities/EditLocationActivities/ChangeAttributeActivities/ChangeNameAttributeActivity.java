@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Backend.Services.ChangeAttributeEntry;
@@ -132,7 +132,7 @@ public class ChangeNameAttributeActivity extends CallBackActivity {
                 try {
                     ChangeAttributeEntry attributeEntry = new ChangeAttributeEntry(
                             new mAttribute(data.get("LID").toString(), data.get("AID").toString(),
-                                    name.getText().toString(), new mDistance(data.get("radius").toString()),
+                                    name.getText().toString(), new mRadius(data.get("radius").toString()),
                                     new mSetting(data.get("setting").toString())),
                             getApplicationContext());
                     attributeEntry.run();

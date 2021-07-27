@@ -1,6 +1,5 @@
 package com.example.locationwake.Activities.EditLocationActivities.ChangeAttributeActivities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,10 +9,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Backend.Services.ChangeAttributeEntry;
@@ -163,7 +160,7 @@ public class ChangeSettingActivity extends CallBackActivity {
                             new mAttribute(data.get("LID").toString(),
                                     data.get("AID").toString(),
                                     data.get("attributeName").toString(),
-                                    new mDistance(data.get("radius").toString()),
+                                    new mRadius(data.get("radius").toString()),
                                     new mSetting(setting[0])),
                             getApplicationContext());
                     attributeEntry.run();

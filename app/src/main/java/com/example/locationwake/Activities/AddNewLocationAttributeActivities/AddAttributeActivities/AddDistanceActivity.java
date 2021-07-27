@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -137,7 +137,7 @@ public class AddDistanceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): clicked on the send button");
-                if (!new mDistance(Integer.toString(radius.getProgress())).isValid()) {
+                if (!new mRadius(Integer.toString(radius.getProgress())).isValid()) {
                     Logger.logE(TAG, "createUI(): onClick(): RADIUS is invalid");
                     Toast.makeText(getApplicationContext(), "The item RADIUS is invalid", Toast.LENGTH_LONG).show();
                     return;

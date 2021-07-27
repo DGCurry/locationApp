@@ -10,8 +10,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddNameAttributeActivity;
+import com.example.locationwake.Backend.Behaviour.Components.LocationComponent;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mRadius;
+import com.example.locationwake.Backend.Services.CheckLocationEntry;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -21,7 +25,7 @@ import org.json.JSONObject;
 /**
  * Activity to add a location to the database
  */
-public class AddLocationActivity extends AppCompatActivity {
+public class AddLocationActivity extends CallBackActivity {
 
     //TAG of the class
     static final private String TAG = "AddLocationActivity";
@@ -40,10 +44,14 @@ public class AddLocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location);
 
-        loadData();
+        Runnable runnable = this::addCallBack;
+        runnable.run();
+    }
 
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
         createUI();
     }
 
@@ -77,6 +85,15 @@ public class AddLocationActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Button chooseMaps = findViewById(R.id.button_ad_maps);
+        chooseMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ShowLocationActivity.class);
+                startActivity(intent);
+            }
+        });
         addNavigation(latitudeInput, longitudeInput);
     }
 
@@ -129,13 +146,26 @@ public class AddLocationActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                //go to the next activity
-                Intent intent = new Intent(getApplicationContext(), AddLocationOverViewActivity.class);
-                intent.putExtra("data", data.toString());
-                startActivity(intent);
-                finish();
+                Runnable checkLocationEntry = new CheckLocationEntry(
+                        getApplicationContext(),
+                        latitudeInput.getText().toString(),
+                        longitudeInput.getText().toString(),
+                        new mRadius("500"));
+                checkLocationEntry.run();
             }
         });
+    }
+
+    @Override
+    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
+        if (succeeded) {
+            //go to the next activity
+            Intent intent = new Intent(getApplicationContext(), AddLocationOverViewActivity.class);
+            intent.putExtra("data", data.toString());
+            startActivity(intent);
+            finish();
+        } else if (failed) {
+            Logger.logD(TAG, "onCallBack(): location " + message + " is too close");
+        }
     }
 }

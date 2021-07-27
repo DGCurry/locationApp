@@ -8,28 +8,28 @@ import com.example.locationwake.Backend.Database.mAttribute;
 
 import java.util.ArrayList;
 
-public class mDistance implements AttributeInterface{
+public class mRadius implements AttributeInterface{
 
-    private String distance;
+    private String radius;
 
     /**
-     * Constructor, sets the distance
-     * @param distance String which holds the radius in meter
+     * Constructor, sets the radius
+     * @param radius String which holds the radius in meter
      */
-    public mDistance(String distance) {
-        this.distance = distance;
+    public mRadius(String radius) {
+        this.radius = radius;
     }
 
     /**
      *
      * @return
      */
-    public String getDistance() {
-        return distance;
+    public String getRadius() {
+        return radius;
     }
 
-    public void setDistance(String distance) {
-        this.distance = distance;
+    public void setRadius(String radius) {
+        this.radius = radius;
     }
 
     @Override
@@ -51,16 +51,16 @@ public class mDistance implements AttributeInterface{
      * @return True if the criteria for the attribute has been met, else False
      */
     public boolean isValid(Context context, String latitude, String longitude) {
-        if (distance.equals("")) {
+        if (radius.equals("")) {
             return false;
         }
 
-        if (distance.trim().length() == 0) {
+        if (radius.trim().length() == 0) {
             return false;
         }
 
         try {
-            Integer.parseInt(distance);
+            Integer.parseInt(radius);
         } catch(NumberFormatException e) {
             return false;
         }
@@ -85,8 +85,8 @@ public class mDistance implements AttributeInterface{
 
                 float newDistance = newLocation.distanceTo(savedLocation);
 
-                if (newDistance <= Float.parseFloat(this.distance)
-                        || newDistance <= Integer.parseInt(attribute.getDistance().getDistance())) {
+                if (newDistance <= Float.parseFloat(this.radius)
+                        || newDistance <= Integer.parseInt(attribute.getDistance().getRadius())) {
                     return false;
                 }
             }

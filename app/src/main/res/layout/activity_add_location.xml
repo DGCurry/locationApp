@@ -98,6 +98,11 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/button_ad_maps"
+                android:layout_width="@dimen/rc_icon_size"
+                android:layout_height="@dimen/rc_icon_size"/>
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

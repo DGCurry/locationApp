@@ -18,7 +18,7 @@ import com.example.locationwake.Activities.EditLocationActivities.ChangeAttribut
 import com.example.locationwake.Activities.EditLocationActivities.ChangeLocationActivities.ChangeLocationActivity;
 import com.example.locationwake.Activities.HelperClasses.JSON.AttributeJSONHelper;
 import com.example.locationwake.Activities.HelperClasses.JSON.LocationJSONHelper;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Logger;
@@ -300,7 +300,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
                             location.getLID(),
                             attributes.get(attributeArrayPosition).getName(),
                             attributes.get(attributeArrayPosition).getAID(),
-                            attributes.get(attributeArrayPosition).getDistance().getDistance(),
+                            attributes.get(attributeArrayPosition).getDistance().getRadius(),
                             attributes.get(attributeArrayPosition).getSetting().getSetting()).build().toString());
                     v.getContext().startActivity(intent);
                 }
@@ -437,8 +437,8 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
          */
         void bindView(int position) {
             int attributeArrayPosition = positionConverter(position);
-            mDistance distanceObject = attributes.get(attributeArrayPosition).getDistance();
-            distance.setText(distanceObject.getDistance());
+            mRadius distanceObject = attributes.get(attributeArrayPosition).getDistance();
+            distance.setText(distanceObject.getRadius());
 
             Button button = v.findViewById(R.id.button_invisible);
             button.setVisibility(View.VISIBLE);
@@ -451,7 +451,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
                             location.getLID(),
                             attributes.get(attributeArrayPosition).getName(),
                             attributes.get(attributeArrayPosition).getAID(),
-                            attributes.get(attributeArrayPosition).getDistance().getDistance(),
+                            attributes.get(attributeArrayPosition).getDistance().getRadius(),
                             attributes.get(attributeArrayPosition).getSetting().getSetting()).build().toString());
                     v.getContext().startActivity(intent);
                 }
@@ -499,7 +499,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
                             location.getLID(),
                             attributes.get(attributeArrayPosition).getName(),
                             attributes.get(attributeArrayPosition).getAID(),
-                            attributes.get(attributeArrayPosition).getDistance().getDistance(),
+                            attributes.get(attributeArrayPosition).getDistance().getRadius(),
                             attributes.get(attributeArrayPosition).getSetting().getSetting()).build().toString());
                     v.getContext().startActivity(intent);
                 }

@@ -1,6 +1,5 @@
 package com.example.locationwake.Activities.EditLocationActivities.ChangeAttributeActivities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,10 +7,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Backend.Services.ChangeAttributeEntry;
@@ -20,8 +17,6 @@ import com.example.locationwake.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * This is a test class to test all func. The GUI will be added later on.
@@ -148,7 +143,7 @@ public class ChangeDistanceActivity extends CallBackActivity {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): clicked on the send button");
-                if (!new mDistance(Integer.toString(radius.getProgress())).isValid()) {
+                if (!new mRadius(Integer.toString(radius.getProgress())).isValid()) {
                     Logger.logE(TAG, "createUI(): onClick(): RADIUS is invalid");
                     Toast.makeText(getApplicationContext(), "The item RADIUS is invalid", Toast.LENGTH_LONG).show();
                     return;
@@ -158,7 +153,7 @@ public class ChangeDistanceActivity extends CallBackActivity {
                             new mAttribute(data.get("LID").toString(),
                                     data.get("AID").toString(),
                                     data.get("attributeName").toString(),
-                                    new mDistance(Integer.toString(radius.getProgress())),
+                                    new mRadius(Integer.toString(radius.getProgress())),
                                     new mSetting(data.get("setting").toString())),
                             getApplicationContext());
                     attributeEntry.run();

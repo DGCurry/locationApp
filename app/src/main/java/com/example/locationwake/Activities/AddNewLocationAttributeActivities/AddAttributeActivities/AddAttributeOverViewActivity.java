@@ -8,7 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Backend.Services.DataEntry;
@@ -138,7 +138,7 @@ public class AddAttributeOverViewActivity extends CallBackActivity {
                 DataEntry dataEntry = null;
                 try {
                     dataEntry = new DataEntry(new mAttribute(data.get("LID").toString(), null,
-                            attributeNameEntry, new mDistance(radiusEntry), new mSetting(settingEntry)),
+                            attributeNameEntry, new mRadius(radiusEntry), new mSetting(settingEntry)),
                             getApplicationContext());
                 } catch (JSONException e) {
                     e.printStackTrace();

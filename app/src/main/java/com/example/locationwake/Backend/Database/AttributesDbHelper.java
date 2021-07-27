@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.locationwake.Logger;
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
         //attributes(id, setting, distance)
         values.put(LOCATION_ID, attribute.getLID());
         values.put(ATTRIBUTE_NAME, attribute.getName());
-        values.put(DISTANCE, attribute.getDistance().getDistance());
+        values.put(DISTANCE, attribute.getDistance().getRadius());
         values.put(SETTING, attribute.getSetting().getSetting());
         values.put(ATTRIBUTE_ID, getMax(db) + 1);
 
@@ -103,7 +103,7 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
 
         //attributes(id, setting, distance)
         values.put(ATTRIBUTE_NAME, attribute.getName());
-        values.put(DISTANCE, attribute.getDistance().getDistance());
+        values.put(DISTANCE, attribute.getDistance().getRadius());
         values.put(SETTING, attribute.getSetting().getSetting());
 
         Logger.logE(TAG, "muaw " + attribute.getAID() + " " + attribute.getLID());
@@ -162,7 +162,7 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
                     cursor.getString(cursor.getColumnIndex(LOCATION_ID)),
                     cursor.getString(cursor.getColumnIndex(ATTRIBUTE_ID)),
                     cursor.getString(cursor.getColumnIndex(ATTRIBUTE_NAME)),
-                    new mDistance(cursor.getString(cursor.getColumnIndex(DISTANCE))),
+                    new mRadius(cursor.getString(cursor.getColumnIndex(DISTANCE))),
                     new mSetting(cursor.getString(cursor.getColumnIndex(SETTING))));
             attributes.add(attribute);
         }
@@ -191,7 +191,7 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
             attribute.setLID(cursor.getString(0));
             attribute.setAID(cursor.getString(1));
             attribute.setName(cursor.getString(2));
-            attribute.setDistance(new mDistance(cursor.getString(3)));
+            attribute.setDistance(new mRadius(cursor.getString(3)));
             attribute.setSetting(new mSetting(cursor.getString(4)));
         }
         cursor.close();

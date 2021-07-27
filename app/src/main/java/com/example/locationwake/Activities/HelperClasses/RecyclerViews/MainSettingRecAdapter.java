@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.locationwake.Backend.Database.Attributes.mDistance;
+import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
@@ -214,7 +214,7 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
          * @param position position of the item
          */
         void bindView(int position) {
-            distance.setText(((mDistance)attributes.get(position)).getDistance() + " meters");
+            distance.setText(((mRadius)attributes.get(position)).getRadius() + " meters");
 
         }
 
