@@ -44,22 +44,16 @@ public class LocationListActivity extends AppCompatActivity {
         //Log, TAG, method, action
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started MainActivity");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_att_loc);
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started loadData()");
-        loadData();
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
-        createUI();
+        setContentView(R.layout.activity_location_list);
     }
 
     @Override
     protected void onResume() {
+        Logger.logV(TAG, "onResume(): resuming activity");
         super.onResume();
         loadData();
         createUI();
     }
-
     /**
      * Loads data from the databases to an ArrayList
      */
@@ -82,14 +76,5 @@ public class LocationListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new AddAttributeLocationListRecAdapter(list, getApplicationContext());
         recyclerView.setAdapter(mAdapter);
-
-        Button addLocationButton = findViewById(R.id.choose_att_loc_new_loc);
-        addLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddNameLocationActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }

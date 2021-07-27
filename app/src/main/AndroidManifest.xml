@@ -42,6 +42,7 @@
         <activity android:name=".Activities.AddNewLocationAttributeActivities.ChooseAttributeOrLocation" />
 
         <activity android:name=".Activities.ViewLocation.ViewLocationActivity" />
+        <activity android:name=".Activities.ViewLocation.LocationListActivity" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"

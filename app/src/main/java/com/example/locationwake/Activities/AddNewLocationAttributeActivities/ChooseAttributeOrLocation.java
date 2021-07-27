@@ -42,19 +42,14 @@ public class ChooseAttributeOrLocation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started MainActivity");
+        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): starting activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_att_loc);
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started loadData()");
-        loadData();
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
-        createUI();
     }
 
     @Override
     protected void onResume() {
+        Logger.logV(TAG, "onResume(): resuming activity");
         super.onResume();
         loadData();
         createUI();

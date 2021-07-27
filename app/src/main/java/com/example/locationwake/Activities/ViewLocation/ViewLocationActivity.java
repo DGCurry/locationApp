@@ -52,11 +52,13 @@ public class ViewLocationActivity extends AppCompatActivity {
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started MainActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_location);
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started loadData()");
+    }
+
+    @Override
+    protected void onResume() {
+        Logger.logV(TAG, "onResume(): resuming activity");
+        super.onResume();
         loadData();
-        //Log, TAG, method, action
-        Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started createUI()");
         createUI();
     }
 

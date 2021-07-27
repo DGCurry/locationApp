@@ -13,11 +13,14 @@
         android:padding="@dimen/rc_item_padding">
 
         <LinearLayout
+            android:id="@+id/container"
+            android:transitionName="container_transition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/imageView_location"
                 android:layout_width="@dimen/rc_icon_size"
                 android:layout_height="@dimen/rc_icon_size"
                 android:layout_gravity="center"

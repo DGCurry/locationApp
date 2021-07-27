@@ -18,10 +18,10 @@ public abstract class Permission extends AppCompatActivity {
 
     protected ArrayList<Integer> permissionList;
 
-    protected static final int NOTIFICATION_PERMISSION_CODE = 100;
-    protected static final int LOCATION_PERMISSION_CODE = 101;
-    protected static final int BACKGROUNDLOCATION_PERMISSION_CODE = 102;
-    protected static final int INTERNET_PERMISSION_CODE = 103;
+    public static final int NOTIFICATION_PERMISSION_CODE = 100;
+    public static final int LOCATION_PERMISSION_CODE = 101;
+    public static final int BACKGROUNDLOCATION_PERMISSION_CODE = 102;
+    public static final int INTERNET_PERMISSION_CODE = 103;
 
 
     /**

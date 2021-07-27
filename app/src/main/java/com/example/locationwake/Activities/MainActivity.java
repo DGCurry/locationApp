@@ -27,6 +27,8 @@ import com.example.locationwake.Activities.HelperClasses.RecyclerViews.MainSetti
 import com.example.locationwake.Activities.PermissionActivities.BackgroundLocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.LocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.NotificationPermissionActivity;
+import com.example.locationwake.Activities.PermissionActivities.Permission;
+import com.example.locationwake.Activities.ViewLocation.LocationListActivity;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.DataHandler;
@@ -36,6 +38,9 @@ import com.example.locationwake.R;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
+import static com.example.locationwake.Activities.PermissionActivities.Permission.LOCATION_PERMISSION_CODE;
+import static com.example.locationwake.Activities.PermissionActivities.Permission.NOTIFICATION_PERMISSION_CODE;
 
 /**
  * This is a test class to test all func. The GUI will be added later on.
@@ -52,11 +57,6 @@ public class MainActivity extends CallBackActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    //permission codes to identify and communicate the found permissions to be given
-    protected static final int NOTIFICATION_PERMISSION_CODE = 100;
-    protected static final int LOCATION_PERMISSION_CODE = 101;
-    protected static final int BACKGROUNDLOCATION_PERMISSION_CODE = 102;
-    protected static final int INTERNET_PERMISSION_CODE = 103;
 
     /**
      * Method to start activity
@@ -95,17 +95,10 @@ public class MainActivity extends CallBackActivity {
         runnableWorker.run();
     }
 
-    /**
-     * Method called on start of the activity
-     *
-     */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    protected void onStart() {
-        Logger.logV(TAG, "onStart(): started MainActivity");
-        super.onStart();
-
-        //Log, TAG, method, action
+    protected void onResume() {
+        Logger.logV(TAG, "onResume(): resuming activity");
+        super.onResume();
         Logger.logV(TAG, "onStart() started createUI()");
         createUI();
     }
@@ -117,7 +110,6 @@ public class MainActivity extends CallBackActivity {
         Logger.logV(TAG, "createUI(): getting the UI elements");
         createSettingUI();
         addNavigation();
-
     }
 
     /**
@@ -134,6 +126,8 @@ public class MainActivity extends CallBackActivity {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): clicked on the list button");
+                Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -188,7 +182,7 @@ public class MainActivity extends CallBackActivity {
 
             switch (permissionList.get(0)) {
 
-                case NOTIFICATION_PERMISSION_CODE:
+                case Permission.NOTIFICATION_PERMISSION_CODE:
                     Logger.logD(TAG, "askPermissions(): starting NotificationPermissionActivity");
                     intent = new Intent(getApplicationContext(), NotificationPermissionActivity.class);
                     permissionList.remove(0);
@@ -196,7 +190,7 @@ public class MainActivity extends CallBackActivity {
                     startActivity(intent);
                     break;
 
-                case LOCATION_PERMISSION_CODE:
+                case Permission.LOCATION_PERMISSION_CODE:
                     Logger.logD(TAG, "askPermissions(): starting LocationPermissionActivity");
                     intent = new Intent(getApplicationContext(), LocationPermissionActivity.class);
                     permissionList.remove(0);
@@ -204,7 +198,7 @@ public class MainActivity extends CallBackActivity {
                     startActivity(intent);
                     break;
 
-                case BACKGROUNDLOCATION_PERMISSION_CODE:
+                case Permission.BACKGROUNDLOCATION_PERMISSION_CODE:
                     Logger.logD(TAG, "askPermissions(): starting BackgroundLocationPermissionActivity");
                     intent = new Intent(getApplicationContext(), BackgroundLocationPermissionActivity.class);
                     permissionList.remove(0);
@@ -227,28 +221,28 @@ public class MainActivity extends CallBackActivity {
                 getApplicationContext(), Manifest.permission.ACCESS_NOTIFICATION_POLICY) ==
                 PackageManager.PERMISSION_DENIED) {
             Logger.logD(TAG, "checkPermissions(): adding NOTIFICATION_PERMISSION_CODE to list");
-            permissionList.add(NOTIFICATION_PERMISSION_CODE);
+            permissionList.add(Permission.NOTIFICATION_PERMISSION_CODE);
         }
 
         if (ContextCompat.checkSelfPermission(
                 getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Logger.logD(TAG, "checkPermissions(): adding LOCATION_PERMISSION_CODE to list");
-            permissionList.add(LOCATION_PERMISSION_CODE);
+            permissionList.add(Permission.LOCATION_PERMISSION_CODE);
         }
 
         if (ContextCompat.checkSelfPermission(
                 getApplicationContext(),
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Logger.logD(TAG, "checkPermissions(): adding BACKGROUNDLOCATION_PERMISSION_CODE to list");
-            permissionList.add(BACKGROUNDLOCATION_PERMISSION_CODE);
+            permissionList.add(Permission.BACKGROUNDLOCATION_PERMISSION_CODE);
         }
 
         if (ContextCompat.checkSelfPermission(
                 getApplicationContext(),
                 Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             Logger.logD(TAG, "checkPermissions(): adding INTERNET_PERMISSION_CODE to list");
-            permissionList.add(INTERNET_PERMISSION_CODE);
+            permissionList.add(Permission.INTERNET_PERMISSION_CODE);
         }
 
         return permissionList;

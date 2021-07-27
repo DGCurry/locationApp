@@ -1,7 +1,10 @@
 package com.example.locationwake.Activities.HelperClasses.RecyclerViews;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,6 +140,12 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), AddNameAttributeActivity.class);
+                    final View sharedContainer = v.findViewById(R.id.container);
+                    View sharedNavigation = ((Activity) context).findViewById(R.id.layout_button_main);
+
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)context,
+                            Pair.create(sharedContainer, "container_transition"),
+                            Pair.create(sharedNavigation, "navigation_animation"));
                     intent.putExtra("data",
                             new AttributeJSONHelper(
                                     locations.get(position).getName(),
@@ -145,7 +154,7 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
                                     null,
                                     null,
                                     null).build().toString());
-                    v.getContext().startActivity(intent);
+                    context.startActivity(intent, options.toBundle());
                 }
             });
         }
