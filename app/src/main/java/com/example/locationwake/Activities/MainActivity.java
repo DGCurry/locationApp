@@ -332,7 +332,7 @@ public class MainActivity extends CallBackActivity {
     @Override
     public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
         if (update) {
-
+            createUI();
         }
         this.runOnUiThread(new Runnable() {
             @Override

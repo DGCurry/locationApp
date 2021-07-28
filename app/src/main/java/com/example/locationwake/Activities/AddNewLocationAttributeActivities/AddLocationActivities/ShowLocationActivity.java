@@ -6,11 +6,15 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.work.ListenableWorker;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
+import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -23,7 +27,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class ShowLocationActivity extends CallBackActivity implements OnMapReadyCallback {
 
@@ -41,20 +48,52 @@ public class ShowLocationActivity extends CallBackActivity implements OnMapReady
     private LocationManager locationManager;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationCallback mLocationCallback;
-    private int locationRequestCode = 1000;
+    private final int locationRequestCode = 1000;
     GoogleMap map;
     float zoom = 13f;
+
+    private Marker currentPositionMarker;
+
+
+    /**
+     * The desired interval for location updates. Inexact. Updates may be more or less frequent.
+     */
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10*1000;
+
+    /**
+     * The fastest rate for active location updates. Updates will never be more frequent
+     * than this value.
+     */
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
+            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_location_map);
+    }
 
-        getCurrentLocation();
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        createLocationCallBack();
+
+        createLocationRequest();
+        requestLocationUpdates();
+
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 
     /**
@@ -63,14 +102,17 @@ public class ShowLocationActivity extends CallBackActivity implements OnMapReady
      * just add a marker near Africa.
      */
     @Override
-    public void onMapReady(GoogleMap map) {
+    public void onMapReady(@NonNull GoogleMap map) {
         this.map = map;
-        getCurrentLocation();
-//        map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-        // add markers and circles around saved locations
+
     }
 
-    private void getCurrentLocation() {
+    private void addSavedLocationsMarkers() {
+        ArrayList<mLocation> locations = DataHandler.loadLocations(getApplicationContext());
+
+    }
+
+    private void createLocationCallBack() {
         Logger.logD(TAG, "getCurrentLocation(): retrieving location");
         boolean gps_enabled = false;
         try {
@@ -88,33 +130,66 @@ public class ShowLocationActivity extends CallBackActivity implements OnMapReady
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
             Logger.logD(TAG, "getCurrentLocation(): creating callback");
-            LocationCallback locationCallback = new LocationCallback() {
+
+            mLocationCallback = new LocationCallback() {
                 @Override
-                public void onLocationResult(LocationResult locationResult) {
-                    if (locationResult == null) {
-                        return;
-                    }
-                    for (Location location : locationResult.getLocations()) {
-                        if (location != null) {
-                            if (map != null) {
-                                Logger.logD(TAG, "getCurrentLocation(): go a location, zooming now");
-                                map.moveCamera(
-                                        CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(location.getLatitude(), location.getLongitude()),
-                                        zoom));
-                            } else {
-                                Logger.logE(TAG, "getCurrentLocation(): no map");
-                            }
-                        } else {
-                            Logger.logE(TAG, "getCurrentLocation(): retrieved location is null");
-                        }
-                    }
+                public void onLocationResult(@NonNull LocationResult locationResult) {
+                    super.onLocationResult(locationResult);
+                    onNewLocation(locationResult.getLastLocation());
                 }
             };
         }
     }
+
+
+    /**
+     * Makes a request for location updates. Note that in this sample we merely log the
+     * {@link SecurityException}.
+     */
+    private void requestLocationUpdates() {
+        Logger.logV(TAG, "requestLocationUpdates(): Requesting location updates");
+        try {
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest,
+                    mLocationCallback, Looper.getMainLooper());
+        } catch (SecurityException unlikely) {
+            Logger.logE(TAG, "requestLocationUpdates(): Lost location permission. " +
+                    "Could not request updates. " + unlikely);
+        }
+    }
+
+    /**
+     * Sets the location request parameters.
+     */
+    private void createLocationRequest() {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    /**
+     * function that is called on callback for location.
+     * @param location
+     */
+    private void  onNewLocation(Location location) {
+        currentLocation = location;
+        if (currentPositionMarker != null) {
+            currentPositionMarker.remove();
+        }
+
+        final MarkerOptions positionMarker = new MarkerOptions().position(
+                new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())).title("Current Location");
+        currentPositionMarker = map.addMarker(positionMarker);
+
+        map.animateCamera(CameraUpdateFactory.newLatLng(
+                new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
+
+        Logger.logE(TAG, "onNewLocation(Location location): New location: " + location +
+                " at " + location.getLatitude() + " " + location.getLongitude());
+    }
+
+
 
 
 
