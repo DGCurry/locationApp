@@ -86,7 +86,7 @@ public class mRadius implements AttributeInterface{
                 float newDistance = newLocation.distanceTo(savedLocation);
 
                 if (newDistance <= Float.parseFloat(this.radius)
-                        || newDistance <= Integer.parseInt(attribute.getDistance().getRadius())) {
+                        || newDistance <= Integer.parseInt(attribute.getRadius().getRadius())) {
                     return false;
                 }
             }

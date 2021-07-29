@@ -31,7 +31,7 @@ public class ChangeAttributeEntryTests {
                         loadedAttribute.getLID(),
                         loadedAttribute.getAID(),
                         "Morning",
-                        loadedAttribute.getDistance(),
+                        loadedAttribute.getRadius(),
                         loadedAttribute.getSetting()),
                 ApplicationProvider.getApplicationContext());
         dataEntry.run();
@@ -43,7 +43,7 @@ public class ChangeAttributeEntryTests {
         ArrayList<mAttribute> attributes = DataHandler.loadAttributes(LID, ApplicationProvider.getApplicationContext());
         assertEquals(1, attributes.size());
         assertEquals(attributes.get(0).getName(), "Morning");
-        assertEquals(attributes.get(0).getDistance().getRadius(), "500");
+        assertEquals(attributes.get(0).getRadius().getRadius(), "500");
         assertEquals(attributes.get(0).getSetting().getSetting(), "SLT");
     }
 }

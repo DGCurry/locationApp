@@ -10,10 +10,23 @@ import com.example.locationwake.Backend.Managers.CallBackManager;
 public abstract class CallBackActivity extends AppCompatActivity {
 
     @Override
-    public void finish() {
-        super.finish();
+    public void onStop() {
+        super.onStop();
         CallBackManager callBackManager = CallBackManager.getInstance();
-        callBackManager.removeActivity(this);
+        callBackManager.removeActivity();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        CallBackManager callBackManager = CallBackManager.getInstance();
+        callBackManager.removeActivity();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        addCallBack();
     }
 
     /**
@@ -31,6 +44,6 @@ public abstract class CallBackActivity extends AppCompatActivity {
      */
     protected void addCallBack() {
         CallBackManager callBackManager = CallBackManager.getInstance();
-        callBackManager.addActivity(this);
+        callBackManager.setActivity(this);
     }
 }

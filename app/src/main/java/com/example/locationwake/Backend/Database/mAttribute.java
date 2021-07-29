@@ -17,8 +17,8 @@ public class mAttribute {
     private String LID;
     private String AID;
 
-    private mRadius mDistance;
-    private com.example.locationwake.Backend.Database.Attributes.mSetting mSetting;
+    private mRadius radius;
+    private mSetting mSetting;
 
     private String name;
 
@@ -28,11 +28,11 @@ public class mAttribute {
      * @param AID key id to link to LocationSettingDbHelper entry
      * All objects here are the least an attribute should have. Any other must be set by getters and setters.
      */
-    public mAttribute(String LID, String AID, String name, mRadius mDistance, mSetting mSetting) {
+    public mAttribute(String LID, String AID, String name, mRadius radius, mSetting mSetting) {
         this.LID = LID;
         this.AID = AID;
         this.name = name;
-        this.mDistance = mDistance;
+        this.radius = radius;
         this.mSetting = mSetting;
     }
 
@@ -73,16 +73,16 @@ public class mAttribute {
      * method to retrieve the attribute mDistance
      * @return mDistance
      */
-    public mRadius getDistance() {
-        return mDistance;
+    public mRadius getRadius() {
+        return radius;
     }
 
     /**
      * sets the attribute mDistance
-     * @param mDistance
+     * @param radius
      */
-    public void setDistance(mRadius mDistance) {
-        this.mDistance = mDistance;
+    public void setRadius(mRadius radius) {
+        this.radius = radius;
     }
 
     /**

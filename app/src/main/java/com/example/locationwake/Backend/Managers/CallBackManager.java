@@ -1,5 +1,7 @@
 package com.example.locationwake.Backend.Managers;
 
+import androidx.lifecycle.Lifecycle;
+
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Logger;
 
@@ -18,8 +20,7 @@ public class CallBackManager {
     // Singleton instance of the class
     private static final CallBackManager instance = new CallBackManager();
 
-    // List of all activities that have subscribed for the callback
-    private static final ArrayList<CallBackActivity> callBackActivityList = new ArrayList<>();
+    private static CallBackActivity callBackActivity;
 
     /**
      * Returns the Singleton instance of CallBackManager
@@ -33,12 +34,12 @@ public class CallBackManager {
      * adds an activity to the list of callbacks
      * @param activity target activity for the callback
      */
-    public void addActivity(CallBackActivity activity) {
-        callBackActivityList.add(activity);
+    public void setActivity(CallBackActivity activity) {
+        callBackActivity = activity;
     }
 
-    public void removeActivity(CallBackActivity activity) {
-        callBackActivityList.remove(activity);
+    public void removeActivity() {
+        callBackActivity = null;
     }
 
     /**
@@ -55,11 +56,14 @@ public class CallBackManager {
                                           boolean failed,
                                           char type,
                                           String message ) {
-        for (CallBackActivity activity:callBackActivityList) {
-            if (!activity.isFinishing() && !activity.isDestroyed()) {
-                Logger.logD(TAG, "callBackActivities(): calling back activity " + activity.getClass().toString());
-                activity.onCallBack(update, succeeded, failed, type, message);
-            }
+        if (callBackActivity == null) {
+            Logger.logE(TAG, "callBackActivities(): callBackActivity is null");
+            return;
+        }
+        if (callBackActivity.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED) ||
+                callBackActivity.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+            Logger.logD(TAG, "callBackActivities(): calling back activity " + callBackActivity.getClass().toString());
+            callBackActivity.onCallBack(update, succeeded, failed, type, message);
         }
     }
 }

@@ -134,7 +134,7 @@ public class SettingWorker extends Worker {
                 SettingObject cSettingObject = new SettingObject(attribute.getLID(), attribute.getAID());
                 LocationComponent addLocationComponent = new LocationComponent(mContext,
                         location,
-                        attribute.getDistance());
+                        attribute.getRadius());
                 // important need to add more components when more attributes kinds are added
                 cSettingObject.addComponent(addLocationComponent);
                 settingObjects.add(cSettingObject);

@@ -84,7 +84,7 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
         //attributes(id, setting, distance)
         values.put(LOCATION_ID, attribute.getLID());
         values.put(ATTRIBUTE_NAME, attribute.getName());
-        values.put(DISTANCE, attribute.getDistance().getRadius());
+        values.put(DISTANCE, attribute.getRadius().getRadius());
         values.put(SETTING, attribute.getSetting().getSetting());
         values.put(ATTRIBUTE_ID, getMax(db) + 1);
 
@@ -103,7 +103,7 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
 
         //attributes(id, setting, distance)
         values.put(ATTRIBUTE_NAME, attribute.getName());
-        values.put(DISTANCE, attribute.getDistance().getRadius());
+        values.put(DISTANCE, attribute.getRadius().getRadius());
         values.put(SETTING, attribute.getSetting().getSetting());
 
         Logger.logE(TAG, "muaw " + attribute.getAID() + " " + attribute.getLID());
@@ -191,7 +191,7 @@ public class AttributesDbHelper extends SQLiteOpenHelper {
             attribute.setLID(cursor.getString(0));
             attribute.setAID(cursor.getString(1));
             attribute.setName(cursor.getString(2));
-            attribute.setDistance(new mRadius(cursor.getString(3)));
+            attribute.setRadius(new mRadius(cursor.getString(3)));
             attribute.setSetting(new mSetting(cursor.getString(4)));
         }
         cursor.close();

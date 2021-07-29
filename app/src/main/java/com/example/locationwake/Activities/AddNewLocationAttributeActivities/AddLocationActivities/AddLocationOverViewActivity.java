@@ -38,14 +38,6 @@ public class AddLocationOverViewActivity extends CallBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_overview_location);
 
-        Runnable runnableCallBack = new Runnable() {
-            @Override
-            public void run() {
-                addCallBack();
-            }
-        };
-        runnableCallBack.run();
-
         loadData();
 
         //Log, TAG, method, action

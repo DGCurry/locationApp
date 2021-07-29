@@ -45,14 +45,6 @@ public class ChangeSettingActivity extends CallBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_setting);
 
-        Runnable runnableCallBack = new Runnable() {
-            @Override
-            public void run() {
-                addCallBack();
-            }
-        };
-        runnableCallBack.run();
-
         loadData();
 
         //Log, TAG, method, action

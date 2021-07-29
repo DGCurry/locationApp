@@ -1,99 +1,79 @@
 package com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddLocationActivities;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.SearchView;
 
-import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
-import com.example.locationwake.Backend.Database.DataHandler;
+import com.example.locationwake.Activities.ActivityExtension.BasicMapActivity;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class ShowLocationActivity extends CallBackActivity implements OnMapReadyCallback {
+import java.io.IOException;
+import java.util.List;
+
+public class ShowLocationActivity extends BasicMapActivity {
+
+    private LatLng focussedLocation;
+    private Marker focussedLocationMarker;
+
+    SearchView searchView;
+
+    // JSON object used to communicate between activities
+    private JSONObject data = new JSONObject();
 
     /**
      * Tag of the class
      */
-    static final private String TAG = "ShowLocationActivity";
-
-    private Location currentLocation;
-
-    /**
-     * Location variables
-     */
-    private LocationRequest mLocationRequest;
-    private LocationManager locationManager;
-    private FusedLocationProviderClient mFusedLocationClient;
-    private LocationCallback mLocationCallback;
-    private final int locationRequestCode = 1000;
-    GoogleMap map;
-    float zoom = 13f;
-
-    private Marker currentPositionMarker;
-
-
-    /**
-     * The desired interval for location updates. Inexact. Updates may be more or less frequent.
-     */
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10*1000;
-
-    /**
-     * The fastest rate for active location updates. Updates will never be more frequent
-     * than this value.
-     */
-    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
-            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TAG = "ShowLocationActivity";
+
         setContentView(R.layout.activity_choose_location_map);
+
+        searchView = findViewById(R.id.idSearchView);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
+        loadData();
 
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        createLocationCallBack();
-
-        createLocationRequest();
-        requestLocationUpdates();
-
+        setSearchQueries();
+        setOkayButton();
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+
+    /**
+     * Method to load the data send by other activities
+     */
+    private void loadData() {
+        Logger.logV(TAG, "loadData(): getting data from AddNameActivity");
+        if (getIntent().hasExtra("data")) {
+            try {
+                data = new JSONObject(getIntent().getStringExtra("data"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -104,97 +84,97 @@ public class ShowLocationActivity extends CallBackActivity implements OnMapReady
     @Override
     public void onMapReady(@NonNull GoogleMap map) {
         this.map = map;
+        addSavedLocationsMarkers();
+        //Here we are going to get the location with a long click
+        map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(@NonNull LatLng latLng) {
+                // get location, zoom in, go to location, set marker
+                focussedLocation = latLng;
 
-    }
-
-    private void addSavedLocationsMarkers() {
-        ArrayList<mLocation> locations = DataHandler.loadLocations(getApplicationContext());
-
-    }
-
-    private void createLocationCallBack() {
-        Logger.logD(TAG, "getCurrentLocation(): retrieving location");
-        boolean gps_enabled = false;
-        try {
-            LocationManager lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch (Exception e) {
-            Logger.logE(TAG, "getCurrentLocation(): " + e);
-        }
-
-        if (!gps_enabled) {
-            Logger.logE(TAG, "getCurrentLocation(): gps is not enabled");
-            //mhhh
-            return;
-        }
-
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            Logger.logD(TAG, "getCurrentLocation(): creating callback");
-
-            mLocationCallback = new LocationCallback() {
-                @Override
-                public void onLocationResult(@NonNull LocationResult locationResult) {
-                    super.onLocationResult(locationResult);
-                    onNewLocation(locationResult.getLastLocation());
+                if (focussedLocationMarker != null) {
+                    focussedLocationMarker.remove();
                 }
-            };
-        }
+                MarkerOptions positionMarker = new MarkerOptions().position(
+                        latLng).title("Focussed Location");
+
+                focussedLocationMarker = map.addMarker(positionMarker);
+                map.animateCamera(CameraUpdateFactory.newLatLng(
+                        latLng));
+
+                latitude.setText(String.valueOf(latLng.latitude));
+                longitude.setText(String.valueOf(latLng.longitude));
+            }
+        });
+    }
+
+    private void setOkayButton() {
+        Button agreeButton = findViewById(R.id.addLocationButton);
+        agreeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddLocationActivity.class);
+                try {
+                    data.put("latitude", String.valueOf(focussedLocation.latitude));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                intent.putExtra("data", data.toString());
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
 
-    /**
-     * Makes a request for location updates. Note that in this sample we merely log the
-     * {@link SecurityException}.
-     */
-    private void requestLocationUpdates() {
-        Logger.logV(TAG, "requestLocationUpdates(): Requesting location updates");
-        try {
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest,
-                    mLocationCallback, Looper.getMainLooper());
-        } catch (SecurityException unlikely) {
-            Logger.logE(TAG, "requestLocationUpdates(): Lost location permission. " +
-                    "Could not request updates. " + unlikely);
-        }
+    private void setSearchQueries() {
+        SearchView searchView = findViewById(R.id.idSearchView);
+        // adding on query listener for our search view.
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // on below line we are getting the
+                // location name from search view.
+                String location = searchView.getQuery().toString();
+
+                // below line is to create a list of address
+                // where we will store the list of all address.
+                List<Address> addressList = null;
+
+                // checking if the entered location is null or not.
+                if (location != null || location.equals("")) {
+                    // on below line we are creating and initializing a geo coder.
+                    Geocoder geocoder = new Geocoder(getApplicationContext());
+                    try {
+                        // on below line we are getting location from the
+                        // location name and adding that location to address list.
+                        addressList = geocoder.getFromLocationName(location, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    // on below line we are getting the location
+                    // from our list a first position.
+                    Address address = addressList.get(0);
+
+                    // on below line we are creating a variable for our location
+                    // where we will add our locations latitude and longitude.
+                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+
+                    // on below line we are adding marker to that position.
+                    map.addMarker(new MarkerOptions().position(latLng).title(location));
+
+                    // below line is to animate camera to that position.
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
-    /**
-     * Sets the location request parameters.
-     */
-    private void createLocationRequest() {
-        mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    /**
-     * function that is called on callback for location.
-     * @param location
-     */
-    private void  onNewLocation(Location location) {
-        currentLocation = location;
-        if (currentPositionMarker != null) {
-            currentPositionMarker.remove();
-        }
-
-        final MarkerOptions positionMarker = new MarkerOptions().position(
-                new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())).title("Current Location");
-        currentPositionMarker = map.addMarker(positionMarker);
-
-        map.animateCamera(CameraUpdateFactory.newLatLng(
-                new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
-
-        Logger.logE(TAG, "onNewLocation(Location location): New location: " + location +
-                " at " + location.getLatitude() + " " + location.getLongitude());
-    }
-
-
-
-
-
-    @Override
-    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
-
-    }
 }

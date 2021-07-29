@@ -83,7 +83,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
 
         int maxPosition = getItemCount();
         //Load in the attributes
-        attributeStack.push(attributes.get(attributeCount).getDistance());
+        attributeStack.push(attributes.get(attributeCount).getRadius());
         attributeStack.push(attributes.get(attributeCount).getSetting());
 
         for (int position = 0; position < maxPosition; position++) {
@@ -113,7 +113,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
                 attributeCount++;
 
                 //Load in the attributes
-                attributeStack.push(attributes.get(attributeCount).getDistance());
+                attributeStack.push(attributes.get(attributeCount).getRadius());
                 attributeStack.push(attributes.get(attributeCount).getSetting());
             }
 
@@ -300,7 +300,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
                             location.getLID(),
                             attributes.get(attributeArrayPosition).getName(),
                             attributes.get(attributeArrayPosition).getAID(),
-                            attributes.get(attributeArrayPosition).getDistance().getRadius(),
+                            attributes.get(attributeArrayPosition).getRadius().getRadius(),
                             attributes.get(attributeArrayPosition).getSetting().getSetting()).build().toString());
                     v.getContext().startActivity(intent);
                 }
@@ -437,7 +437,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
          */
         void bindView(int position) {
             int attributeArrayPosition = positionConverter(position);
-            mRadius distanceObject = attributes.get(attributeArrayPosition).getDistance();
+            mRadius distanceObject = attributes.get(attributeArrayPosition).getRadius();
             distance.setText(distanceObject.getRadius());
 
             Button button = v.findViewById(R.id.button_invisible);
@@ -451,7 +451,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
                             location.getLID(),
                             attributes.get(attributeArrayPosition).getName(),
                             attributes.get(attributeArrayPosition).getAID(),
-                            attributes.get(attributeArrayPosition).getDistance().getRadius(),
+                            attributes.get(attributeArrayPosition).getRadius().getRadius(),
                             attributes.get(attributeArrayPosition).getSetting().getSetting()).build().toString());
                     v.getContext().startActivity(intent);
                 }
@@ -499,7 +499,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
                             location.getLID(),
                             attributes.get(attributeArrayPosition).getName(),
                             attributes.get(attributeArrayPosition).getAID(),
-                            attributes.get(attributeArrayPosition).getDistance().getRadius(),
+                            attributes.get(attributeArrayPosition).getRadius().getRadius(),
                             attributes.get(attributeArrayPosition).getSetting().getSetting()).build().toString());
                     v.getContext().startActivity(intent);
                 }

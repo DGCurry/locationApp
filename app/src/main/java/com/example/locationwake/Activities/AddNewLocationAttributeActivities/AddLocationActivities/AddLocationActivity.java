@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddNameAttributeActivity;
@@ -43,9 +45,6 @@ public class AddLocationActivity extends CallBackActivity {
         Logger.logV(TAG, "onCreate(Bundle savedInstanceState): started AddLocationActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location);
-
-        Runnable runnable = this::addCallBack;
-        runnable.run();
     }
 
     @Override
@@ -86,14 +85,15 @@ public class AddLocationActivity extends CallBackActivity {
             e.printStackTrace();
         }
 
-        Button chooseMaps = findViewById(R.id.button_ad_maps);
-        chooseMaps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ShowLocationActivity.class);
-                startActivity(intent);
-            }
+        Button mapButton = findViewById(R.id.button_ad_maps);
+        mapButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ShowLocationActivity.class);
+            intent.putExtra("data", data.toString());
+            startActivity(intent);
+            finish();
         });
+
+
         addNavigation(latitudeInput, longitudeInput);
     }
 

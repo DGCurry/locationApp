@@ -42,14 +42,6 @@ public class ChangeNameLocationActivity extends CallBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_name_location);
 
-        Runnable runnableCallBack = new Runnable() {
-            @Override
-            public void run() {
-                addCallBack();
-            }
-        };
-        runnableCallBack.run();
-
         loadData();
 
         //Log, TAG, method, action

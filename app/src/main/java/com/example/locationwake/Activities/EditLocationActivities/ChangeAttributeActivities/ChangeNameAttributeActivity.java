@@ -40,9 +40,6 @@ public class ChangeNameAttributeActivity extends CallBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_name_location);
 
-        Runnable runnableCallBack = this::addCallBack;
-        runnableCallBack.run();
-
         loadData();
 
         //Log, TAG, method, action

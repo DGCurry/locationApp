@@ -39,9 +39,6 @@ import com.example.locationwake.R;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.locationwake.Activities.PermissionActivities.Permission.LOCATION_PERMISSION_CODE;
-import static com.example.locationwake.Activities.PermissionActivities.Permission.NOTIFICATION_PERMISSION_CODE;
-
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
@@ -78,20 +75,7 @@ public class MainActivity extends CallBackActivity {
         }
         Logger.logV(TAG, "onCreate() started startWorker()");
 
-        Runnable runnableCallBack = new Runnable() {
-            @Override
-            public void run() {
-                addCallBack();
-            }
-        };
-        runnableCallBack.run();
-
-        Runnable runnableWorker = new Runnable() {
-            @Override
-            public void run() {
-                startWorker();
-            }
-        };
+        Runnable runnableWorker = this::startWorker;
         runnableWorker.run();
     }
 
@@ -305,7 +289,7 @@ public class MainActivity extends CallBackActivity {
         //Holds all the data that is in the database
         ArrayList<AttributeInterface> list = new ArrayList<>();
         list.add(attribute.getSetting());
-        list.add(attribute.getDistance());
+        list.add(attribute.getRadius());
         list.add(mLocation);
 
         Logger.logD(TAG, "createUI(): populating recyclerview");
@@ -332,13 +316,7 @@ public class MainActivity extends CallBackActivity {
     @Override
     public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
         if (update) {
-            createUI();
+            runOnUiThread(this::createUI);
         }
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
     }
 }
