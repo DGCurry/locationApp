@@ -203,8 +203,8 @@ public class LocationWorker extends Worker {
     private void saveLocation(Location location) {
         SharedPreferences preferences = mContext.getSharedPreferences("LOCATION_FILE_NAME", mContext.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putFloat("location_lat", (float) location.getLatitude());
-        editor.putFloat("location_lon", (float) location.getLongitude());
+        editor.putString("location_lat", Double.toString(location.getLatitude()));
+        editor.putString("location_lon", Double.toString(location.getLongitude()));
         editor.apply();
     }
 

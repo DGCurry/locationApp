@@ -81,6 +81,7 @@ public class SettingWorker extends Worker {
         ArrayList<SettingObject> settingObjects = createSettingObjects();
 
         String[] activeKeys = getActiveKeys(settingObjects);
+
         // in case there has not been found any active settings, set special values
         if (activeKeys == null) {
             saveCurrentSetting("None", "None", null);

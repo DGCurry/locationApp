@@ -132,26 +132,22 @@ public class AddLocationActivity extends CallBackActivity {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "createUI(): clicked on send Button");
-                //check the input data
-                if (!new mLocation(null, null, latitudeInput.getText().toString(),
-                        longitudeInput.getText().toString()).isValid()) {
-                    Logger.logE(TAG, "createUI(): onClick(): LOCATION is invalid");
-                    Toast.makeText(getApplicationContext(), "The item Location is invalid", Toast.LENGTH_LONG).show();
-                    return;
-                }
 
                 try {
-                    data.put("latitude", latitudeInput.getText().toString());
-                    data.put("longitude", longitudeInput.getText().toString());
+                    String latitude = data.get("latitude").toString();
+                    String longitude = data.get("longitude").toString();
+
+                    if (new mLocation(null, null, latitude, longitude).isValid()) {
+                        Runnable checkLocationEntry = new CheckLocationEntry(
+                                getApplicationContext(),
+                                latitude,
+                                longitude,
+                                new mRadius("100"));
+                        checkLocationEntry.run();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Runnable checkLocationEntry = new CheckLocationEntry(
-                        getApplicationContext(),
-                        latitudeInput.getText().toString(),
-                        longitudeInput.getText().toString(),
-                        new mRadius("500"));
-                checkLocationEntry.run();
             }
         });
     }

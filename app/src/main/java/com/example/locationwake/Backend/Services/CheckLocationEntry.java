@@ -22,7 +22,7 @@ public class CheckLocationEntry implements Runnable {
 
     private final int radius;
     private final Context context;
-    float savedLatitude, savedLongitude;
+    Double savedLatitude, savedLongitude;
 
     /**
      * constructor
@@ -32,8 +32,8 @@ public class CheckLocationEntry implements Runnable {
     public CheckLocationEntry(Context context, String latitude, String longitude, mRadius radius) {
         this.context = context;
         this.radius = Integer.parseInt(radius.getRadius());
-        this.savedLatitude = Float.parseFloat(latitude);
-        this.savedLongitude = Float.parseFloat(longitude);
+        this.savedLatitude = Double.parseDouble(latitude);
+        this.savedLongitude = Double.parseDouble(longitude);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class CheckLocationEntry implements Runnable {
         //for each location
         for (mLocation savedLocation:locations) {
             Location loadedLocation = new Location("");
-            loadedLocation.setLongitude(Float.parseFloat(savedLocation.getLng()));
-            loadedLocation.setLatitude(Float.parseFloat(savedLocation.getLat()));
+            loadedLocation.setLongitude(Double.parseDouble(savedLocation.getLng()));
+            loadedLocation.setLatitude(Double.parseDouble(savedLocation.getLat()));
 
             Logger.logD(TAG, "run(): Calculating distance for \n" +
                     "\t LID: " + savedLocation.getLID() + "\n" +

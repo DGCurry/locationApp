@@ -1,6 +1,7 @@
 package com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddLocationActivities;
 
 import android.content.Intent;
+import android.icu.number.Precision;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -113,16 +115,33 @@ public class ShowLocationActivity extends BasicMapActivity {
         agreeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddLocationActivity.class);
-                try {
-                    data.put("latitude", String.valueOf(focussedLocation.latitude));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                if (focussedLocation != null) {
+                    Intent intent = new Intent(getApplicationContext(), AddLocationActivity.class);
+                    try {
+                        data.put("latitude", String.valueOf(focussedLocation.latitude));
+                        data.put("longitude", String.valueOf(focussedLocation.longitude));
 
-                intent.putExtra("data", data.toString());
-                startActivity(intent);
-                finish();
+                        intent.putExtra("data", data.toString());
+                        startActivity(intent);
+                        finish();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else if (currentLocation != null) {
+                    Intent intent = new Intent(getApplicationContext(), AddLocationActivity.class);
+                    try {
+                        data.put("latitude", String.valueOf(currentLocation.latitude));
+                        data.put("longitude", String.valueOf(currentLocation.longitude));
+
+                        intent.putExtra("data", data.toString());
+                        startActivity(intent);
+                        finish();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }
@@ -153,19 +172,29 @@ public class ShowLocationActivity extends BasicMapActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    // on below line we are getting the location
-                    // from our list a first position.
-                    Address address = addressList.get(0);
 
-                    // on below line we are creating a variable for our location
-                    // where we will add our locations latitude and longitude.
-                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                    if (!(addressList == null || addressList.size() == 0)) {
+                        // on below line we are getting the location
+                        // from our list a first position.
+                        Address address = addressList.get(0);
 
-                    // on below line we are adding marker to that position.
-                    map.addMarker(new MarkerOptions().position(latLng).title(location));
+                        // on below line we are creating a variable for our location
+                        // where we will add our locations latitude and longitude.
+                        focussedLocation = new LatLng(address.getLatitude(), address.getLongitude());
+                        if (focussedLocationMarker != null) {
+                            focussedLocationMarker.remove();
+                        }
 
-                    // below line is to animate camera to that position.
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                        // on below line we are adding marker to that position.
+                        focussedLocationMarker = map.addMarker(new MarkerOptions().position(focussedLocation).title(location));
+
+                        // below line is to animate camera to that position.
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(focussedLocation, 10));
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(), "No location found", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+
                 }
                 return false;
             }

@@ -52,7 +52,7 @@ public abstract class BasicMapActivity extends AppCompatActivity implements OnMa
      */
     static protected String TAG = "BasicMapActivity";
 
-    protected Location currentLocation;
+    protected LatLng currentLocation;
 
     /**
      * Location variables
@@ -237,17 +237,17 @@ public abstract class BasicMapActivity extends AppCompatActivity implements OnMa
      * @param location
      */
     protected void  onNewLocation(Location location) {
-        currentLocation = location;
+        currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
         if (currentPositionMarker != null) {
             currentPositionMarker.remove();
         }
 
         final MarkerOptions positionMarker = new MarkerOptions().position(
-                new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())).title("Current Location");
+                currentLocation).title("Current Location");
         currentPositionMarker = map.addMarker(positionMarker);
         if (!isZoomed) {
             map.animateCamera(CameraUpdateFactory.newLatLng(
-                    new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
+                  currentLocation));
             isZoomed = true;
 
         }

@@ -17,7 +17,7 @@ public class LocationComponent extends Component {
 
     private int radius;
     private Context context;
-    float savedLatitude, savedLongitude;
+    double savedLatitude, savedLongitude;
 
     /**
      * constructor
@@ -28,8 +28,8 @@ public class LocationComponent extends Component {
     public LocationComponent(Context context, mLocation mLocation, mRadius radius) {
         this.context = context;
         this.radius = Integer.parseInt(radius.getRadius());
-        this.savedLatitude = Float.parseFloat(mLocation.getLat());
-        this.savedLongitude = Float.parseFloat(mLocation.getLng());
+        this.savedLatitude = Double.parseDouble(mLocation.getLat());
+        this.savedLongitude = Double.parseDouble(mLocation.getLng());
     }
 
     /**
@@ -54,18 +54,18 @@ public class LocationComponent extends Component {
      * Method to get the location's latitude that has been retrieved by LocationWorker
      * @return
      */
-    private float getLatitude() {
+    private double getLatitude() {
         SharedPreferences prfs = context.getSharedPreferences("LOCATION_FILE_NAME", Context.MODE_PRIVATE);
-        return prfs.getFloat("location_lat", 0);
+        return Double.parseDouble(prfs.getString("location_lat", "0.0"));
     }
 
     /**
      * Method to get the location's longitude that has been retrieved by LocationWorker
      * @return
      */
-    private float getLongitude() {
+    private double getLongitude() {
         SharedPreferences prfs = context.getSharedPreferences("LOCATION_FILE_NAME", Context.MODE_PRIVATE);
-        return prfs.getFloat("location_lon", 0);
+        return Double.parseDouble(prfs.getString("location_lon", "0.0"));
     }
 
 }

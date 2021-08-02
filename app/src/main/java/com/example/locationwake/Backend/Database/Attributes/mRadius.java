@@ -80,8 +80,8 @@ public class mRadius implements AttributeInterface{
                 newLocation.setLatitude(Double.parseDouble(latitude));
 
                 Location savedLocation = new Location("");
-                savedLocation.setLongitude(Float.parseFloat(location.getLng()));
-                savedLocation.setLatitude(Float.parseFloat(location.getLat()));
+                savedLocation.setLongitude(Double.parseDouble(location.getLng()));
+                savedLocation.setLatitude(Double.parseDouble(location.getLat()));
 
                 float newDistance = newLocation.distanceTo(savedLocation);
 
