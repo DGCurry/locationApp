@@ -4,6 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_choose_location_map.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_main_activity.xml" value="0.13729508196721313" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_main_activityB.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_main_activityb.xml" value="0.10234375" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_settings.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header_icon.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/location_item.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/location_item_expanded.xml" value="0.1" />
       </map>
     </option>
   </component>
