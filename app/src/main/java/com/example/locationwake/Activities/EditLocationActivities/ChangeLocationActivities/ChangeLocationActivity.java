@@ -71,7 +71,7 @@ public class ChangeLocationActivity extends CallBackActivity {
         EditText latitudeInput = findViewById(R.id.editText_ad_location_latitude);
         EditText longitudeInput = findViewById(R.id.editText_ad_location_longitude);
 
-        TextView title = findViewById(R.id.textView_location_title_main);
+        TextView title = findViewById(R.id.textView_header_title);
         try {
             title.setText(data.get("locationName").toString());
             latitudeInput.setText(data.get("latitude").toString());

@@ -6,15 +6,24 @@
 
 
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/fulvous</item>
+        <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/fulvous_dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/space_cadet</item>
+        <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">@color/space_cadet_light</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
         <!-- Customize your theme here. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorSecondary</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">1.4</item>
+        <item name="android:layout_height">3dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
 </resources>

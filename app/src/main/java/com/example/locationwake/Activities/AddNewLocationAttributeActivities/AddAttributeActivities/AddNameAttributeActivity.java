@@ -64,8 +64,8 @@ public class AddNameAttributeActivity extends AppCompatActivity {
      */
     protected void createUI() {
         Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
-        TextView title = findViewById(R.id.textView_location_title_main);
-        TextView subTitle = findViewById(R.id.textView_setting_title_main);
+        TextView title = findViewById(R.id.textView_header_title);
+        TextView subTitle = findViewById(R.id.textView_header_subtitle);
         subTitle.setVisibility(View.VISIBLE);
 
         EditText name = findViewById(R.id.editText_ad_name_name);

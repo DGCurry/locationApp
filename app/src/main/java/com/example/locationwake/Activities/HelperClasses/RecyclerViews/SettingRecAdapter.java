@@ -2,10 +2,14 @@ package com.example.locationwake.Activities.HelperClasses.RecyclerViews;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +29,13 @@ import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 
 
 import java.util.ArrayList;
@@ -188,7 +199,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
 
             case AttributeInterface.SETTING_TYPE:
                 itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.setting_item, parent, false);
+                        .inflate(R.layout.header_icon_item_nt, parent, false);
                 return new SettingViewHolder(itemView);
 
             case AttributeInterface.LOCATION_TYPE:
@@ -199,7 +210,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
             //name
             default:
                 itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.header_icon, parent, false);
+                        .inflate(R.layout.header_icon_item_nt, parent, false);
                 return new NameViewHolder(itemView);
 
 
@@ -277,7 +288,8 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
         public SettingViewHolder(View view) {
             super(view);
             v = view;
-            setting = (TextView) view.findViewById(R.id.textView_header_setting);
+            setting = (TextView) view.findViewById(R.id.textView_header_subtitle);
+            setting.setVisibility(View.VISIBLE);
         }
 
         /**
@@ -289,7 +301,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
             mSetting settingObject = attributes.get(attributeArrayPosition).getSetting();
             setting.setText(settingObject.getSetting());
 
-            Button button = v.findViewById(R.id.button_invisible);
+            Button button = v.findViewById(R.id.button_header_icon);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -311,10 +323,10 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
     /**
      * innerclass holds the information in the location item
      */
-    public class LocationViewHolder extends RecyclerView.ViewHolder {
+    public class LocationViewHolder extends RecyclerView.ViewHolder implements OnMapReadyCallback {
 
-        //        MapView mapView;
-//        GoogleMap map;
+        MapView mapView;
+        GoogleMap map;
         View layout;
 
         /**
@@ -324,27 +336,30 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
         public LocationViewHolder(View view) {
             super(view);
             layout = view;
-//            mapView = layout.findViewById(R.id.lite_listrow_map);
-//            if (mapView != null) {
-            // Initialise the MapView
-//                mapView.onCreate(null);
-            // Set the map ready callback to receive the GoogleMap object
-//                mapView.getMapAsync(this);
+            mapView = (MapView) layout.findViewById(R.id.map_main);
+
+            if (mapView != null) {
+                // Initialise the MapView
+                mapView.onCreate(null);
+                mapView.getMapAsync(this);
+            }
+
         }
+
 
         /**
          * binds the item to a certain position
          * @param position position of the item
          */
         void bindView(int position) {
-            TextView name = layout.findViewById(R.id.textView_distance_title);
+            TextView name = layout.findViewById(R.id.textView_header_title);
             TextView latitude = layout.findViewById(R.id.textView_main_location_latitude);
             TextView longitude = layout.findViewById(R.id.textView_main_location_longitude);
             name.setText(location.getName());
             latitude.setText(location.getLat());
             longitude.setText(location.getLng());
 
-            Button changeLocation = layout.findViewById(R.id.button_header_change);
+            Button changeLocation = layout.findViewById(R.id.button_header_icon);
             changeLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -355,11 +370,12 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
                 }
             });
 
-            Button addAttribute = layout.findViewById(R.id.button_header_add_attribute);
+            Button addAttribute = layout.findViewById(R.id.button_subheader);
+            addAttribute.setVisibility(View.VISIBLE);
             addAttribute.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                Logger.logD(TAG, "LocationViewHolder.bindView(): sending name " + location.getName());
+                    Logger.logD(TAG, "LocationViewHolder.bindView(): sending name " + location.getName());
                     Intent intent = new Intent(v.getContext(), AddNameAttributeActivity.class);
                     intent.putExtra("data", new AttributeJSONHelper(
                             location.getName(),
@@ -371,44 +387,26 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
                     v.getContext().startActivity(intent);
                 }
             });
+        }
 
-            // Store a reference of the ViewHolder object in the layout.
-//            layout.setTag(this);
-            // Store a reference to the item in the mapView's tag. We use it to get the
-            // coordinate of a location, when setting the map location.
-//            mapView.setTag(location);
-//            setMapLocation();
+
+        /**
+         * Adds a marker and centers the camera on the NamedLocation with the normal map type.
+         */
+        private void setMapLocation() {
+            if (map == null) return;
+            // Set the map type back to normal.
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(5, 5), 13f));
+            map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        }
+
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            MapsInitializer.initialize(context);
+            map = googleMap;
+            setMapLocation();
         }
 //
-//        /**
-//         * callback function called when the map is ready to be displayed
-//         * @param googleMap
-//         */
-//        @Override
-//        public void onMapReady(@NonNull GoogleMap googleMap) {
-//            MapsInitializer.initialize(context);
-//            map = googleMap;
-//            setMapLocation();
-//        }
-//
-//        /**
-//         * function used to set the map to a certain location, and to add a marker.
-//         */
-//        private void setMapLocation() {
-//            if (map == null) return;
-//            mLocation data = (mLocation) mapView.getTag();
-//            if (data == null) return;
-//
-//            LatLng latlng = new LatLng(Double.parseDouble(data.getLat()), Double.parseDouble(data.getLng()));
-//
-//
-//            // Add a marker for this item and set the camera
-//            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 13f));
-//            map.addMarker(new MarkerOptions().position(latlng));
-//
-//            // Set the map type back to normal.
-//            map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//        }
     }
 
     /**
@@ -440,7 +438,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
             mRadius distanceObject = attributes.get(attributeArrayPosition).getRadius();
             distance.setText(distanceObject.getRadius());
 
-            Button button = v.findViewById(R.id.button_invisible);
+            Button button = v.findViewById(R.id.button_header_icon);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -474,8 +472,28 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
         public NameViewHolder(View view) {
             super(view);
             v = view;
+            Logger.logD(TAG, "NameViewHolder(): changing params");
+            setLayout();
+
             // get reference to views
-            title = (TextView) view.findViewById(R.id.textView_location_title_main);
+            title = (TextView) view.findViewById(R.id.textView_header_title);
+        }
+
+        private void setLayout() {
+            v.setBackgroundColor(context.getResources().getColor(R.color.fulvous));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+
+            Resources r = context.getResources();
+            int px = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    30,
+                    r.getDisplayMetrics()
+            );
+
+            params.setMargins(0, px, 0, 0);
+            v.setLayoutParams(params);
         }
 
         /**
@@ -488,7 +506,7 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
 
             title.setText(name);
 
-            Button button = v.findViewById(R.id.button_invisible);
+            Button button = v.findViewById(R.id.button_header_icon);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override

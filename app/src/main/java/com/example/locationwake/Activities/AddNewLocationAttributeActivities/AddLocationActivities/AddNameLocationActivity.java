@@ -65,7 +65,7 @@ public class AddNameLocationActivity extends AppCompatActivity {
         Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
         EditText name = findViewById(R.id.editText_ad_name_name);
 
-        TextView title = findViewById(R.id.textView_location_title_main);
+        TextView title = findViewById(R.id.textView_header_title);
 
         name.addTextChangedListener(new TextWatcher() {
             @Override

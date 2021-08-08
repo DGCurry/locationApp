@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Fade;
+import androidx.transition.Transition;
 
 import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddNameAttributeActivity;
 import com.example.locationwake.Activities.HelperClasses.JSON.AttributeJSONHelper;
@@ -69,7 +71,7 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView;
         itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.header_icon, parent, false);
+                .inflate(R.layout.header_icon_item, parent, false);
         return new headerViewHolder(itemView);
     }
 
@@ -86,12 +88,15 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): Clicked on an item");
                 Intent intent = new Intent(v.getContext(), ViewLocationActivity.class);
-                JSONObject data = new LocationJSONHelper(locations.get(position).getLID(),
-                        locations.get(position).getName(), locations.get(position).getLat(),
-                        locations.get(position).getLng())
+                JSONObject data = new LocationJSONHelper(locations.get(holder.getAdapterPosition()).getLID(),
+                        locations.get(holder.getAdapterPosition()).getName(), locations.get(holder.getAdapterPosition()).getLat(),
+                        locations.get(holder.getAdapterPosition()).getLng())
                         .build();
                 intent.putExtra("data", data.toString());
-                v.getContext().startActivity(intent);
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)v.getContext(),
+                        Pair.create(v, "container_transition"));
+
+                v.getContext().startActivity(intent, options.toBundle());
             }
         });
         ((headerViewHolder) holder).bindView(position);
@@ -124,7 +129,7 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
         public headerViewHolder(View view) {
             super(view);
             v = view;
-            title = (TextView) view.findViewById(R.id.textView_location_title_main);
+            title = (TextView) view.findViewById(R.id.textView_header_title);
         }
 
         /**
@@ -134,7 +139,7 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
         void bindView(int position) {
             title.setText(locations.get(position).getName());
 
-            Button addAttribute = v.findViewById(R.id.button_invisible);
+            Button addAttribute = v.findViewById(R.id.button_header_icon);
             addAttribute.setVisibility(View.VISIBLE);
             addAttribute.setOnClickListener(new View.OnClickListener() {
                 @Override

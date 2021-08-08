@@ -50,7 +50,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/rc_icon_size"
+                    android:layout_marginStart="@dimen/rc_icon_size_l"
                     android:padding="@dimen/rc_text_padding"
                     android:textColor="#000"
                     android:textSize="@dimen/extra_large_text_size"
@@ -62,7 +62,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/normal_text_size"
-                    android:layout_marginStart="@dimen/rc_icon_size"
+                    android:layout_marginStart="@dimen/rc_icon_size_l"
                     android:padding="@dimen/rc_text_padding"
                     tools:text="" />
 
@@ -80,7 +80,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/rc_icon_size"
+                    android:layout_marginStart="@dimen/rc_icon_size_l"
                     android:padding="@dimen/rc_text_padding"
                     android:textColor="#000"
                     android:textSize="@dimen/extra_large_text_size"
@@ -92,7 +92,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/normal_text_size"
-                    android:layout_marginStart="@dimen/rc_icon_size"
+                    android:layout_marginStart="@dimen/rc_icon_size_l"
                     android:padding="@dimen/rc_text_padding"
                     tools:text="" />
 

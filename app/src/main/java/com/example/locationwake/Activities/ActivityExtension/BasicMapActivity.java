@@ -237,6 +237,7 @@ public abstract class BasicMapActivity extends AppCompatActivity implements OnMa
      * @param location
      */
     protected void  onNewLocation(Location location) {
+        Logger.logD(TAG, "onNewLocation(): current location is " + location.getLatitude() + " " + location.getLongitude());
         currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
         if (currentPositionMarker != null) {
             currentPositionMarker.remove();

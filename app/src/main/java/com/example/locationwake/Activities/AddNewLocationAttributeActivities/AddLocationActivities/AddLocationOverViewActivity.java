@@ -66,7 +66,7 @@ public class AddLocationOverViewActivity extends CallBackActivity {
     protected void createUI() {
         Logger.logV(TAG, "createUI(): creating UI and assigning listeners");
         TextView title, latitude, longitude;
-        title = findViewById(R.id.textView_location_title_main);
+        title = findViewById(R.id.textView_header_title);
 
         try {
             title.setText(data.get("locationName").toString());

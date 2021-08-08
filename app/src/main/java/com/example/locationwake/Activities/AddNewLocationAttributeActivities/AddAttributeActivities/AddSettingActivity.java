@@ -94,8 +94,8 @@ public class AddSettingActivity extends AppCompatActivity {
             }
         });
 
-        TextView title = findViewById(R.id.textView_location_title_main);
-        TextView subTitle = findViewById(R.id.textView_setting_title_main);
+        TextView title = findViewById(R.id.textView_header_title);
+        TextView subTitle = findViewById(R.id.textView_header_subtitle);
         subTitle.setVisibility(View.VISIBLE);
 
         try {

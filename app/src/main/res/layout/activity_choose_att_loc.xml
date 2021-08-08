@@ -2,41 +2,85 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:padding="15dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/space_cadet">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/extra_large_text_size"
+        android:text="Add location or new Attribute"
+        android:padding="@dimen/rc_text_padding"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="@dimen/navigation_buttons_height"
+        android:gravity="center" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_list_location"
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/choose_location"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:overScrollMode="never"
-        android:visibility="visible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_default="wrap" />
+        app:layout_constraintHeight_max="400dp"
+        app:layout_constraintVertical_weight="1"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/choose_att_loc_new_loc"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/rc_icon_size"
-        app:layout_constraintTop_toBottomOf="@id/recyclerView_list_location"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="add New Location"/>
+        <include
+            layout="@layout/header" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_list_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/rc_item_margin"
+            android:overScrollMode="never"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintWidth_default="wrap"
+            android:visibility="visible"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/add_location"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_weight="1"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintTop_toBottomOf="@+id/choose_location"
+        android:orientation="vertical" >
+
+        <include
+            layout="@layout/header" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView_turn_on_off"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/rc_item_margin"
+            app:layout_constraintTop_toBottomOf="@id/active_location"
+            android:visibility="visible"
+            android:background="@color/black" >
+
+            <include
+                layout="@layout/subheader" />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <include
         android:id="@+id/navigation_bar"
         layout="@layout/navigation_buttons"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

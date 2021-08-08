@@ -10,7 +10,7 @@ import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Services.DataEntry;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;

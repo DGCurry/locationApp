@@ -6,15 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddNameAttributeActivity;
-import com.example.locationwake.Backend.Behaviour.Components.LocationComponent;
 import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Services.CheckLocationEntry;
@@ -78,7 +72,7 @@ public class AddLocationActivity extends CallBackActivity {
         EditText latitudeInput = findViewById(R.id.editText_ad_location_latitude);
         EditText longitudeInput = findViewById(R.id.editText_ad_location_longitude);
 
-        TextView title = findViewById(R.id.textView_location_title_main);
+        TextView title = findViewById(R.id.textView_header_title);
         try {
             title.setText(data.get("locationName").toString());
         } catch (JSONException e) {

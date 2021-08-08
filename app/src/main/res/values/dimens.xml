@@ -5,7 +5,9 @@
     <dimen name="ic_clear_margin">56dp</dimen>
 
     recyclerview cards
-    <dimen name="rc_icon_size">40dp</dimen>
+    <dimen name="rc_icon_size_l">40dp</dimen>
+    <dimen name="rc_icon_size_m">20dp</dimen>
+    <dimen name="rc_icon_size_s">10dp</dimen>
     <dimen name="rc_item_padding">10dp</dimen>
     <dimen name="rc_text_padding">5dp</dimen>
     <dimen name="rc_item_margin">10dp</dimen>

@@ -1,5 +1,6 @@
 package com.example.locationwake.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Activities.AddNewLocationAttributeActivities.ChooseAttributeOrLocation;
+import com.example.locationwake.Activities.HelperClasses.DataClasses.MainActivityData;
 import com.example.locationwake.Activities.HelperClasses.RecyclerViews.MainSettingRecAdapter;
 import com.example.locationwake.Activities.PermissionActivities.BackgroundLocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.LocationPermissionActivity;
@@ -35,6 +38,13 @@ import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
+import com.google.android.gms.common.data.DataHolder;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -42,17 +52,20 @@ import java.util.concurrent.TimeUnit;
 /**
  * This is a test class to test all func. The GUI will be added later on.
  */
-public class MainActivity extends CallBackActivity {
+public class MainActivity extends CallBackActivity implements OnMapReadyCallback {
 
     //TAG of the class
     static final private String TAG = "MainActivity";
 
     //GUI ELEMENTS
     private View activeSettingStub;
+    private GoogleMap map;
+    private SupportMapFragment mapFragment;
+    private TextView locationName;
+    private RecyclerView attributesRC;
+    private RecyclerView.Adapter attributesAd;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private MainActivityData dataHolder;
 
 
     /**
@@ -73,17 +86,36 @@ public class MainActivity extends CallBackActivity {
             Logger.logV(TAG, "onCreate(): asking permissions");
             askPermissions();
         }
-        Logger.logV(TAG, "onCreate() started startWorker()");
 
+        Logger.logV(TAG, "onCreate() started startWorker()");
         Runnable runnableWorker = this::startWorker;
         runnableWorker.run();
+
+        Logger.logV(TAG, "onCreate(): adding callback");
+        Runnable runnableCallBack = this::addCallBack;
+        runnableCallBack.run();
+    }
+
+    @Override
+    protected void onStart() {
+        Logger.logV(TAG, "onStart(): starting activity");
+        super.onStart();
+
+        Logger.logV(TAG, "onStart(): loading data ");
+        dataHolder = new MainActivityData();
+        dataHolder.setContext(getApplicationContext());
+        dataHolder.run();
+
+        Logger.logV(TAG, "onStart(): initializing UI ");
+        initializeUI();
     }
 
     @Override
     protected void onResume() {
         Logger.logV(TAG, "onResume(): resuming activity");
         super.onResume();
-        Logger.logV(TAG, "onStart() started createUI()");
+
+        Logger.logV(TAG, "onResume(): started createUI()");
         createUI();
     }
 
@@ -91,9 +123,11 @@ public class MainActivity extends CallBackActivity {
      * Creates the GUI
      */
     protected void createUI() {
-        Logger.logV(TAG, "createUI(): getting the UI elements");
-        createSettingUI();
+        Logger.logV(TAG, "createUI(): adding navigation to the activity");
         addNavigation();
+
+        Logger.logV(TAG, "createUI(): getting the UI elements");
+        updateUI();
     }
 
     /**
@@ -130,28 +164,6 @@ public class MainActivity extends CallBackActivity {
                 Logger.logD(TAG, "onClick(): clicked on the setting button");
             }
         });
-    }
-
-    /**
-     * Creates the GUI for the Setting that is currently active, or not
-     */
-    private void createSettingUI() {
-
-        activeSettingStub = findViewById(R.id.include_main_active_setting);
-
-        Logger.logD(TAG, "createSettingUI(): retrieving saved setting");
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(
-                "SETTING_FILE_NAME", Context.MODE_PRIVATE);
-
-        String savedSetting = pref.getString("setting", null);
-
-        // if the setting is null, there is no active setting
-        if (savedSetting == null) {
-            updateUINoSettingFound();
-        } else {
-            updateUISettingFound(pref.getString("LID", "None"), pref.getString("AID", "None"));
-        }
-
     }
 
     /**
@@ -233,6 +245,77 @@ public class MainActivity extends CallBackActivity {
     }
 
     /**
+     * method called when the backend has found a setting to be enabled. The UI is updated
+     */
+    private void populateRC(mLocation location, mAttribute attribute) {
+        //retrieve all the data and inflate one of the thingies
+        //Holds all the data that is in the database
+        ArrayList<AttributeInterface> list = new ArrayList<>();
+        list.add(attribute.getSetting());
+        list.add(attribute.getRadius());
+        list.add(location);
+
+        attributesRC.setVisibility(View.VISIBLE);
+
+        attributesRC.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
+                getApplicationContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false);
+
+        attributesRC.setLayoutManager(layoutManager);
+        RecyclerView.Adapter attributesAd = new MainSettingRecAdapter(list, getApplicationContext());
+        attributesRC.setAdapter(attributesAd);
+
+        Toast.makeText(getApplicationContext(), "There is a location found, UI updated", Toast.LENGTH_SHORT).show();
+    }
+
+    private void initializeUI() {
+        Logger.logD(TAG, "initializeUI(): initializing");
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_main);
+        attributesRC = (RecyclerView) findViewById(R.id.recyclerView_main_active_setting);
+        locationName = findViewById(R.id.textView_header_title);
+    }
+
+    /**
+     * Updates and creates the GUI for the Setting that is currently active, or not
+     */
+    private void updateUI() {
+        String locationNameText = dataHolder.getLocation() != null ? dataHolder.getLocation().getName() : "No location has been found";
+
+        locationName.setText(locationNameText);
+        if (dataHolder.getLocation() != null && dataHolder.getAttribute() != null) {
+            mapFragment.getMapAsync(this);
+            findViewById(R.id.include_add_location).setVisibility(View.INVISIBLE);
+
+            Logger.logD(TAG, "updateUI(): found location, updating RC");
+            populateRC(dataHolder.getLocation(), dataHolder.getAttribute());
+            View switchLocation = findViewById(R.id.cardView_turn_on_off);
+            switchLocation.setVisibility(View.VISIBLE);
+
+        } else {
+            Logger.logD(TAG, "updateUI(): found no location, displaying add location button");
+            findViewById(R.id.include_add_location).setVisibility(View.INVISIBLE);
+
+            View addLocation = findViewById(R.id.include_add_location);
+            addLocation.setVisibility(View.VISIBLE);
+            TextView addLocationT = addLocation.findViewById(R.id.textView_header_title);
+            addLocationT.setText("Add a new location");
+            addLocation.findViewById(R.id.button_header_icon).setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        googleMap.getUiSettings().setScrollGesturesEnabled(false);
+
+        LatLng location = new LatLng(Double.parseDouble(dataHolder.getLocation().getLat()), Double.parseDouble(dataHolder.getLocation().getLng()));
+        googleMap.addMarker(new MarkerOptions().position(location));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f));
+    }
+
+
+    /**
      * method to start all worker background threads
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -255,57 +338,6 @@ public class MainActivity extends CallBackActivity {
     }
 
     /**
-     * method called when the backend has found no setting to be enabled.
-     */
-    private void updateUINoSettingFound() {
-        Logger.logD(TAG, "updateUISettingFound(): savedSetting is null, no location found");
-
-        TextView title = findViewById(R.id.textView_location_title_main);
-        TextView subtitle = findViewById(R.id.textView_setting_title_main);
-
-        title.setText("No location found");
-        subtitle.setText("Add location or wait 10 minutes");
-
-        subtitle.setVisibility(View.VISIBLE);
-        Toast.makeText(getApplicationContext(), "There is no location found, UI updated", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * method called when the backend has found a setting to be enabled. The UI is updated
-     */
-    private void updateUISettingFound(String LID, String AID) {
-        Logger.logD(TAG, "createUI(): savedSetting is not null, location found");
-        //retrieve all the data and inflate one of the thingies
-        activeSettingStub.setVisibility(View.VISIBLE);
-
-        TextView title = findViewById(R.id.textView_location_title_main);
-
-        String name = DataHandler.loadLocation(LID, getApplicationContext()).getName();
-
-        title.setText(name);
-
-        mLocation mLocation = DataHandler.loadLocation(LID, getApplicationContext());
-        mAttribute attribute = DataHandler.loadAttribute(LID, AID, getApplicationContext());
-        //Holds all the data that is in the database
-        ArrayList<AttributeInterface> list = new ArrayList<>();
-        list.add(attribute.getSetting());
-        list.add(attribute.getRadius());
-        list.add(mLocation);
-
-        Logger.logD(TAG, "createUI(): populating recyclerview");
-
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_main_active_setting);
-        recyclerView.setVisibility(View.VISIBLE);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new MainSettingRecAdapter(list, getApplicationContext());
-        recyclerView.setAdapter(mAdapter);
-
-        Toast.makeText(getApplicationContext(), "There is a location found, UI updated", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
      * Method to handle the callback from the backend
      * @param update if the Activity should update components of itself, this is true
      * @param succeeded if an action called by the Activity has succeeded, this is true
@@ -316,7 +348,8 @@ public class MainActivity extends CallBackActivity {
     @Override
     public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
         if (update) {
-            runOnUiThread(this::createUI);
+            runOnUiThread(this::updateUI);
         }
     }
+
 }

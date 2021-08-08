@@ -78,7 +78,10 @@ public class ChooseAttributeOrLocation extends AppCompatActivity {
         mAdapter = new AddAttributeLocationListRecAdapter(list, getApplicationContext());
         recyclerView.setAdapter(mAdapter);
 
-        Button addLocationButton = findViewById(R.id.choose_att_loc_new_loc);
+        Button addLocationButton = findViewById(R.id.button_subheader);
+        addLocationButton.setVisibility(View.VISIBLE);
+        addLocationButton.setText("+");
+
         addLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

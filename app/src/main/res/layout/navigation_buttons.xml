@@ -20,8 +20,8 @@
         </Space>
         <Button
             android:id="@+id/button_navigation_left"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size">
+            android:layout_width="@dimen/rc_icon_size_l"
+            android:layout_height="@dimen/rc_icon_size_l">
         </Button>
 
         <Space
@@ -31,8 +31,8 @@
         </Space>
         <Button
             android:id="@+id/button_navigation_middle"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size">
+            android:layout_width="@dimen/rc_icon_size_l"
+            android:layout_height="@dimen/rc_icon_size_l">
         </Button>
         <Space
             android:layout_width="0dp"
@@ -41,8 +41,8 @@
         </Space>
         <Button
             android:id="@+id/button_navigation_right"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size">
+            android:layout_width="@dimen/rc_icon_size_l"
+            android:layout_height="@dimen/rc_icon_size_l">
         </Button>
         <Space
             android:layout_width="0dp"

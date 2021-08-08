@@ -3,7 +3,27 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_choose_att_loc.xml" value="0.2" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_choose_location_map.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_h_item.xml" value="0.17421875" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_main_activity.xml" value="0.13729508196721313" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_main_activityB.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_main_activityb.xml" value="0.10234375" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_permission.xml" value="0.10078125" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_settings.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/distance_item.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header.xml" value="0.194921875" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header_icon.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header_icon_item.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header_icon_item_nt.xml" value="0.264" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/location_item.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/location_item_expanded.xml" value="0.264" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/navigation_buttons.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/setting_item.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/subheader.xml" value="0.12773224043715847" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/subheader_double.xml" value="0.1325136612021858" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/vertical_divider.xml" value="0.11796875" />
       </map>
     </option>
   </component>
@@ -51,7 +71,7 @@
       </value>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="15" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15_PREVIEW" project-jdk-name="15" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

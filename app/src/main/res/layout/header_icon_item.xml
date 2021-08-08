@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:transitionName="container_transition"
-    >
+    android:layout_marginBottom="@dimen/rc_item_margin">
 
     <LinearLayout
         android:id="@+id/container"
-        android:transitionName="header_transition"
+        android:transitionName="container_transition"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
@@ -65,4 +63,4 @@
 
     </LinearLayout>
 
-</merge>
+</androidx.cardview.widget.CardView>
