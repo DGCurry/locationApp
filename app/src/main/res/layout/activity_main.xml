@@ -40,7 +40,6 @@
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_weight="1"
-                android:layout_marginStart="10dp"
                 app:cardCornerRadius="100dp">
 
                 <!--fragment to display our maps-->
@@ -74,7 +73,7 @@
         android:orientation="vertical" >
 
         <include
-            layout="@layout/header" />
+            layout="@layout/header_divider" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_main_active_setting"
@@ -83,7 +82,7 @@
             android:layout_margin="@dimen/rc_item_margin"
             app:layout_constrainedHeight="true"
             app:layout_constraintWidth_default="wrap"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
         <include
             android:id="@+id/include_add_location"

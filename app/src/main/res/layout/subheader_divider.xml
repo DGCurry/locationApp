@@ -36,6 +36,9 @@
 
         </LinearLayout>
 
+        <include
+            layout="@layout/vertical_divider"/>
+
     </LinearLayout>
 
 </merge>

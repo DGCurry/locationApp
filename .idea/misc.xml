@@ -14,7 +14,8 @@
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_settings.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/distance_item.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header.xml" value="0.194921875" />
-        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header_icon.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header_divider.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header_icon.xml" value="0.2" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header_icon_item.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header_icon_item_nt.xml" value="0.264" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/location_item.xml" value="0.1" />
@@ -22,7 +23,9 @@
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/navigation_buttons.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/setting_item.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/subheader.xml" value="0.12773224043715847" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/subheader_divider.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/subheader_double.xml" value="0.1325136612021858" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/subheader_double_divider.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/vertical_divider.xml" value="0.11796875" />
       </map>
     </option>

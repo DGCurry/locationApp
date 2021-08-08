@@ -7,7 +7,7 @@
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryVariant">@color/fulvous_dark</item>
+        <item name="colorPrimaryVariant">@color/quantum_grey600</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/white</item>

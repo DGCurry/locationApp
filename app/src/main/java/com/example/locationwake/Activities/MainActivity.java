@@ -58,12 +58,9 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
     static final private String TAG = "MainActivity";
 
     //GUI ELEMENTS
-    private View activeSettingStub;
-    private GoogleMap map;
     private SupportMapFragment mapFragment;
     private TextView locationName;
     private RecyclerView attributesRC;
-    private RecyclerView.Adapter attributesAd;
 
     private MainActivityData dataHolder;
 
@@ -91,9 +88,6 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
         Runnable runnableWorker = this::startWorker;
         runnableWorker.run();
 
-        Logger.logV(TAG, "onCreate(): adding callback");
-        Runnable runnableCallBack = this::addCallBack;
-        runnableCallBack.run();
     }
 
     @Override
@@ -101,10 +95,10 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
         Logger.logV(TAG, "onStart(): starting activity");
         super.onStart();
 
-        Logger.logV(TAG, "onStart(): loading data ");
-        dataHolder = new MainActivityData();
-        dataHolder.setContext(getApplicationContext());
-        dataHolder.run();
+
+        Logger.logV(TAG, "onCreate(): adding callback");
+        Runnable runnableCallBack = this::addCallBack;
+        runnableCallBack.run();
 
         Logger.logV(TAG, "onStart(): initializing UI ");
         initializeUI();
@@ -114,6 +108,11 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
     protected void onResume() {
         Logger.logV(TAG, "onResume(): resuming activity");
         super.onResume();
+
+        Logger.logV(TAG, "onResume(): loading data ");
+        dataHolder = new MainActivityData();
+        dataHolder.setContext(getApplicationContext());
+        dataHolder.run();
 
         Logger.logV(TAG, "onResume(): started createUI()");
         createUI();
@@ -347,6 +346,7 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
      */
     @Override
     public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
+        Logger.logD(TAG, "MUAW");
         if (update) {
             runOnUiThread(this::updateUI);
         }

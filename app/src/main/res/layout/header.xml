@@ -20,7 +20,8 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -46,16 +47,13 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button_header_icon"
+                android:id="@+id/button_header"
                 android:layout_gravity="center"
                 android:layout_width="@dimen/rc_icon_size_l"
                 android:layout_height="@dimen/rc_icon_size_l"
                 android:visibility="gone"/>
 
         </LinearLayout>
-
-        <include
-            layout="@layout/vertical_divider"/>
 
     </LinearLayout>
 

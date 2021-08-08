@@ -3,61 +3,73 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:map="http://schemas.android.com/tools"
-    android:transitionName="container_transition"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:transitionName="container_transition">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/gmap_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="15dp"
         android:orientation="vertical" >
 
-        <include
-            layout="@layout/header_icon"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-        </include>
+            android:textSize="@dimen/extra_large_text_size"
+            android:text="Location Page"
+            android:padding="@dimen/rc_text_padding"
+            android:gravity="center" />
 
-        <include
-            layout="@layout/subheader_double">
-        </include>
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/rc_item_padding">
+            android:layout_marginTop="@dimen/activity_vertical_margin" >
 
-            <TextView
-                android:id="@+id/textView_main_location_latitude"
+            <Space
                 android:layout_width="0dp"
-                android:layout_weight=".5"
-                android:layout_height="match_parent"
-                android:textSize="@dimen/normal_text_size"
-                android:layout_marginStart="@dimen/rc_icon_size_l"
-                android:padding="@dimen/rc_text_padding"/>
+                android:layout_height="200dp"
+                android:layout_weight="0.2" />
 
-            <TextView
-                android:id="@+id/textView_main_location_longitude"
+            <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
-                android:layout_weight=".5"
-                android:layout_height="match_parent"
-                android:textSize="@dimen/normal_text_size"
-                android:layout_marginStart="@dimen/rc_icon_size_l"
-                android:padding="@dimen/rc_text_padding"/>
+                android:layout_height="200dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="20dp">
 
-        </LinearLayout>
+                <!--fragment to display our maps-->
+                <com.google.android.gms.maps.MapView
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/map_main"
+                    android:layout_margin="@dimen/rc_item_padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    map:liteMode="true"
+                    map:mapType="none"
+                    tools:context=".MapsActivity" />
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/map_main"
-            android:layout_margin="@dimen/rc_item_padding"
-            android:layout_width="match_parent"
-            android:layout_height="290dp"
-            map:liteMode="true"
-            map:mapType="none" />
+            </androidx.cardview.widget.CardView>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_weight="0.2" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <include
-            layout="@layout/subheader"/>
+            layout="@layout/header_divider"
+            >
+        </include>
 
-    </LinearLayout>
+        <include
+            layout="@layout/header_icon_item_nt"
+            android:layout_margin="@dimen/rc_item_margin"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.cardview.widget.CardView>

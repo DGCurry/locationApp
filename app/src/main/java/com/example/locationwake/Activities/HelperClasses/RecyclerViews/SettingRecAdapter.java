@@ -353,11 +353,9 @@ public class SettingRecAdapter extends RecyclerView.Adapter{
          */
         void bindView(int position) {
             TextView name = layout.findViewById(R.id.textView_header_title);
-            TextView latitude = layout.findViewById(R.id.textView_main_location_latitude);
-            TextView longitude = layout.findViewById(R.id.textView_main_location_longitude);
+            TextView latLng = layout.findViewById(R.id.textView_header_title_nt);
             name.setText(location.getName());
-            latitude.setText(location.getLat());
-            longitude.setText(location.getLng());
+            latLng.setText(location.getLat() + ", " + location.getLng());
 
             Button changeLocation = layout.findViewById(R.id.button_header_icon);
             changeLocation.setOnClickListener(new View.OnClickListener() {
