@@ -7,20 +7,14 @@
     android:transitionName="container_transition">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/gmap_preview"
+        android:id="@+id/top_page_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/extra_large_text_size"
-            android:text="Location Page"
-            android:padding="@dimen/rc_text_padding"
-            android:gravity="center" />
-
+        <include
+            layout="@layout/pageheader" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -60,15 +54,54 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <include
-            layout="@layout/header_divider"
-            >
-        </include>
+            layout="@layout/header" />
 
         <include
-            layout="@layout/header_icon_item_nt"
-            android:layout_margin="@dimen/rc_item_margin"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent" />
+            layout="@layout/vertical_divider" />
+
+        <LinearLayout
+            android:id="@+id/latlong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:orientation="horizontal"
+            android:padding="@dimen/rc_item_padding">
+
+            <ImageView
+                android:id="@+id/imageView_subheader_icon_one"
+                android:layout_width="@dimen/rc_icon_size_l"
+                android:layout_height="@dimen/rc_icon_size_l"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_launcher_background">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/textView_subheader_double_one"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/large_text_size"
+                android:padding="@dimen/rc_text_padding"
+                android:text="latitude" />
+
+            <ImageView
+                android:id="@+id/imageView_subheader_icon_two"
+                android:layout_width="@dimen/rc_icon_size_l"
+                android:layout_height="@dimen/rc_icon_size_l"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_launcher_background">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/textView_subheader_double_two"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/large_text_size"
+                android:padding="@dimen/rc_text_padding"
+                android:text="longitude" />
+
+        </LinearLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

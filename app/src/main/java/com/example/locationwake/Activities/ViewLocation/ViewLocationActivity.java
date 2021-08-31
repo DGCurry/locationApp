@@ -1,18 +1,15 @@
 package com.example.locationwake.Activities.ViewLocation;
 
 import android.os.Bundle;
-import android.widget.HorizontalScrollView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.locationwake.Activities.HelperClasses.RecyclerViews.CustomItemDecoration.LocationListDividerLine;
 import com.example.locationwake.Activities.HelperClasses.RecyclerViews.SettingRecAdapter;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -108,7 +105,6 @@ public class ViewLocationActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.addItemDecoration(new LocationListDividerLine(getApplicationContext(), R.drawable.drawable_divider));
         mAdapter = new SettingRecAdapter(attributes, location, getApplicationContext());
         recyclerView.setAdapter(mAdapter);
     }

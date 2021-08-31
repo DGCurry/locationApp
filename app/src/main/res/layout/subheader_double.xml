@@ -5,6 +5,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
@@ -45,12 +46,6 @@
             android:padding="@dimen/rc_text_padding"
             android:text="longitude" />
 
-        <Button
-            android:id="@+id/button_subheader_double"
-            android:layout_gravity="center"
-            android:layout_width="@dimen/rc_icon_size_l"
-            android:layout_height="@dimen/rc_icon_size_l"
-            android:visibility="gone"/>
     </LinearLayout>
 
 </merge>

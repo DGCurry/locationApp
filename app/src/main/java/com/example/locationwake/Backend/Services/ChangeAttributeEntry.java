@@ -2,7 +2,6 @@ package com.example.locationwake.Backend.Services;
 
 import android.content.Context;
 
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Backend.Managers.CallBackManager;

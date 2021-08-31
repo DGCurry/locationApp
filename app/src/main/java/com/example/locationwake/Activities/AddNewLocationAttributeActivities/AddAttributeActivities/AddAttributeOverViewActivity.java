@@ -66,11 +66,11 @@ public class AddAttributeOverViewActivity extends CallBackActivity {
      */
     protected void createUI() {
         Logger.logV(TAG, "createUI(): creating UI and assigning listeners");
-        TextView locationName, attributeName, radius, setting;
-        locationName = findViewById(R.id.textView_header_title);
-        attributeName = findViewById(R.id.textView_header_subtitle);
+        TextView title, attributeName, radius, setting;
+        attributeName = findViewById(R.id.textView_ad_overview_name);
         radius = findViewById(R.id.textView_ad_overview_radius);
         setting = findViewById(R.id.textView_ad_overview_setting);
+        title = findViewById(R.id.page_header);
 
         final String locationNameString, attributeNameEntry, radiusEntry, settingEntry;
         try {
@@ -83,7 +83,7 @@ public class AddAttributeOverViewActivity extends CallBackActivity {
             return;
         }
 
-        locationName.setText(locationNameString);
+        title.setText("Add Attribute to " + locationNameString);
         attributeName.setText(attributeNameEntry);
         radius.setText(radiusEntry);
         setting.setText(settingEntry);

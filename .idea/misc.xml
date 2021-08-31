@@ -3,15 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_add_distance.xml" value="0.2069672131147541" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_add_location.xml" value="0.20935792349726776" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_add_name_attribute.xml" value="0.2069672131147541" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_add_name_location.xml" value="0.2069672131147541" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_add_overview_attribute.xml" value="0.205859375" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_add_overview_location.xml" value="0.205859375" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_add_setting.xml" value="0.2069672131147541" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_choose_att_loc.xml" value="0.2" />
-        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_choose_location_map.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_choose_location_map.xml" value="0.2" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_h_item.xml" value="0.17421875" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_location_list.xml" value="0.2069672131147541" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_main_activity.xml" value="0.13729508196721313" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_main_activityB.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_main_activityb.xml" value="0.10234375" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_permission.xml" value="0.10078125" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_settings.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/activity_view_location.xml" value="0.205859375" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/attribute_item_expanded.xml" value="0.2" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/distance_item.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header.xml" value="0.194921875" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header_divider.xml" value="0.1" />
@@ -20,12 +30,14 @@
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/header_icon_item_nt.xml" value="0.264" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/location_item.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/location_item_expanded.xml" value="0.264" />
-        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/navigation_buttons.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/navigation_buttons.xml" value="0.176" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/pageheader.xml" value="0.26328125" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/setting_item.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/subheader.xml" value="0.12773224043715847" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/subheader_divider.xml" value="0.1" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/subheader_double.xml" value="0.1325136612021858" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/subheader_double_divider.xml" value="0.1" />
+        <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/textbox.xml" value="0.128125" />
         <entry key="..\:/Users/Diederik Geertzen/AndroidStudioProjects/LocationWake/app/src/main/res/layout/vertical_divider.xml" value="0.11796875" />
       </map>
     </option>
@@ -74,7 +86,7 @@
       </value>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15_PREVIEW" project-jdk-name="15" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="15" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

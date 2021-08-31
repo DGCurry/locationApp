@@ -3,8 +3,7 @@ package com.example.locationwake.Activities.HelperClasses.DataClasses;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
-import com.example.locationwake.Backend.Database.Attributes.mSetting;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Logger;

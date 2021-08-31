@@ -5,26 +5,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddLocationActivities.AddNameLocationActivity;
 import com.example.locationwake.Activities.HelperClasses.DataClasses.ChooseALData;
-import com.example.locationwake.Activities.HelperClasses.DataClasses.MainActivityData;
 import com.example.locationwake.Activities.HelperClasses.RecyclerViews.AddAttributeLocationListRecAdapter;
-import com.example.locationwake.Activities.HelperClasses.RecyclerViews.MainSettingRecAdapter;
 import com.example.locationwake.Activities.ViewLocation.LocationListActivity;
-import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
-import com.example.locationwake.Backend.Database.DataHandler;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
-import com.example.locationwake.Backend.Database.mAttribute;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
-import com.google.android.gms.maps.SupportMapFragment;
 
 import java.util.ArrayList;
 
@@ -138,8 +130,8 @@ public class ChooseAttributeOrLocation extends CallBackActivity {
     private void updateUI() {
         if (dataHolder.getLocations().size() > 0) {
             Logger.logD(TAG, "updateUI(): creating RC");
-            findViewById(R.id.add_attribute).setVisibility(View.VISIBLE);
-            findViewById(R.id.add_attribute).animate();
+            findViewById(R.id.middle_page_container).setVisibility(View.VISIBLE);
+            findViewById(R.id.middle_page_container).animate();
             populateRC(dataHolder.getLocations());
         }
     }
@@ -147,8 +139,8 @@ public class ChooseAttributeOrLocation extends CallBackActivity {
     private void initializeUI() {
         Logger.logD(TAG, "initializeUI(): initializing");
 
-        addLocation = findViewById(R.id.add_location).findViewById(R.id.textView_header_title);
-        addAttribute = findViewById(R.id.add_attribute).findViewById(R.id.textView_header_title);
+        addLocation = findViewById(R.id.top_page_container).findViewById(R.id.textView_header_title);
+        addAttribute = findViewById(R.id.middle_page_container).findViewById(R.id.textView_header_title);
         addLocationB = findViewById(R.id.button_header_icon);
         addLocationB.setVisibility(View.VISIBLE);
     }
@@ -162,7 +154,7 @@ public class ChooseAttributeOrLocation extends CallBackActivity {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter mAdapter = new AddAttributeLocationListRecAdapter(locations, getApplicationContext());
+        RecyclerView.Adapter mAdapter = new AddAttributeLocationListRecAdapter(locations);
         recyclerView.setAdapter(mAdapter);
     }
 

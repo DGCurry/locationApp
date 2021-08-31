@@ -9,7 +9,8 @@ import android.widget.Toast;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Activities.MainActivity;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mLatLng;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Services.DataEntry;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
@@ -65,14 +66,8 @@ public class AddLocationOverViewActivity extends CallBackActivity {
      */
     protected void createUI() {
         Logger.logV(TAG, "createUI(): creating UI and assigning listeners");
-        TextView title, latitude, longitude;
-        title = findViewById(R.id.textView_header_title);
+        TextView latitude, longitude;
 
-        try {
-            title.setText(data.get("locationName").toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         latitude = findViewById(R.id.textView_ad_overview_latitude);
         longitude = findViewById(R.id.textView_ad_overview_longitude);
@@ -129,8 +124,12 @@ public class AddLocationOverViewActivity extends CallBackActivity {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): clicked on the send button");
+                Logger.logV(TAG, "onClick(): entering data \n" +
+                        nameEntry + "\n" +
+                        latitudeEntry + "\n" +
+                        longitudeEntry);
                 DataEntry dataEntry = new DataEntry(
-                        new mLocation(null, nameEntry, latitudeEntry, longitudeEntry),
+                        new mLocation(null, nameEntry, new mLatLng(latitudeEntry, longitudeEntry)),
                         getApplicationContext());
                 dataEntry.run();
                 finish();

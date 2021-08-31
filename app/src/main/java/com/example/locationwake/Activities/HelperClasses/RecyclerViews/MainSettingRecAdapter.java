@@ -13,7 +13,7 @@ import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 
 import java.util.ArrayList;
@@ -29,7 +29,6 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
 
     //Holds the different attributes of the location that is in the Recyclerview
     private List<AttributeInterface> attributes;
-    private String name;
 
     //Context of the Activity
     Context context;
@@ -71,7 +70,7 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView;
         switch (viewType) {
-            case AttributeInterface.DISTANCE_TYPE:
+            case AttributeInterface.RADIUS_TYPE:
                 itemView = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.activity_h_item, parent, false);
                 return new RadiusViewHolder(itemView);
@@ -96,7 +95,7 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
-            case AttributeInterface.DISTANCE_TYPE:
+            case AttributeInterface.RADIUS_TYPE:
                 Logger.logV(TAG, "onBindViewHolder(): DISTANCE_TYPE added");
                 ((RadiusViewHolder) holder).bindView(position);
                 break;
@@ -179,7 +178,7 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
          */
         void bindView(int position) {
             mLocation location = (mLocation) attributes.get(position);
-            latLng.setText(location.getLat() + ", " + location.getLng());
+            latLng.setText(location.getLatLng().getLat() + ", " + location.getLatLng().getLng());
             // Store a reference of the ViewHolder object in the layout.
             // Store a reference to the item in the mapView's tag. We use it to get the
             // coordinate of a location, when setting the map location.

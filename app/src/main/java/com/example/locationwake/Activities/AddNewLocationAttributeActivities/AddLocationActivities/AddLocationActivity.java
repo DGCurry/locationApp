@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddNameAttributeActivity;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mLatLng;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Services.CheckLocationEntry;
 import com.example.locationwake.Logger;
@@ -48,6 +49,18 @@ public class AddLocationActivity extends CallBackActivity {
         createUI();
     }
 
+    @Override
+    protected void onStart() {
+        Logger.logV(TAG, "onStart(): starting activity");
+        super.onStart();
+
+
+        Logger.logV(TAG, "onStart(): adding callback");
+        Runnable runnableCallBack = this::addCallBack;
+        runnableCallBack.run();
+
+    }
+
     /**
      * Method to load the data send by other activities
      */
@@ -71,13 +84,6 @@ public class AddLocationActivity extends CallBackActivity {
 
         EditText latitudeInput = findViewById(R.id.editText_ad_location_latitude);
         EditText longitudeInput = findViewById(R.id.editText_ad_location_longitude);
-
-        TextView title = findViewById(R.id.textView_header_title);
-        try {
-            title.setText(data.get("locationName").toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         Button mapButton = findViewById(R.id.button_ad_maps);
         mapButton.setOnClickListener(v -> {
@@ -131,7 +137,7 @@ public class AddLocationActivity extends CallBackActivity {
                     String latitude = data.get("latitude").toString();
                     String longitude = data.get("longitude").toString();
 
-                    if (new mLocation(null, null, latitude, longitude).isValid()) {
+                    if (new mLatLng(latitude, longitude).isValid()) {
                         Runnable checkLocationEntry = new CheckLocationEntry(
                                 getApplicationContext(),
                                 latitude,

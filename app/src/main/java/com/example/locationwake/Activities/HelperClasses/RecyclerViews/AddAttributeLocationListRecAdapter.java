@@ -13,14 +13,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.Fade;
-import androidx.transition.Transition;
 
 import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddAttributeActivities.AddNameAttributeActivity;
 import com.example.locationwake.Activities.HelperClasses.JSON.AttributeJSONHelper;
 import com.example.locationwake.Activities.HelperClasses.JSON.LocationJSONHelper;
 import com.example.locationwake.Activities.ViewLocation.ViewLocationActivity;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -40,14 +38,12 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
     //List that holds all the different attributes of the location displayed with the Recyclerview
     private List<mLocation> locations;
 
-    //Context of the application
-    Context context;
 
     /**
      * Constructor
      * @param context context of the application
      */
-    public AddAttributeLocationListRecAdapter(List<mLocation> locations, Context context) {
+    public AddAttributeLocationListRecAdapter(List<mLocation> locations) {
         if (this.locations == null) {
             this.locations = new ArrayList<>();
         }
@@ -58,7 +54,6 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
 
         notifyDataSetChanged();
 
-        this.context = context;
     }
 
     /**
@@ -89,8 +84,8 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
                 Logger.logD(TAG, "onClick(): Clicked on an item");
                 Intent intent = new Intent(v.getContext(), ViewLocationActivity.class);
                 JSONObject data = new LocationJSONHelper(locations.get(holder.getAdapterPosition()).getLID(),
-                        locations.get(holder.getAdapterPosition()).getName(), locations.get(holder.getAdapterPosition()).getLat(),
-                        locations.get(holder.getAdapterPosition()).getLng())
+                        locations.get(holder.getAdapterPosition()).getName(), locations.get(holder.getAdapterPosition()).getLatLng().getLat(),
+                        locations.get(holder.getAdapterPosition()).getLatLng().getLng())
                         .build();
                 intent.putExtra("data", data.toString());
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)v.getContext(),
@@ -146,11 +141,11 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), AddNameAttributeActivity.class);
                     final View sharedContainer = v.findViewById(R.id.container);
-                    View sharedNavigation = ((Activity) context).findViewById(R.id.layout_button_main);
-
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)context,
-                            Pair.create(sharedContainer, "container_transition"),
-                            Pair.create(sharedNavigation, "navigation_animation"));
+//                    View sharedNavigation = ((Activity) context).findViewById(R.id.layout_button_main);
+//
+//                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)context,
+//                            Pair.create(sharedContainer, "container_transition"),
+//                            Pair.create(sharedNavigation, "navigation_animation"));
                     intent.putExtra("data",
                             new AttributeJSONHelper(
                                     locations.get(position).getName(),
@@ -159,7 +154,7 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
                                     null,
                                     null,
                                     null).build().toString());
-                    context.startActivity(intent, options.toBundle());
+                    v.getContext().startActivity(intent);
                 }
             });
         }

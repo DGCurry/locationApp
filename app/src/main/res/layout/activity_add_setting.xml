@@ -1,53 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="15dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/space_cadet">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/page_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="@dimen/navigation_buttons_height"
-        >
+        android:layout_margin="@dimen/rc_item_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <include
-            android:id="@+id/include_add_setting_header"
-            layout="@layout/header_icon"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_default="wrap"
-            app:layout_constraintWidth_default="spread"
-            android:visibility="visible">
-        </include>
+            layout="@layout/pageheader"/>
 
-        <LinearLayout
-            android:id="@+id/layout_add_setting_input_outer"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/top_page_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/include_add_setting_header"
-            android:orientation="vertical"
-            android:background="@color/white">
+            android:orientation="vertical" >
 
+            <include
+                layout="@layout/textbox" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/middle_page_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
             <LinearLayout
-                android:id="@+id/layout_add_setting_input_inner"
+                android:id="@+id/choose_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView_ad_setting_title"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -69,9 +64,9 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <include
         android:id="@+id/navigation_bar"

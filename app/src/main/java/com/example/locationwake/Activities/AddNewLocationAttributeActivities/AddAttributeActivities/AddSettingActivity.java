@@ -94,13 +94,10 @@ public class AddSettingActivity extends AppCompatActivity {
             }
         });
 
-        TextView title = findViewById(R.id.textView_header_title);
-        TextView subTitle = findViewById(R.id.textView_header_subtitle);
-        subTitle.setVisibility(View.VISIBLE);
+        TextView title = findViewById(R.id.page_header);
 
         try {
-            title.setText(data.get("locationName").toString());
-            subTitle.setText(data.get("attributeName").toString());
+            title.setText("Add Attribute to " + data.get("locationName").toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

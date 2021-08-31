@@ -6,7 +6,7 @@
 //import androidx.test.ext.junit.runners.AndroidJUnit4;
 //
 //import com.example.locationwake.Backend.Database.Attributes.mDistance;
-//import com.example.locationwake.Backend.Database.Attributes.mLocation;
+//import com.example.locationwake.Backend.Database.mLocation;
 //import com.example.locationwake.Backend.Behaviour.Components.LocationComponent;
 //
 //import org.junit.Before;

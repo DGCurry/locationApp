@@ -7,7 +7,7 @@ import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Services.DataEntry;
 
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ public class DataEntryTests {
                         "Evening",
                         new mRadius("500"),
                         new mSetting("SLT")),
-                new mLocation("5", "Home", "5", "5"),
+                new mLocation("5", "Home", "5"),
                 ApplicationProvider.getApplicationContext());
         dataEntry.run();
 

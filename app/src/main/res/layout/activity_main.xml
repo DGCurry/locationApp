@@ -3,115 +3,127 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:map="http://schemas.android.com/tools"
-    android:padding="15dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/gmap_preview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintVertical_weight="1"
+        android:id="@+id/page_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="vertical" >
+        android:layout_margin="@dimen/rc_item_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/extra_large_text_size"
-            android:text="Welcome Back"
-            android:padding="@dimen/rc_text_padding"
-            android:gravity="center" />
-
+        <include
+            layout="@layout/pageheader"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/top_page_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/activity_vertical_margin" >
+            android:orientation="vertical" >
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_weight="0.4" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/activity_vertical_margin" >
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_weight="1"
-                app:cardCornerRadius="100dp">
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_weight="0.4" />
 
-                <!--fragment to display our maps-->
-                <fragment
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:id="@+id/map_main"
-                    class="com.google.android.gms.maps.SupportMapFragment"
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="100dp">
+
+                    <fragment
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:id="@+id/map_main"
+                        class="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        map:liteMode="true"
+                        tools:context=".MapsActivity" />
+
+                </androidx.cardview.widget.CardView>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_weight="0.4" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <include
+                layout="@layout/header_divider" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/middle_page_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:id="@+id/known_location_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible" >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_main_active_setting"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    map:liteMode="true"
-                    tools:context=".MapsActivity" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/rc_item_margin"
+                    app:layout_constrainedHeight="true"
+                    app:layout_constraintWidth_default="wrap" />
 
-            </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView_turn_on_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:background="@color/black" >
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_weight="0.4" />
+                    <include
+                        layout="@layout/subheader" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip4"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right" />
+
+                </androidx.cardview.widget.CardView>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/unknown_location_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MIAUW">
+
+                </TextView>
+
+            </FrameLayout>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/active_location"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintVertical_weight="1"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:layout_constraintTop_toBottomOf="@+id/gmap_preview"
-        android:orientation="vertical" >
-
-        <include
-            layout="@layout/header_divider" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_main_active_setting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/rc_item_margin"
-            app:layout_constrainedHeight="true"
-            app:layout_constraintWidth_default="wrap"
-            android:visibility="gone"/>
-
-        <include
-            android:id="@+id/include_add_location"
-            layout="@layout/header_icon_item_nt"
-            android:visibility="gone">
-        </include>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView_turn_on_off"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:background="@color/black" >
-
-            <include
-                layout="@layout/subheader" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip4"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="right" />
-
-        </androidx.cardview.widget.CardView>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
     <include
-        android:id="@+id/navigation_bar"
         layout="@layout/navigation_buttons" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,13 +11,10 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,12 +30,11 @@ import com.example.locationwake.Activities.PermissionActivities.NotificationPerm
 import com.example.locationwake.Activities.PermissionActivities.Permission;
 import com.example.locationwake.Activities.ViewLocation.LocationListActivity;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
-import com.example.locationwake.Backend.Database.DataHandler;
+import com.example.locationwake.Backend.Database.Attributes.mLatLng;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
-import com.google.android.gms.common.data.DataHolder;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -96,7 +92,7 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
         super.onStart();
 
 
-        Logger.logV(TAG, "onCreate(): adding callback");
+        Logger.logV(TAG, "onStart(): adding callback");
         Runnable runnableCallBack = this::addCallBack;
         runnableCallBack.run();
 
@@ -116,6 +112,7 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
 
         Logger.logV(TAG, "onResume(): started createUI()");
         createUI();
+        updateUI();
     }
 
     /**
@@ -124,9 +121,6 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
     protected void createUI() {
         Logger.logV(TAG, "createUI(): adding navigation to the activity");
         addNavigation();
-
-        Logger.logV(TAG, "createUI(): getting the UI elements");
-        updateUI();
     }
 
     /**
@@ -164,6 +158,112 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
             }
         });
     }
+
+    /**
+     * method called when the backend has found a setting to be enabled. The UI is updated
+     */
+    private void populateRC(mLatLng latLng, mAttribute attribute) {
+        //retrieve all the data and inflate one of the thingies
+        //Holds all the data that is in the database
+        ArrayList<AttributeInterface> list = new ArrayList<>();
+        list.add(attribute.getSetting());
+        list.add(attribute.getRadius());
+        list.add(latLng);
+
+        attributesRC.setVisibility(View.VISIBLE);
+
+        attributesRC.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
+                getApplicationContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false);
+
+        attributesRC.setLayoutManager(layoutManager);
+        RecyclerView.Adapter attributesAd = new MainSettingRecAdapter(list, getApplicationContext());
+        attributesRC.setAdapter(attributesAd);
+
+        Toast.makeText(getApplicationContext(), "There is a location found, UI updated", Toast.LENGTH_SHORT).show();
+    }
+
+    private void initializeUI() {
+        Logger.logD(TAG, "initializeUI(): initializing");
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_main);
+        attributesRC = (RecyclerView) findViewById(R.id.recyclerView_main_active_setting);
+        locationName = findViewById(R.id.textView_header_title);
+    }
+
+    /**
+     * Updates and creates the GUI for the Setting that is currently active, or not
+     */
+    private void updateUI() {
+        String locationNameText = dataHolder.getLocation() != null ? dataHolder.getLocation().getName() : "No location has been found";
+
+        locationName.setText(locationNameText);
+        if (dataHolder.getLocation() != null && dataHolder.getAttribute() != null) {
+            mapFragment.getMapAsync(this);
+            findViewById(R.id.unknown_location_container).setVisibility(View.INVISIBLE);
+            findViewById(R.id.known_location_container).setVisibility(View.VISIBLE);
+
+            Logger.logD(TAG, "updateUI(): found location, updating RC");
+            populateRC(dataHolder.getLocation().getLatLng(), dataHolder.getAttribute());
+            View switchLocation = findViewById(R.id.cardView_turn_on_off);
+            switchLocation.setVisibility(View.VISIBLE);
+
+        } else {
+            Logger.logD(TAG, "updateUI(): found no location, displaying add location button");
+            findViewById(R.id.unknown_location_container).setVisibility(View.VISIBLE);
+            findViewById(R.id.known_location_container).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        googleMap.getUiSettings().setScrollGesturesEnabled(false);
+
+        LatLng location = new LatLng(Double.parseDouble(dataHolder.getLocation().getLatLng().getLat()), Double.parseDouble(dataHolder.getLocation().getLatLng().getLng()));
+        googleMap.addMarker(new MarkerOptions().position(location));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f));
+    }
+
+
+    /**
+     * method to start all worker background threads
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startWorker() {
+        Logger.logD(TAG, "startWorker(): starting workmanager");
+        PeriodicWorkRequest  work = new PeriodicWorkRequest.Builder(
+                com.example.locationwake.Backend.Managers.WorkManager.class,
+                15,
+                TimeUnit.MINUTES)
+                .addTag("WorkManager")
+                .setBackoffCriteria(BackoffPolicy.LINEAR, 60*1000, TimeUnit.MILLISECONDS)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        workManager.enqueueUniquePeriodicWork(
+                "WorkManager",
+                ExistingPeriodicWorkPolicy.KEEP,
+                work
+        );
+    }
+
+    /**
+     * Method to handle the callback from the backend
+     * @param update if the Activity should update components of itself, this is true
+     * @param succeeded if an action called by the Activity has succeeded, this is true
+     * @param failed if an action called by the Activity has failed, this is true
+     * @param type to distinguish between more CallBacks with the same boolean values, a Char can be added
+     * @param message to give the user or developer feedback, a message can be added
+     */
+    @Override
+    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
+        Logger.logD(TAG, "MUAW");
+        if (update) {
+            runOnUiThread(this::updateUI);
+        }
+    }
+
 
     /**
      * Method to ask the user permissions for services used by the application
@@ -241,115 +341,6 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
         }
 
         return permissionList;
-    }
-
-    /**
-     * method called when the backend has found a setting to be enabled. The UI is updated
-     */
-    private void populateRC(mLocation location, mAttribute attribute) {
-        //retrieve all the data and inflate one of the thingies
-        //Holds all the data that is in the database
-        ArrayList<AttributeInterface> list = new ArrayList<>();
-        list.add(attribute.getSetting());
-        list.add(attribute.getRadius());
-        list.add(location);
-
-        attributesRC.setVisibility(View.VISIBLE);
-
-        attributesRC.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
-                getApplicationContext(),
-                LinearLayoutManager.HORIZONTAL,
-                false);
-
-        attributesRC.setLayoutManager(layoutManager);
-        RecyclerView.Adapter attributesAd = new MainSettingRecAdapter(list, getApplicationContext());
-        attributesRC.setAdapter(attributesAd);
-
-        Toast.makeText(getApplicationContext(), "There is a location found, UI updated", Toast.LENGTH_SHORT).show();
-    }
-
-    private void initializeUI() {
-        Logger.logD(TAG, "initializeUI(): initializing");
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_main);
-        attributesRC = (RecyclerView) findViewById(R.id.recyclerView_main_active_setting);
-        locationName = findViewById(R.id.textView_header_title);
-    }
-
-    /**
-     * Updates and creates the GUI for the Setting that is currently active, or not
-     */
-    private void updateUI() {
-        String locationNameText = dataHolder.getLocation() != null ? dataHolder.getLocation().getName() : "No location has been found";
-
-        locationName.setText(locationNameText);
-        if (dataHolder.getLocation() != null && dataHolder.getAttribute() != null) {
-            mapFragment.getMapAsync(this);
-            findViewById(R.id.include_add_location).setVisibility(View.INVISIBLE);
-
-            Logger.logD(TAG, "updateUI(): found location, updating RC");
-            populateRC(dataHolder.getLocation(), dataHolder.getAttribute());
-            View switchLocation = findViewById(R.id.cardView_turn_on_off);
-            switchLocation.setVisibility(View.VISIBLE);
-
-        } else {
-            Logger.logD(TAG, "updateUI(): found no location, displaying add location button");
-            findViewById(R.id.include_add_location).setVisibility(View.INVISIBLE);
-
-            View addLocation = findViewById(R.id.include_add_location);
-            addLocation.setVisibility(View.VISIBLE);
-            TextView addLocationT = addLocation.findViewById(R.id.textView_header_title);
-            addLocationT.setText("Add a new location");
-            addLocation.findViewById(R.id.button_header_icon).setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        googleMap.getUiSettings().setScrollGesturesEnabled(false);
-
-        LatLng location = new LatLng(Double.parseDouble(dataHolder.getLocation().getLat()), Double.parseDouble(dataHolder.getLocation().getLng()));
-        googleMap.addMarker(new MarkerOptions().position(location));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f));
-    }
-
-
-    /**
-     * method to start all worker background threads
-     */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void startWorker() {
-        Logger.logD(TAG, "startWorker(): starting workmanager");
-        PeriodicWorkRequest  work = new PeriodicWorkRequest.Builder(
-                com.example.locationwake.Backend.Managers.WorkManager.class,
-                15,
-                TimeUnit.MINUTES)
-                .addTag("WorkManager")
-                .setBackoffCriteria(BackoffPolicy.LINEAR, 60*1000, TimeUnit.MILLISECONDS)
-                .build();
-
-        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-        workManager.enqueueUniquePeriodicWork(
-                "WorkManager",
-                ExistingPeriodicWorkPolicy.KEEP,
-                work
-        );
-    }
-
-    /**
-     * Method to handle the callback from the backend
-     * @param update if the Activity should update components of itself, this is true
-     * @param succeeded if an action called by the Activity has succeeded, this is true
-     * @param failed if an action called by the Activity has failed, this is true
-     * @param type to distinguish between more CallBacks with the same boolean values, a Char can be added
-     * @param message to give the user or developer feedback, a message can be added
-     */
-    @Override
-    public void onCallBack(boolean update, boolean succeeded, boolean failed, char type, String message) {
-        Logger.logD(TAG, "MUAW");
-        if (update) {
-            runOnUiThread(this::updateUI);
-        }
     }
 
 }

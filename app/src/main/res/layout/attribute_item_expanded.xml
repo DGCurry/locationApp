@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:transitionName="container_transition"
+    android:layout_marginTop="@dimen/rc_item_margin">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/top_page_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:orientation="vertical" >
+
+        <include
+            layout="@layout/pageheader" />
+
+        <include
+            layout="@layout/header" />
+
+        <include
+            layout="@layout/vertical_divider" />
+
+        <LinearLayout
+            android:id="@+id/setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:padding="@dimen/rc_item_padding">
+
+            <TextView
+                android:id="@+id/subheader_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/rc_icon_size_l"
+                android:textSize="@dimen/large_text_size"
+                android:padding="@dimen/rc_text_padding"
+                android:text="Subtitle" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/radius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:padding="@dimen/rc_item_padding">
+
+            <TextView
+                android:id="@+id/subheader_radius"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/rc_icon_size_l"
+                android:textSize="@dimen/large_text_size"
+                android:padding="@dimen/rc_text_padding"
+                android:text="Subtitle" />
+
+        </LinearLayout>
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.cardview.widget.CardView>

@@ -1,11 +1,9 @@
 package com.example.locationwake.Backend.Services;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Location;
 
-import com.example.locationwake.Backend.Behaviour.Component;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Managers.CallBackManager;
@@ -48,13 +46,13 @@ public class CheckLocationEntry implements Runnable {
         //for each location
         for (mLocation savedLocation:locations) {
             Location loadedLocation = new Location("");
-            loadedLocation.setLongitude(Double.parseDouble(savedLocation.getLng()));
-            loadedLocation.setLatitude(Double.parseDouble(savedLocation.getLat()));
+            loadedLocation.setLongitude(Double.parseDouble(savedLocation.getLatLng().getLng()));
+            loadedLocation.setLatitude(Double.parseDouble(savedLocation.getLatLng().getLat()));
 
             Logger.logD(TAG, "run(): Calculating distance for \n" +
                     "\t LID: " + savedLocation.getLID() + "\n" +
-                    "\t latitude: " + savedLocation.getLat() + "\n" +
-                    "\t longitude: " + savedLocation.getLng() + "\n" +
+                    "\t latitude: " + savedLocation.getLatLng().getLat() + "\n" +
+                    "\t longitude: " + savedLocation.getLatLng().getLng() + "\n" +
                     "\n And new location \n" +
                     "\t latitude: " + savedLatitude + "\n" +
                     "\t longitude: " + savedLongitude);

@@ -64,27 +64,12 @@ public class AddNameAttributeActivity extends AppCompatActivity {
      */
     protected void createUI() {
         Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
-        TextView title = findViewById(R.id.textView_header_title);
-        TextView subTitle = findViewById(R.id.textView_header_subtitle);
-        subTitle.setVisibility(View.VISIBLE);
+        TextView title = findViewById(R.id.page_header);
 
         EditText name = findViewById(R.id.editText_ad_name_name);
 
-        name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                subTitle.setText(s);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
         try {
-            title.setText(data.get("locationName").toString());
+            title.setText("Add Attribute to " + data.get("locationName").toString());
         } catch (JSONException e) {
             title.setText("None");
             e.printStackTrace();

@@ -1,24 +1,20 @@
 package com.example.locationwake.Activities.ActivityExtension;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Looper;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
-import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
 import com.example.locationwake.Logger;
@@ -31,7 +27,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -123,7 +118,7 @@ public abstract class BasicMapActivity extends AppCompatActivity implements OnMa
     protected void addSavedLocationsMarkers() {
         ArrayList<mLocation> locations = DataHandler.loadLocations(getApplicationContext());
         for (mLocation location:locations) {
-            LatLng locationCenter = new LatLng(Double.parseDouble(location.getLat()), Double.parseDouble(location.getLng()));
+            LatLng locationCenter = new LatLng(Double.parseDouble(location.getLatLng().getLat()), Double.parseDouble(location.getLatLng().getLng()));
 
             map.addMarker(new MarkerOptions().position(locationCenter).title(location.getName()));
             ArrayList<mAttribute> attributes = DataHandler.loadAttributes(location.getLID(), getApplicationContext());

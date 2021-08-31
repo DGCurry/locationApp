@@ -1,5 +1,7 @@
 package com.example.locationwake.Backend.Database;
 
+import androidx.annotation.NonNull;
+
 import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 
@@ -28,7 +30,8 @@ public class mAttribute {
      * @param AID key id to link to LocationSettingDbHelper entry
      * All objects here are the least an attribute should have. Any other must be set by getters and setters.
      */
-    public mAttribute(String LID, String AID, String name, mRadius radius, mSetting mSetting) {
+    public mAttribute(@NonNull String LID, String AID, String name,
+                      @NonNull mRadius radius, @NonNull mSetting mSetting) {
         this.LID = LID;
         this.AID = AID;
         this.name = name;
@@ -81,7 +84,7 @@ public class mAttribute {
      * sets the attribute mDistance
      * @param radius
      */
-    public void setRadius(mRadius radius) {
+    public void setRadius(@NonNull mRadius radius) {
         this.radius = radius;
     }
 
@@ -89,7 +92,7 @@ public class mAttribute {
      * method to retrieve the attribute mSetting
      * @return mSetting
      */
-    public com.example.locationwake.Backend.Database.Attributes.mSetting getSetting() {
+    public mSetting getSetting() {
         return mSetting;
     }
 
@@ -97,7 +100,7 @@ public class mAttribute {
      * sets the attribute mSetting
      * @param mSetting
      */
-    public void setSetting(com.example.locationwake.Backend.Database.Attributes.mSetting mSetting) {
+    public void setSetting(@NonNull mSetting mSetting) {
         this.mSetting = mSetting;
     }
 
