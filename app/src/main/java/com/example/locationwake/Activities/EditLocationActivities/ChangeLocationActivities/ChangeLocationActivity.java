@@ -10,7 +10,8 @@ import android.widget.Toast;
 
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
 import com.example.locationwake.Activities.EditLocationActivities.ChangeAttributeActivities.ChangeNameAttributeActivity;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mLatLng;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Services.ChangeLocationEntry;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
@@ -71,7 +72,7 @@ public class ChangeLocationActivity extends CallBackActivity {
         EditText latitudeInput = findViewById(R.id.editText_ad_location_latitude);
         EditText longitudeInput = findViewById(R.id.editText_ad_location_longitude);
 
-        TextView title = findViewById(R.id.textView_location_title_main);
+        TextView title = findViewById(R.id.textView_header_title);
         try {
             title.setText(data.get("locationName").toString());
             latitudeInput.setText(data.get("latitude").toString());
@@ -118,8 +119,8 @@ public class ChangeLocationActivity extends CallBackActivity {
             public void onClick(View v) {
                 Logger.logD(TAG, "createUI(): clicked on send Button");
                 //check the input data
-                if (!new mLocation(null, null, latitudeInput.getText().toString(),
-                        longitudeInput.getText().toString()).isValid()) {
+                if (!new mLatLng(latitudeInput.getText().toString(), longitudeInput.getText().toString()
+                ).isValid()) {
                     Logger.logE(TAG, "createUI(): onClick(): LOCATION is invalid");
                     Toast.makeText(getApplicationContext(), "The item Location is invalid", Toast.LENGTH_LONG).show();
                     return;
@@ -128,8 +129,9 @@ public class ChangeLocationActivity extends CallBackActivity {
                     ChangeLocationEntry locationEntry = new ChangeLocationEntry(
                             new mLocation(data.get("LID").toString(),
                                     data.get("locationName").toString(),
-                                    latitudeInput.getText().toString(),
-                                    longitudeInput.getText().toString()), getApplicationContext());
+                                    new mLatLng(latitudeInput.getText().toString(), longitudeInput.getText().toString()
+                                    )
+                            ), getApplicationContext());
                     locationEntry.run();
                 } catch (JSONException e) {
                     e.printStackTrace();

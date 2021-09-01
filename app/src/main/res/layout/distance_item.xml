@@ -17,8 +17,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size"
+            android:layout_width="@dimen/rc_icon_size_l"
+            android:layout_height="@dimen/rc_icon_size_l"
             android:layout_gravity="center"
             android:src="@drawable/ic_launcher_background"/>
 
@@ -34,10 +34,10 @@
             android:text="Radius"/>
 
         <Button
-            android:id="@+id/button_invisible"
+            android:id="@+id/button_header_icon"
             android:layout_gravity="center"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size"
+            android:layout_width="@dimen/rc_icon_size_l"
+            android:layout_height="@dimen/rc_icon_size_l"
             android:visibility="gone"/>
 
     </LinearLayout>
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/large_text_size"
-        android:layout_marginStart="@dimen/rc_icon_size"
+        android:layout_marginStart="@dimen/rc_icon_size_l"
         android:padding="@dimen/rc_text_padding"
         android:text="... meters " />
 

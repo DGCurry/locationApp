@@ -1,6 +1,5 @@
 package com.example.locationwake.Activities.EditLocationActivities.ChangeLocationActivities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,11 +9,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.locationwake.Activities.ActivityExtension.CallBackActivity;
-import com.example.locationwake.Activities.MainActivity;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mLatLng;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Services.ChangeLocationEntry;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
@@ -71,7 +68,7 @@ public class ChangeNameLocationActivity extends CallBackActivity {
         Logger.logV(TAG, "createUI(): creating recyclerView and adding elements into it");
         EditText name = findViewById(R.id.editText_ad_name_name);
 
-        TextView title = findViewById(R.id.textView_location_title_main);
+        TextView title = findViewById(R.id.textView_header_title);
 
         name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -127,8 +124,9 @@ public class ChangeNameLocationActivity extends CallBackActivity {
                     ChangeLocationEntry locationEntry = new ChangeLocationEntry(
                             new mLocation(data.get("LID").toString(),
                                     name.getText().toString(),
-                                    data.get("latitude").toString(),
-                                    data.get("longitude").toString()), getApplicationContext());
+                                    new mLatLng(data.get("latitude").toString(), data.get("longitude")
+                                            .toString())
+                            ), getApplicationContext());
                     locationEntry.run();
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -17,7 +17,7 @@ import com.example.locationwake.Backend.Managers.CallBackManager;
 import com.example.locationwake.Logger;
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Behaviour.Components.LocationComponent;
 import com.example.locationwake.Backend.Behaviour.SettingObject;
 

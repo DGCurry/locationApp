@@ -18,7 +18,7 @@ import com.example.locationwake.Activities.AddNewLocationAttributeActivities.Add
 import com.example.locationwake.Activities.HelperClasses.JSON.AttributeJSONHelper;
 import com.example.locationwake.Activities.HelperClasses.JSON.LocationJSONHelper;
 import com.example.locationwake.Activities.ViewLocation.ViewLocationActivity;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -38,14 +38,12 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
     //List that holds all the different attributes of the location displayed with the Recyclerview
     private List<mLocation> locations;
 
-    //Context of the application
-    Context context;
 
     /**
      * Constructor
      * @param context context of the application
      */
-    public AddAttributeLocationListRecAdapter(List<mLocation> locations, Context context) {
+    public AddAttributeLocationListRecAdapter(List<mLocation> locations) {
         if (this.locations == null) {
             this.locations = new ArrayList<>();
         }
@@ -56,7 +54,6 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
 
         notifyDataSetChanged();
 
-        this.context = context;
     }
 
     /**
@@ -69,7 +66,7 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView;
         itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.header_icon, parent, false);
+                .inflate(R.layout.header_icon_item, parent, false);
         return new headerViewHolder(itemView);
     }
 
@@ -86,12 +83,15 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): Clicked on an item");
                 Intent intent = new Intent(v.getContext(), ViewLocationActivity.class);
-                JSONObject data = new LocationJSONHelper(locations.get(position).getLID(),
-                        locations.get(position).getName(), locations.get(position).getLat(),
-                        locations.get(position).getLng())
+                JSONObject data = new LocationJSONHelper(locations.get(holder.getAdapterPosition()).getLID(),
+                        locations.get(holder.getAdapterPosition()).getName(), locations.get(holder.getAdapterPosition()).getLatLng().getLat(),
+                        locations.get(holder.getAdapterPosition()).getLatLng().getLng())
                         .build();
                 intent.putExtra("data", data.toString());
-                v.getContext().startActivity(intent);
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)v.getContext(),
+                        Pair.create(v, "container_transition"));
+
+                v.getContext().startActivity(intent, options.toBundle());
             }
         });
         ((headerViewHolder) holder).bindView(position);
@@ -124,7 +124,7 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
         public headerViewHolder(View view) {
             super(view);
             v = view;
-            title = (TextView) view.findViewById(R.id.textView_location_title_main);
+            title = (TextView) view.findViewById(R.id.textView_header_title);
         }
 
         /**
@@ -134,18 +134,18 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
         void bindView(int position) {
             title.setText(locations.get(position).getName());
 
-            Button addAttribute = v.findViewById(R.id.button_invisible);
+            Button addAttribute = v.findViewById(R.id.button_header_icon);
             addAttribute.setVisibility(View.VISIBLE);
             addAttribute.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), AddNameAttributeActivity.class);
                     final View sharedContainer = v.findViewById(R.id.container);
-                    View sharedNavigation = ((Activity) context).findViewById(R.id.layout_button_main);
-
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)context,
-                            Pair.create(sharedContainer, "container_transition"),
-                            Pair.create(sharedNavigation, "navigation_animation"));
+//                    View sharedNavigation = ((Activity) context).findViewById(R.id.layout_button_main);
+//
+//                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)context,
+//                            Pair.create(sharedContainer, "container_transition"),
+//                            Pair.create(sharedNavigation, "navigation_animation"));
                     intent.putExtra("data",
                             new AttributeJSONHelper(
                                     locations.get(position).getName(),
@@ -154,7 +154,7 @@ public class AddAttributeLocationListRecAdapter extends RecyclerView.Adapter{
                                     null,
                                     null,
                                     null).build().toString());
-                    context.startActivity(intent, options.toBundle());
+                    v.getContext().startActivity(intent);
                 }
             });
         }

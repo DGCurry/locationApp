@@ -9,11 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.locationwake.Backend.Database.Attributes.mLatLng;
 import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Database.Attributes.mSetting;
 
 import java.util.ArrayList;
@@ -29,7 +30,6 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
 
     //Holds the different attributes of the location that is in the Recyclerview
     private List<AttributeInterface> attributes;
-    private String name;
 
     //Context of the Activity
     Context context;
@@ -71,19 +71,19 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView;
         switch (viewType) {
-            case AttributeInterface.DISTANCE_TYPE:
+            case AttributeInterface.RADIUS_TYPE:
                 itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.distance_item, parent, false);
-                return new DistanceViewHolder(itemView);
+                        .inflate(R.layout.activity_h_item, parent, false);
+                return new RadiusViewHolder(itemView);
 
             case AttributeInterface.SETTING_TYPE:
                 itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.setting_item, parent, false);
+                        .inflate(R.layout.activity_h_item, parent, false);
                 return new SettingViewHolder(itemView);
 
             default:
                 itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.location_item, parent, false);
+                        .inflate(R.layout.activity_h_item, parent, false);
                 return new LocationViewHolder(itemView);
         }
     }
@@ -96,9 +96,9 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
-            case AttributeInterface.DISTANCE_TYPE:
+            case AttributeInterface.RADIUS_TYPE:
                 Logger.logV(TAG, "onBindViewHolder(): DISTANCE_TYPE added");
-                ((DistanceViewHolder) holder).bindView(position);
+                ((RadiusViewHolder) holder).bindView(position);
                 break;
 
             case AttributeInterface.LOCATION_TYPE:
@@ -141,7 +141,7 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
          */
         public SettingViewHolder(View view) {
             super(view);
-            setting = (TextView) view.findViewById(R.id.textView_header_setting);
+            setting = (TextView) view.findViewById(R.id.textView_h_title);
         }
 
         /**
@@ -159,7 +159,7 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
      */
     public class LocationViewHolder extends RecyclerView.ViewHolder {
         View layout;
-        TextView latitude, longitude;
+        TextView latLng;
 
         /**
          * constructor of the class. Binds the UI elements
@@ -169,8 +169,7 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
         public LocationViewHolder(View view) {
             super(view);
             layout = view;
-            latitude = view.findViewById(R.id.textView_main_location_latitude);
-            longitude = view.findViewById(R.id.textView_main_location_longitude);
+            latLng = view.findViewById(R.id.textView_h_title);
         }
 
         /**
@@ -179,9 +178,8 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
          * @param position position of the item
          */
         void bindView(int position) {
-            mLocation location = (mLocation) attributes.get(position);
-            latitude.setText(location.getLat());
-            longitude.setText(location.getLng());
+            mLatLng mLatLng = (mLatLng) attributes.get(position);
+            latLng.setText(mLatLng.getLat() + ", " + mLatLng.getLng());
             // Store a reference of the ViewHolder object in the layout.
             // Store a reference to the item in the mapView's tag. We use it to get the
             // coordinate of a location, when setting the map location.
@@ -191,9 +189,8 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
     /**
      * innerclass holds the information in the radius item
      */
-    public class DistanceViewHolder extends RecyclerView.ViewHolder {
+    public class RadiusViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView title;
         private final TextView distance;
 
         /**
@@ -201,11 +198,10 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
          *
          * @param view
          */
-        public DistanceViewHolder(View view) {
+        public RadiusViewHolder(View view) {
             super(view);
             // get reference to views
-            title = (TextView) view.findViewById(R.id.textView_distance_title);
-            distance = (TextView) view.findViewById(R.id.textView_distance_radius);
+            distance = view.findViewById(R.id.textView_h_title);
         }
 
         /**
@@ -214,8 +210,7 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
          * @param position position of the item
          */
         void bindView(int position) {
-            distance.setText(((mRadius)attributes.get(position)).getRadius() + " meters");
-
+            distance.setText(((mRadius)attributes.get(position)).getRadius());
         }
 
     }

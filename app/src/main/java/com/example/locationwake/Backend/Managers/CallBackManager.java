@@ -64,6 +64,8 @@ public class CallBackManager {
                 callBackActivity.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
             Logger.logD(TAG, "callBackActivities(): calling back activity " + callBackActivity.getClass().toString());
             callBackActivity.onCallBack(update, succeeded, failed, type, message);
+        } else {
+            Logger.logE(TAG, "callBackActivities(): no active activity to call back");
         }
     }
 }

@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 
 import com.example.locationwake.Backend.Database.Attributes.mRadius;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Backend.Behaviour.Component;
 
 public class LocationComponent extends Component {
@@ -28,8 +28,8 @@ public class LocationComponent extends Component {
     public LocationComponent(Context context, mLocation mLocation, mRadius radius) {
         this.context = context;
         this.radius = Integer.parseInt(radius.getRadius());
-        this.savedLatitude = Double.parseDouble(mLocation.getLat());
-        this.savedLongitude = Double.parseDouble(mLocation.getLng());
+        this.savedLatitude = Double.parseDouble(mLocation.getLatLng().getLat());
+        this.savedLongitude = Double.parseDouble(mLocation.getLatLng().getLng());
     }
 
     /**

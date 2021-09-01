@@ -5,6 +5,7 @@ import android.location.Location;
 
 import com.example.locationwake.Backend.Database.DataHandler;
 import com.example.locationwake.Backend.Database.mAttribute;
+import com.example.locationwake.Backend.Database.mLocation;
 
 import java.util.ArrayList;
 
@@ -34,7 +35,7 @@ public class mRadius implements AttributeInterface{
 
     @Override
     public int getType() {
-        return AttributeInterface.DISTANCE_TYPE;
+        return AttributeInterface.RADIUS_TYPE;
     }
 
     /**
@@ -80,8 +81,8 @@ public class mRadius implements AttributeInterface{
                 newLocation.setLatitude(Double.parseDouble(latitude));
 
                 Location savedLocation = new Location("");
-                savedLocation.setLongitude(Double.parseDouble(location.getLng()));
-                savedLocation.setLatitude(Double.parseDouble(location.getLat()));
+                savedLocation.setLongitude(Double.parseDouble(location.getLatLng().getLng()));
+                savedLocation.setLatitude(Double.parseDouble(location.getLatLng().getLat()));
 
                 float newDistance = newLocation.distanceTo(savedLocation);
 

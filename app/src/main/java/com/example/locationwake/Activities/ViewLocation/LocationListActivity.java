@@ -1,18 +1,14 @@
 package com.example.locationwake.Activities.ViewLocation;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.locationwake.Activities.AddNewLocationAttributeActivities.AddLocationActivities.AddNameLocationActivity;
 import com.example.locationwake.Activities.HelperClasses.RecyclerViews.AddAttributeLocationListRecAdapter;
 import com.example.locationwake.Backend.Database.DataHandler;
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.mLocation;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
 
@@ -74,7 +70,7 @@ public class LocationListActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new AddAttributeLocationListRecAdapter(list, getApplicationContext());
+        mAdapter = new AddAttributeLocationListRecAdapter(list);
         recyclerView.setAdapter(mAdapter);
     }
 }

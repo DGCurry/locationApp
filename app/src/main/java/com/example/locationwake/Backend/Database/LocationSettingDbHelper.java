@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import com.example.locationwake.Backend.Database.Attributes.mLocation;
+import com.example.locationwake.Backend.Database.Attributes.mLatLng;
 import com.example.locationwake.Logger;
 
 import java.util.ArrayList;
@@ -77,8 +77,8 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put(LATITUDE, location.getLat());
-        values.put(LONGITUDE, location.getLng());
+        values.put(LATITUDE, location.getLatLng().getLat());
+        values.put(LONGITUDE, location.getLatLng().getLng());
         values.put(LOCATION_NAME, location.getName());
 
         int id = (int)db.insert(TABLE_LOCATION, null, values);
@@ -97,8 +97,8 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put(LATITUDE, location.getLat());
-        values.put(LONGITUDE, location.getLng());
+        values.put(LATITUDE, location.getLatLng().getLat());
+        values.put(LONGITUDE, location.getLatLng().getLng());
         values.put(LOCATION_NAME, location.getName());
 
         db.update(TABLE_LOCATION, values, LOCATION_ID + " = ?", new String[]{location.getLID()});
@@ -126,8 +126,10 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
             mLocation location = new mLocation(
                     cursor.getString(cursor.getColumnIndex(LOCATION_ID)),
                     cursor.getString(cursor.getColumnIndex(LOCATION_NAME)),
-                    cursor.getString(cursor.getColumnIndex(LATITUDE)),
-                    cursor.getString(cursor.getColumnIndex(LONGITUDE)));
+                    new mLatLng(
+                            cursor.getString(cursor.getColumnIndex(LATITUDE)),
+                            cursor.getString(cursor.getColumnIndex(LONGITUDE)))
+            );
 
             locations.add(location);
         }
@@ -151,13 +153,15 @@ public class LocationSettingDbHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
 
         //put in every entry with the correct data
-        mLocation location = new mLocation(null, null, null, null);
+        mLocation location = new mLocation(null, null, null);
         while (cursor.moveToNext()) {
             location = new mLocation(
                     cursor.getString(cursor.getColumnIndex(LOCATION_ID)),
                     cursor.getString(cursor.getColumnIndex(LOCATION_NAME)),
-                    cursor.getString(cursor.getColumnIndex(LATITUDE)),
-                    cursor.getString(cursor.getColumnIndex(LONGITUDE)));
+                    new mLatLng(
+                            cursor.getString(cursor.getColumnIndex(LATITUDE)),
+                            cursor.getString(cursor.getColumnIndex(LONGITUDE)))
+            );
         }
 
         cursor.close();

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
         android:id="@+id/layout_button_main"
         android:transitionName="navigation_animation"
@@ -11,44 +12,52 @@
         android:layout_height="@dimen/navigation_buttons_height"
         android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-        </Space>
-        <Button
-            android:id="@+id/button_navigation_left"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size">
-        </Button>
+        <include
+            layout="@layout/vertical_divider" />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-        </Space>
-        <Button
-            android:id="@+id/button_navigation_middle"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size">
-        </Button>
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-        </Space>
-        <Button
-            android:id="@+id/button_navigation_right"
-            android:layout_width="@dimen/rc_icon_size"
-            android:layout_height="@dimen/rc_icon_size">
-        </Button>
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-        </Space>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+            </Space>
+            <Button
+                android:id="@+id/button_navigation_left"
+                android:layout_width="@dimen/rc_icon_size_l"
+                android:layout_height="@dimen/rc_icon_size_l">
+            </Button>
 
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+            </Space>
+            <Button
+                android:id="@+id/button_navigation_middle"
+                android:layout_width="@dimen/rc_icon_size_l"
+                android:layout_height="@dimen/rc_icon_size_l">
+            </Button>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+            </Space>
+            <Button
+                android:id="@+id/button_navigation_right"
+                android:layout_width="@dimen/rc_icon_size_l"
+                android:layout_height="@dimen/rc_icon_size_l">
+            </Button>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+            </Space>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
