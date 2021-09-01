@@ -26,11 +26,15 @@
             <include
                 layout="@layout/header_divider" />
 
-            <include
-                layout="@layout/header_icon_item_nt"
-                android:layout_margin="@dimen/rc_item_margin"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent" />
+            <Button
+                android:id="@+id/add_new_location_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Add new location +"
+                />
+
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

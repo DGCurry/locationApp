@@ -15,6 +15,9 @@
         android:paddingBottom="@dimen/navigation_buttons_height"
         android:orientation="vertical">
 
+        <include
+            layout="@layout/pageheader"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_view_location"
                 android:layout_width="match_parent"

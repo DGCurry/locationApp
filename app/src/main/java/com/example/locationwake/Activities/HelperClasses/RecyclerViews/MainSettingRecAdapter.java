@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.locationwake.Backend.Database.Attributes.mLatLng;
 import com.example.locationwake.Backend.Database.Attributes.mRadius;
 import com.example.locationwake.Logger;
 import com.example.locationwake.R;
@@ -177,8 +178,8 @@ public class MainSettingRecAdapter extends RecyclerView.Adapter {
          * @param position position of the item
          */
         void bindView(int position) {
-            mLocation location = (mLocation) attributes.get(position);
-            latLng.setText(location.getLatLng().getLat() + ", " + location.getLatLng().getLng());
+            mLatLng mLatLng = (mLatLng) attributes.get(position);
+            latLng.setText(mLatLng.getLat() + ", " + mLatLng.getLng());
             // Store a reference of the ViewHolder object in the layout.
             // Store a reference to the item in the mapView's tag. We use it to get the
             // coordinate of a location, when setting the map location.

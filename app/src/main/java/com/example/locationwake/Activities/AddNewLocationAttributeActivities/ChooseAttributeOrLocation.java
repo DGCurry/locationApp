@@ -141,7 +141,7 @@ public class ChooseAttributeOrLocation extends CallBackActivity {
 
         addLocation = findViewById(R.id.top_page_container).findViewById(R.id.textView_header_title);
         addAttribute = findViewById(R.id.middle_page_container).findViewById(R.id.textView_header_title);
-        addLocationB = findViewById(R.id.button_header_icon);
+        addLocationB = findViewById(R.id.add_new_location_button);
         addLocationB.setVisibility(View.VISIBLE);
     }
 

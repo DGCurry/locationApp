@@ -2,7 +2,6 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:transitionName="container_transition"
     android:layout_marginTop="@dimen/rc_item_margin">
 
     <androidx.appcompat.widget.LinearLayoutCompat
