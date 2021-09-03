@@ -42,14 +42,20 @@ public class NotificationManager {
         this.CHANNEL_ID = CHANNEL_ID;
     }
 
+    public boolean isAllowedUpdateNotification() {
+        return context.getSharedPreferences("NOTIFICATIONS_UPDATE_FILE_NAME", Context.MODE_PRIVATE).getBoolean("notification_during_update", true);
+    }
+
+    public boolean isAllowedNotification() {
+        return context.getSharedPreferences("NOTIFICATIONS_UPDATE_FILE_NAME", Context.MODE_PRIVATE).getBoolean("notification_after_update", true);
+    }
+
     /**
      * method that creates the foreground notification information
      * @return
      */
     @NonNull
     public ForegroundInfo createForegroundInfo() {
-        //TODO: check how to change notification information
-        //TODO: make notificationID a variable
         return new ForegroundInfo(NOTIFICATION_ID, createNotification());
     }
 

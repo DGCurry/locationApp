@@ -119,6 +119,7 @@ public class LocationWorker extends Worker {
                     new com.example.locationwake.Backend.Managers.NotificationManager(NOTIFICATION_ID
                             , NOTIFICATION_TITLE, "Retrieving location", getApplicationContext(),
                             3, CHANNEL_ID);
+
             setForegroundAsync(notificationManager.createForegroundInfo());
 
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());

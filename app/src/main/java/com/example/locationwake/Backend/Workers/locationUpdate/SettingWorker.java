@@ -1,6 +1,7 @@
 package com.example.locationwake.Backend.Workers.locationUpdate;
 
 import android.Manifest;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -66,13 +67,6 @@ public class SettingWorker extends Worker {
     public Result doWork() {
         Logger.logD(TAG, "doWork(): started");
 
-        //create notification channel
-        com.example.locationwake.Backend.Managers.NotificationManager notificationManager =
-                new com.example.locationwake.Backend.Managers.NotificationManager(NOTIFICATION_ID
-                        , NOTIFICATION_TITLE, "Retrieving and checking settings for your system", getApplicationContext(),
-                        3, CHANNEL_ID);
-        setForegroundAsync(notificationManager.createForegroundInfo());
-
         //get all from database
         //TODO: for these to work, need to create instances of Component, that all have the correct implementation to check
         // TODO: begin easy, with only location
@@ -101,6 +95,26 @@ public class SettingWorker extends Worker {
 
         Logger.logD(TAG, "doWork(): finished");
         return Result.success();
+    }
+
+    private void createNotification() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(
+                "NOTIFICATIONS_UPDATE_FILE_NAME", Context.MODE_PRIVATE);
+        com.example.locationwake.Backend.Managers.NotificationManager notificationManager;
+        if (pref.getBoolean("notification_after_update", true)) {
+            //create notification channel
+            notificationManager =
+                    new com.example.locationwake.Backend.Managers.NotificationManager(NOTIFICATION_ID
+                            , NOTIFICATION_TITLE, "Retrieving and checking settings for your system", getApplicationContext(),
+                            NotificationManager.IMPORTANCE_HIGH, CHANNEL_ID);
+        } else {
+            //create notification channel
+            notificationManager =
+                    new com.example.locationwake.Backend.Managers.NotificationManager(NOTIFICATION_ID
+                            , NOTIFICATION_TITLE, "Retrieving and checking settings for your system", getApplicationContext(),
+                            NotificationManager.IMPORTANCE_DEFAULT, CHANNEL_ID);
+        }
+        setForegroundAsync(notificationManager.createForegroundInfo());
     }
 
     /**

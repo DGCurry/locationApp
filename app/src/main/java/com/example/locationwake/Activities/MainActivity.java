@@ -2,6 +2,7 @@ package com.example.locationwake.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +12,9 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +31,7 @@ import com.example.locationwake.Activities.PermissionActivities.BackgroundLocati
 import com.example.locationwake.Activities.PermissionActivities.LocationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.NotificationPermissionActivity;
 import com.example.locationwake.Activities.PermissionActivities.Permission;
+import com.example.locationwake.Activities.SettingActivities.SettingActivity;
 import com.example.locationwake.Activities.ViewLocation.LocationListActivity;
 import com.example.locationwake.Backend.Database.Attributes.AttributeInterface;
 import com.example.locationwake.Backend.Database.Attributes.mLatLng;
@@ -70,8 +74,11 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Logger.logV(TAG, "onCreate(): created MainActivity");
+        setTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         // ask permissions -> create worker if needed -> gather data needed -> create GUI
         // only if sdk is greater than 23, otherwise permissions will be granted at install
@@ -84,6 +91,11 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
         Runnable runnableWorker = this::startWorker;
         runnableWorker.run();
 
+    }
+
+    private void setTheme() {
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("THEME_FILE_NAME", Context.MODE_PRIVATE);
+        AppCompatDelegate.setDefaultNightMode(preferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM));
     }
 
     @Override
@@ -112,6 +124,7 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
 
         Logger.logV(TAG, "onResume(): started createUI()");
         createUI();
+        Logger.logV(TAG, "onStart() started updateUI()");
         updateUI();
     }
 
@@ -155,6 +168,8 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "onClick(): clicked on the setting button");
+                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -232,9 +247,14 @@ public class MainActivity extends CallBackActivity implements OnMapReadyCallback
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startWorker() {
         Logger.logD(TAG, "startWorker(): starting workmanager");
-        PeriodicWorkRequest  work = new PeriodicWorkRequest.Builder(
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(
+                "SERVICE_MINUTES_FILE_NAME", Context.MODE_PRIVATE);
+        int repeatInterval = pref.getInt("service_minutes", 15);
+
+        PeriodicWorkRequest work = new PeriodicWorkRequest.Builder(
                 com.example.locationwake.Backend.Managers.WorkManager.class,
-                15,
+                repeatInterval,
                 TimeUnit.MINUTES)
                 .addTag("WorkManager")
                 .setBackoffCriteria(BackoffPolicy.LINEAR, 60*1000, TimeUnit.MILLISECONDS)

@@ -1,95 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/space_cadet">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/page_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="@dimen/navigation_buttons_height"
-        >
+        android:layout_margin="@dimen/rc_item_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/navigation_buttons_height"
+        android:orientation="vertical">
 
         <include
-            android:id="@+id/include_add_location_header"
-            layout="@layout/header_icon"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_default="wrap"
-            app:layout_constraintWidth_default="spread"
-            android:visibility="visible">
-        </include>
+            layout="@layout/pageheader"/>
 
-        <LinearLayout
-            android:id="@+id/layout_add_location_input_outer"
+        <ScrollView
+            android:id="@+id/top_page_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/include_add_location_header"
-            android:orientation="vertical"
-            android:background="@color/white">
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/layout_add_location_input_inner_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <LinearLayout
+                    android:id="@+id/notification_settings_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textView_ad_attribute_distance_title"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                    <include
+                        layout="@layout/header" />
+
+                    <include
+                        layout="@layout/vertical_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/not_update"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/rc_icon_size"
-                        android:padding="@dimen/rc_text_padding"
-                        android:textColor="#000"
-                        android:textSize="@dimen/extra_large_text_size"
-                        android:text="Radius"/>
+                        android:scaleType="centerCrop"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/rc_item_padding">
 
-                    <TextView
-                        android:id="@+id/textView_ad_attribute_distance_value"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        <TextView
+                            android:id="@+id/textView_not_update"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/rc_icon_size_l"
+                            android:textSize="@dimen/large_text_size"
+                            android:padding="@dimen/rc_text_padding"
+                            android:text="Title" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_not_update"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/not_after_update"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/rc_icon_size"
-                        android:padding="@dimen/rc_text_padding"
-                        android:textColor="#000"
-                        android:textSize="@dimen/extra_large_text_size"
-                        android:text="0 meters"/>
+                        android:scaleType="centerCrop"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/rc_item_padding">
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                        <TextView
+                            android:id="@+id/textView_not_after_update"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/rc_icon_size_l"
+                            android:textSize="@dimen/large_text_size"
+                            android:padding="@dimen/rc_text_padding"
+                            android:text="Title" />
 
-                <SeekBar
-                    android:id="@+id/seekBar_ad_attribute_radius"
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_not_after_update"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ui_settings_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/rc_icon_size"
-                    android:padding="@dimen/rc_text_padding"
-                    android:max="100"
-                    android:progress="50"/>
+                    android:orientation="vertical">
+
+                    <include
+                        layout="@layout/header" />
+
+                    <include
+                        layout="@layout/vertical_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/ui_use_OS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/rc_item_padding">
+
+                        <TextView
+                            android:id="@+id/textView_use_OS"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/rc_icon_size_l"
+                            android:textSize="@dimen/large_text_size"
+                            android:padding="@dimen/rc_text_padding"
+                            android:text="Title" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_use_OS"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ui_use_dark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/rc_item_padding">
+
+                        <TextView
+                            android:id="@+id/textView_ui_dark"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/rc_icon_size_l"
+                            android:textSize="@dimen/large_text_size"
+                            android:padding="@dimen/rc_text_padding"
+                            android:text="Title" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_ui_dark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ui_use_light"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/rc_item_padding">
+
+                        <TextView
+                            android:id="@+id/textView_ui_light"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/rc_icon_size_l"
+                            android:textSize="@dimen/large_text_size"
+                            android:padding="@dimen/rc_text_padding"
+                            android:text="Title" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_ui_light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/service_settings_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        layout="@layout/header" />
+
+                    <include
+                        layout="@layout/vertical_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/service_minutes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/rc_item_padding">
+
+                        <SeekBar
+                            android:id="@+id/seekBar_service_minutes"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/rc_text_padding"
+                            android:layout_marginRight="@dimen/rc_icon_size_l"
+                            android:max="45"
+                            android:layout_gravity="center"
+                            android:progress="0"/>
+
+                        <TextView
+                            android:id="@+id/textView_service_minutes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/rc_icon_size_m"
+                            android:text="miauw" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/button_agree"
+                        android:layout_width="@dimen/rc_icon_size_l"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:text="+"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </ScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <include
-        android:id="@+id/navigation_bar"
-        layout="@layout/navigation_buttons"/>
+        layout="@layout/navigation_buttons" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

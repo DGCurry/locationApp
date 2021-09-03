@@ -42,6 +42,8 @@
         <activity android:name=".Activities.EditLocationActivities.ChangeAttributeActivities.ChangeNameAttributeActivity" />
         <activity android:name=".Activities.EditLocationActivities.ChangeAttributeActivities.ChangeSettingActivity" />
 
+        <activity android:name=".Activities.SettingActivities.SettingActivity" />
+
 
         <activity android:name=".Activities.AddNewLocationAttributeActivities.ChooseAttributeOrLocation" />
 
